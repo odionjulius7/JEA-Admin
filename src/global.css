@@ -1,0 +1,22 @@
+/* scrollbar */
+@import 'simplebar-react/dist/simplebar.min.css';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+:where(.css-dev-only-do-not-override-1b0bdye).ant-input:placeholder-shown {
+  text-overflow: ellipsis;
+  color: #000000;
+  font-weight: bolder;
+}
+
+/*  */
+.ck-editor__editable {
+  min-height: 250px;
+}
