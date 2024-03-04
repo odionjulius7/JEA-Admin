@@ -36,8 +36,10 @@ export default function LoginView() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
 
+  console.log(authState);
+
   const { user, isError, isSuccess, isLoading, message } = authState.auth;
-  const token = user?.data?.token;
+  const token = user?.token;
 
   const theme = useTheme();
 

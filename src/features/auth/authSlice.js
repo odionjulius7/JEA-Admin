@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import authService from './authServices';
 
 // get the user stored data in local storage from set in the authService
-const getUserfromLocalStorage = localStorage.getItem('reviel')
-  ? JSON.parse(localStorage.getItem('reviel'))
+const getUserfromLocalStorage = localStorage.getItem('jea')
+  ? JSON.parse(localStorage.getItem('jea'))
   : null;
 // console.log(getUserfromLocalStorage);
 const initialState = {

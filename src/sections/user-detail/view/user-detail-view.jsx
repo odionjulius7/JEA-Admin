@@ -30,7 +30,7 @@ import { getAUser, UnsuspendAUser, resetState, suspendAUser } from 'src/features
 
 import AppWidgetSummary from 'src/sections/overview/app-widget-summary';
 
-import { getAUserloansMetrics } from 'src/features/Loan/loanSlice';
+// import { getAUserloansMetrics } from 'src/features/Loan/loanSlice';
 
 import UserDetailTable from '../user-detail-table';
 import UserRecLoanTable from '../user-rec-loan';
@@ -47,8 +47,6 @@ export default function UserDetailPage() {
   const { id } = useParams();
   const { isSuccess1, isError, unsuspendData, suspendData } = userState;
 
-  // console.log(loanState?.userloansMetricsData);
-
   useEffect(() => {
     if (isSuccess1) {
       toast.success('successfully suspended user!');
@@ -59,16 +57,16 @@ export default function UserDetailPage() {
     }
   }, [isSuccess1, isError, suspendData]);
 
-  useEffect(() => {
-    const ids = { id, token };
-    dispatch(resetState());
-    dispatch(getAUser(ids));
-  }, [dispatch, token, id, unsuspendData, suspendData]);
+  // useEffect(() => {
+  //   const ids = { id, token };
+  //   dispatch(resetState());
+  //   dispatch(getAUser(ids));
+  // }, [dispatch, token, id, unsuspendData, suspendData]);
 
-  useEffect(() => {
-    const ids = { id, token };
-    dispatch(getAUserloansMetrics(ids));
-  }, [dispatch, token, id]);
+  // useEffect(() => {
+  //   const ids = { id, token };
+  //   dispatch(getAUserloansMetrics(ids));
+  // }, [dispatch, token, id]);
 
   const [value, setValue] = useState('1');
 

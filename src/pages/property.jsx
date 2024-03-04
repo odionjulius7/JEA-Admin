@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Container } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
@@ -12,11 +13,12 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
 
-import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAproperty, resetState } from 'src/features/Property/propertySlice';
 
 // ----------------------------------------------------------------------
 
@@ -39,14 +41,33 @@ export const post = {
 // ----------------------------------------------------------------------
 
 export default function PropertyPage() {
+  const dispatch = useDispatch();
+  // const loanState = useSelector((state) => state.loan);
+  const propertyState = useSelector((state) => state.property);
+
+  const propertyDetail = propertyState?.property?.property;
+  console.log(propertyDetail);
+  // user auth
+  const authState = useSelector((state) => state);
+
+  const token = authState?.auth.user?.token;
+  const { id } = useParams();
+
+  useEffect(() => {
+    const ids = { id, token };
+    dispatch(resetState());
+    dispatch(getAproperty(ids));
+  }, [dispatch, token, id]);
+
+  //
   const { cover, title, view, comment, share, author, createdAt } = post;
 
   const latestPostLarge = 0;
 
   const renderAvatar = (
     <Avatar
-      alt={author.name}
-      src={author.avatarUrl}
+      alt={propertyDetail?.title}
+      src={propertyDetail?.images[0]}
       sx={{
         zIndex: 9,
         width: 32,
@@ -83,48 +104,48 @@ export default function PropertyPage() {
         }),
       }}
     >
-      {title}
+      {propertyDetail?.title}
     </Link>
   );
 
-  const renderInfo = (
-    <Stack
-      direction="row"
-      flexWrap="wrap"
-      spacing={1.5}
-      justifyContent="flex-end"
-      sx={{
-        mt: 3,
-        color: 'text.disabled',
-      }}
-    >
-      {[
-        // { number: comment, icon: 'eva:message-circle-fill' },
-        { number: view, icon: 'eva:eye-fill' },
-        { number: share, icon: 'eva:share-fill' },
-      ].map((info) => (
-        <Stack
-          key={1}
-          direction="row"
-          sx={{
-            ...(latestPostLarge && {
-              opacity: 0.48,
-              color: 'common.white',
-            }),
-          }}
-        >
-          <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-          <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
-        </Stack>
-      ))}
-    </Stack>
-  );
+  // const renderInfo = (
+  //   <Stack
+  //     direction="row"
+  //     flexWrap="wrap"
+  //     spacing={1.5}
+  //     justifyContent="flex-end"
+  //     sx={{
+  //       mt: 3,
+  //       color: 'text.disabled',
+  //     }}
+  //   >
+  //     {[
+  //       // { number: comment, icon: 'eva:message-circle-fill' },
+  //       { number: view, icon: 'eva:eye-fill' },
+  //       { number: share, icon: 'eva:share-fill' },
+  //     ].map((info, index) => (
+  //       <Stack
+  //         key={index}
+  //         direction="row"
+  //         sx={{
+  //           ...(latestPostLarge && {
+  //             opacity: 0.48,
+  //             color: 'common.white',
+  //           }),
+  //         }}
+  //       >
+  //         <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
+  //         {/* <Typography variant="caption">{fShortenNumber(info.number)}</Typography> */}
+  //       </Stack>
+  //     ))}
+  //   </Stack>
+  // );
 
   const renderCover = (
     <Box
       component="img"
       alt={title}
-      src={cover}
+      src={propertyDetail?.images[1]}
       sx={{
         top: 0,
         width: 1,
@@ -148,7 +169,7 @@ export default function PropertyPage() {
         }),
       }}
     >
-      {fDate(createdAt)}
+      {fDate(propertyDetail?.createdAt)}
     </Typography>
   );
 
@@ -170,15 +191,23 @@ export default function PropertyPage() {
   return (
     <>
       <Helmet>
-        <title>JEA | Dashboard</title>
+        <title>JEA | property</title>
       </Helmet>
 
       <Container
         sx={{
-          padding: '50px ',
+          padding: '60px ',
+          marginBottom: '40px',
         }}
       >
-        <Typography>Prouct Page</Typography>
+        <Typography
+          style={{
+            marginBottom: '20px',
+            fontWeight: 'bold',
+          }}
+        >
+          Property Page
+        </Typography>
         <Stack
           direction="row"
           spacing={2}
@@ -195,7 +224,7 @@ export default function PropertyPage() {
         </Stack>
         <Stack direction="row" spacing={3}>
           <Grid
-            item
+            // item
             // md={8}
             sx={{
               height: '30vh',
@@ -247,27 +276,77 @@ export default function PropertyPage() {
 
                 {renderTitle}
 
-                <Stack>
-                  <Typography>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit nemo amet qui?
-                    Corporis blanditiis veniam eos ratione, mollitia repudiandae reiciendis
-                    quibusdam repellendus iure in aperiam quod consectetur magnam tempore expedita.
-                    Fugiat dolores placeat minima autem expedita est unde ad, minus vel eos esse
-                    aspernatur quisquam inventore quam praesentium voluptate quidem? Qui labore
-                    dicta necessitatibus, obcaecati ullam quas beatae pariatur error? A dolorem,
-                    adipisci provident eos beatae, inventore sequi alias nisi, veritatis
-                    necessitatibus libero eum mollitia suscipit perferendis consequuntur modi fugiat
-                    ratione eveniet dolores sit error accusamus dolorum voluptate! Veritatis,
-                    consequatur! emporibus quos sunt similique laborum iste enim ducimus dolorem
-                    quod dignissimos recusandae eligendi suscipit dolore amet, neque consectetur.
-                    Fuga voluptates, voluptatibus quisquam eos aspernatur maxime! Magnam ex non,
-                    fugiat necessitatibus, earum tempore excepturi dolor quia officiis dolorum
-                    explicabo adipisci nam, reprehenderit in consequatur quos porro aperiam
-                    aspernatur expedita pariatur asperiores dolore. Esse enim deserunt sequi.
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Price:</em>
+                    <span>
+                      {new Intl.NumberFormat('en-NG', {
+                        style: 'currency',
+                        currency: 'NGN',
+                      }).format(propertyDetail?.price)}
+                    </span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Category:</em>
+                    <span>{propertyDetail?.category?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>features:</em>
+                    <span>{propertyDetail?.features?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Location:</em>
+                    <span>{propertyDetail?.location?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em style={{ marginRight: '0.5' }}>Number Of Room:</em>
+                    <span>{propertyDetail?.number_of_room}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      marginTop: '20px',
+                      marginBottom: '40px',
+                    }}
+                  >
+                    {propertyDetail?.description}
                   </Typography>
                 </Stack>
 
-                {renderInfo}
+                {/* {renderInfo} */}
               </Box>
             </Card>
           </Grid>
@@ -287,34 +366,16 @@ export default function PropertyPage() {
                 gap: '10px',
               }}
             >
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
+              {propertyDetail?.images?.map((property, index) => (
+                <img
+                  key={index}
+                  src={property}
+                  alt=""
+                  style={{
+                    width: '40%',
+                  }}
+                />
+              ))}
             </Card>
           </Grid>
         </Stack>

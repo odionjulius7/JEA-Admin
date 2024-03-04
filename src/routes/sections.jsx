@@ -21,6 +21,8 @@ export const ProjectsPage = lazy(() => import('src/pages/projects'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const PropertyPage = lazy(() => import('src/pages/property'));
+export const AllRequestsPage = lazy(() => import('src/pages/allRequests'));
+export const RequestPage = lazy(() => import('src/pages/singleRequest'));
 export const ProjectPage = lazy(() => import('src/pages/project'));
 export const SingleBlogPage = lazy(() => import('src/pages/single-blog'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -77,6 +79,22 @@ export default function Router() {
           ),
         },
         {
+          path: 'all-requests',
+          element: (
+            <ProtectedRoute>
+              <AllRequestsPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'single-request/:id',
+          element: (
+            <ProtectedRoute>
+              <RequestPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: 'account',
           element: (
             <ProtectedRoute>
@@ -89,14 +107,6 @@ export default function Router() {
           element: (
             <ProtectedRoute>
               <ProjectsPage />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: 'loan/:id',
-          element: (
-            <ProtectedRoute>
-              <LoanDetailsPage />
             </ProtectedRoute>
           ),
         },

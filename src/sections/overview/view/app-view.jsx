@@ -1,13 +1,18 @@
 import { useEffect } from 'react';
 // import { faker } from '@faker-js/faker';
+import PropTypes from 'prop-types';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { getUserMetrics } from 'src/features/Users/usersSlice';
-
-import { getMonthlyloanLineChart, getloanMetric } from 'src/features/Loan/loanSlice';
+import {
+  allBlog,
+  allProject,
+  allProperty,
+  allRequest,
+  resetState,
+} from 'src/features/Property/propertySlice';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,32 +26,48 @@ import DashboardTable from '../DashboardTable';
 
 export default function AppView() {
   const dispatch = useDispatch();
-  const loanState = useSelector((state) => state.loan);
+  // const loanState = useSelector((state) => state.loan);
+  const propertyState = useSelector((state) => state.property);
+  const projectState = useSelector((state) => state.property);
+  const requestState = useSelector((state) => state.property);
+  const blogState = useSelector((state) => state.property);
+
+  // user
   const userState = useSelector((state) => state.users);
   const authState = useSelector((state) => state);
 
-  const token = authState?.auth.user?.data?.token;
+  const token = authState?.auth.user?.token;
   const { user } = authState.auth;
   const user1 = user?.data?.user;
 
-  // console.log(loanState?.loanLineChartData);
-  const loan_metrics = loanState?.loanMetrics;
+  const propertys = propertyState?.properties?.allProperty || [];
+  const projs = projectState?.projects?.allProject || [];
+  const requests = requestState?.requests?.allPropRequest || [];
+  const blogs = blogState?.blogs?.blog || [];
+  // console.log(blogState?.blogs);
   const userMetrics = userState?.userMetrics;
 
   useEffect(() => {
-    // dispatch(resetState()); // at first render alway clear the state(like loading, success etc)
-    dispatch(getloanMetric(token));
-    dispatch(getMonthlyloanLineChart(token));
-  }, [dispatch, token]);
-  //
-  useEffect(() => {
-    dispatch(getUserMetrics(token));
+    dispatch(resetState());
+    dispatch(allProperty(token));
+    dispatch(allProject(token));
+    dispatch(allRequest(token));
+    dispatch(allBlog(token));
   }, [dispatch, token]);
   //
   function convertKoboToNaira(koboAmount) {
     const nairaAmount = koboAmount / 100; // 100 kobo equals 1 naira
     return nairaAmount;
   }
+
+  const propLth = propertys || [];
+  const projLth = projs || [];
+  const requestLth = requests || [];
+  const blogtLth = blogs || [];
+
+  const completedProj = projs.filter((proj) => proj.category === 'completed');
+  const unCompletedProj = projs.filter((proj) => proj.category !== 'completed');
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -58,7 +79,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="All Properties"
-            total={loan_metrics?.loans_active || 0.001}
+            total={propLth}
             color="success"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -67,7 +88,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Requested Properties"
-            total={loan_metrics?.loans_due || 0.001}
+            total={requestLth}
             color="info"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -76,7 +97,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="All Projects"
-            total={loan_metrics?.loans_initiated || 0.001}
+            total={projLth}
             color="warning"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -86,7 +107,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Completed Projects"
-            total={convertKoboToNaira(loan_metrics?.total_amount) || 0.001}
+            total={completedProj}
             color="info"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
             // icon={<span style={{ fontSize: '30px' }}>&#8358; </span>}
@@ -96,7 +117,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Ongoing Projects"
-            total={loan_metrics?.kyc_pending || 0.001}
+            total={unCompletedProj}
             color="error"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
@@ -105,7 +126,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="All Blogs"
-            total={loan_metrics?.kyc_approved || 0.001}
+            total={blogtLth}
             color="error"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
@@ -186,8 +207,8 @@ export default function AppView() {
             title="Projects"
             chart={{
               series: [
-                { label: 'Completed', value: userMetrics?.verified || 0.01 },
-                { label: 'Ongoing', value: userMetrics?.not_verified || 0.01 },
+                { label: 'Completed', value: completedProj?.length || 0.01 },
+                { label: 'Ongoing', value: unCompletedProj?.length || 0.01 },
                 // { label: 'Series', value: 1443 },
                 // { label: 'Africa', value: 4443 },
               ],
@@ -202,3 +223,7 @@ export default function AppView() {
     </Container>
   );
 }
+
+// AppView.propTypes = {
+//   props: PropTypes.array,
+// };

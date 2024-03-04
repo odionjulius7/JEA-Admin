@@ -21,11 +21,11 @@ const navConfig = [
         path: '/property-list',
         icon: icon('ic_cart'),
       },
-      {
-        title: 'Properties',
-        path: 'property-products',
-        icon: icon('ic_user'),
-      },
+      // {
+      //   title: 'Properties',
+      //   path: 'property-products',
+      //   icon: icon('ic_user'),
+      // },
       {
         title: 'Post Property',
         path: '/post-property',
@@ -65,6 +65,16 @@ const navConfig = [
       },
     ],
   },
+  {
+    title: 'All Requests',
+    path: 'all-requests',
+    icon: icon('ic_lock'),
+  },
+  // {
+  //   title: 'Property Requested',
+  //   path: 'single-property',
+  //   icon: icon('ic_lock'),
+  // },
   {
     title: 'account',
     path: 'account',

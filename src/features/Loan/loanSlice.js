@@ -13,6 +13,11 @@ const initialState = {
   message: '',
 };
 
+// allUsersRecordedLoans,
+//   getAUserloansMetrics,
+//   loanTransaction,
+//   getApprovedloans,
+
 export const allLoanRecords = createAsyncThunk('loan/get-loans', async (token, thunkAPI) => {
   try {
     return await loanService.allLoanRecords(token);
@@ -20,26 +25,6 @@ export const allLoanRecords = createAsyncThunk('loan/get-loans', async (token, t
     return thunkAPI.rejectWithValue(error);
   }
 });
-export const allUsersRecordedLoans = createAsyncThunk(
-  'loan/users-recorded-loans',
-  async (token, thunkAPI) => {
-    try {
-      return await loanService.allUsersRecordedLoans(token);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-export const getApproveloans = createAsyncThunk(
-  'loan/get-approved-loans',
-  async (items, thunkAPI) => {
-    try {
-      return await loanService.getApprovedloans(items);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
 
 export const getAloan = createAsyncThunk('loan/get-a-loan', async (ids, thunkAPI) => {
   try {
@@ -87,17 +72,6 @@ export const getloanMetric = createAsyncThunk('loan/get-loan-metrics', async (to
   }
 });
 
-// user loan metrics,
-export const getAUserloansMetrics = createAsyncThunk(
-  'loan/user-loans-metrics',
-  async (ids, thunkAPI) => {
-    try {
-      return await loanService.getAUserloansMetrics(ids);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
 //
 // user loan metrics,
 export const searchLoansByName = createAsyncThunk('loan/search-loan', async (nums, thunkAPI) => {
@@ -109,18 +83,6 @@ export const searchLoansByName = createAsyncThunk('loan/search-loan', async (num
 });
 //
 
-// Table   Loan Transaction,
-export const loanTransaction = createAsyncThunk(
-  'users/get-loan-transaction',
-  async (token, thunkAPI) => {
-    try {
-      return await loanService.loanTransaction(token);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-//
 // Get Loans By Status,
 export const getLoanStatus = createAsyncThunk(
   'users/get-loans-by-status',
@@ -137,7 +99,7 @@ export const getLoanStatus = createAsyncThunk(
 export const resetState = createAction('Reset_all');
 //
 export const loanSlice = createSlice({
-  name: 'loan',
+  name: 'property',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -192,23 +154,7 @@ export const loanSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      // users recorded loans
-      .addCase(allUsersRecordedLoans.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(allUsersRecordedLoans.fulfilled, (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.userRecordedLoans = action.payload;
-        state.message = 'success';
-      })
-      .addCase(allUsersRecordedLoans.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-        state.isLoading = false;
-      })
+
       // get a loan
       .addCase(getAloan.pending, (state) => {
         state.isLoading = true;
@@ -243,23 +189,7 @@ export const loanSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      // user's loan metrics
-      .addCase(getAUserloansMetrics.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getAUserloansMetrics.fulfilled, (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.userloansMetricsData = action.payload;
-        state.message = 'success';
-      })
-      .addCase(getAUserloansMetrics.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-        state.isLoading = false;
-      })
+
       // Get Loan Line chart
       .addCase(getMonthlyloanLineChart.pending, (state) => {
         state.isLoading = true;
@@ -272,23 +202,6 @@ export const loanSlice = createSlice({
         state.message = 'success';
       })
       .addCase(getMonthlyloanLineChart.rejected, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.error;
-        state.isLoading = false;
-      })
-      // Get Loan Transaction Table
-      .addCase(loanTransaction.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(loanTransaction.fulfilled, (state, action) => {
-        state.isError = false;
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.loanTransactionData = action.payload;
-        state.message = 'success';
-      })
-      .addCase(loanTransaction.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;

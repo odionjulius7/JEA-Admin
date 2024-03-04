@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
+
+import Box from '@mui/material/Box';
 
 import { Container, Grid } from '@mui/material';
 
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -33,7 +34,7 @@ export default function PostProjectView() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
 
-  const { user, isError, isSuccess, isLoading, message } = authState.auth;
+  const { user } = authState.auth;
   const token = user?.data?.token;
 
   const theme = useTheme();

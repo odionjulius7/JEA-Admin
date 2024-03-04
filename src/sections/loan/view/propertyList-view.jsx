@@ -8,23 +8,13 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-import Grid from '@mui/material/Unstable_Grid2';
 
-// import { loans } from 'src/_mock/loanListT';
-
-// import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import AppWidgetSummary from 'src/sections/overview/app-widget-summary';
-
-import {
-  getloanMetric,
-  allLoanRecords,
-  searchLoansByName,
-  getLoanStatus,
-} from 'src/features/Loan/loanSlice';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { allProperty, resetState } from 'src/features/Property/propertySlice';
+
+import moment from 'moment';
 
 import TableNoData from '../table-no-data';
 import TableEmptyRows from '../table-empty-rows';
@@ -38,54 +28,34 @@ import PropertiesTableHead from '../properties-table-head';
 
 export default function PropertiesPage() {
   const dispatch = useDispatch();
-  const loanState = useSelector((state) => state.loan);
+
+  const propertyState = useSelector((state) => state.property);
   const authState = useSelector((state) => state);
   const token = authState?.auth.user?.data?.token;
-  const loan_metrics = loanState?.loanMetrics;
-  // console.log(loan_metrics);
-  function convertKoboToNaira(koboAmount) {
-    const nairaAmount = koboAmount / 100; // 100 kobo equals 1 naira
-    return nairaAmount;
-  }
 
-  const lones = loanState?.loans || [];
-  // console.log(loanState);
+  const propertys = propertyState?.properties?.allProperty || [];
 
-  // Table Loans
-  // const loans = lones?.map((loan, index) => {
-  //   // Create loan data for each item
-  //   const loanData = {
-  //     Id: loan.id ,
-  //     title: loan.lender_first_name ,
-  //     location: loan.borrower_first_name ,
-  //     amount: convertKoboToNaira(loan.amount),
-  //     date: loan.createdAt ,
-  //     status: loan.status ? 'sold' : 'available',
-  //   };
-
-  //   // You can also add the index if needed
-  //   loanData.index = index;
-
-  //   return loanData;
-  // });
-
-  const loans = [
-    {
-      Id: '21',
-      title: 'Bongalow',
-      location: 'Ikota',
-      amount: 2000,
-      date: '02/02/2024',
+  const rows = propertys?.map((property, index) => {
+    const propsData = {
+      id: property?._id || 0,
+      title: property.title,
+      location: property.location,
+      category: property.category,
+      amount: new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN',
+      }).format(property?.price),
+      created: moment(property?.createdAt).format('L'),
       status: 'available',
-    },
-  ];
-  //
+    };
+    // You can also add the index if needed
+    propsData.index = index;
 
-  const [loanStatus, setLoanStatus] = useState('');
+    return propsData;
+  });
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
-
-  // const [selected, setSelected] = useState([]);
 
   const [orderBy, setOrderBy] = useState('name');
 
@@ -112,7 +82,7 @@ export default function PropertiesPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: loans,
+    inputData: rows,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -152,7 +122,7 @@ export default function PropertiesPage() {
 
   const setPostStatus = (e) => {
     // console.log(e);
-    setLoanStatus(e);
+    // setLoanStatus(e);
   };
 
   // useEffect(() => {
@@ -162,12 +132,9 @@ export default function PropertiesPage() {
   //   }
   // }, [loanStatus, dispatch, token]);
 
-  // console.log(loanStatus);
-  //
-
   useEffect(() => {
-    dispatch(getloanMetric(token));
-    dispatch(allLoanRecords(token));
+    dispatch(resetState());
+    dispatch(allProperty(token));
   }, [dispatch, token]);
 
   return (
@@ -190,12 +157,12 @@ export default function PropertiesPage() {
               <PropertiesTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={loans?.length}
+                rowCount={rows?.length}
                 onRequestSort={handleSort}
                 // numSelected={selected.length}
                 // onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'Id', label: 'ID', align: 'center' },
+                  // { id: 'Id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title', align: 'center' },
                   { id: 'location', label: 'Location', align: 'center' },
                   { id: 'amount', label: 'Property Value', align: 'center' },
@@ -209,8 +176,8 @@ export default function PropertiesPage() {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <PropertiesTableRow
-                      key={row.Id}
-                      Id={row.Id}
+                      key={row.id}
+                      Id={row.id}
                       title={row.title}
                       location={row.location}
                       amount={row.amount}
@@ -223,7 +190,7 @@ export default function PropertiesPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, loans?.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, rows?.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -235,7 +202,7 @@ export default function PropertiesPage() {
         <TablePagination
           page={page}
           component="div"
-          count={loans?.length}
+          count={rows?.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

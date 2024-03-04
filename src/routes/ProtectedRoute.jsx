@@ -7,12 +7,12 @@ function ProtectedRoute({ children }) {
 
   const userData = useSelector((state) => state.auth.user);
 
-  const token = userData?.data?.token;
+  const token = userData?.token;
   // console.log(token);
   // const isAuthenticated = token;
 
   const isUserAuthenticated = () => {
-    let isAuthenticated = true; // Default to false
+    let isAuthenticated = false; // Default to false
     if (token !== null && token !== undefined && token !== '') {
       isAuthenticated = true;
     }

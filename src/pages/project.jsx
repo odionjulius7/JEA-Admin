@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Container } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
@@ -17,6 +18,9 @@ import { fShortenNumber } from 'src/utils/format-number';
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAproject, getAproperty, resetState } from 'src/features/Property/propertySlice';
 
 // ----------------------------------------------------------------------
 
@@ -39,14 +43,36 @@ export const post = {
 // ----------------------------------------------------------------------
 
 export default function ProjectPage() {
+  const dispatch = useDispatch();
+  // const loanState = useSelector((state) => state.loan);
+  const propertyState = useSelector((state) => state.property);
+  const projectState = useSelector((state) => state.property);
+
+  const propertyDetail = propertyState?.property?.property;
+  const projectDetail = projectState?.project?.project;
+  console.log(projectDetail);
+  // user auth
+  const authState = useSelector((state) => state);
+
+  const token = authState?.auth.user?.token;
+  const { id } = useParams();
+
+  useEffect(() => {
+    const ids = { id, token };
+    dispatch(resetState());
+    dispatch(getAproperty(ids));
+    dispatch(getAproject(ids));
+  }, [dispatch, token, id]);
+
+  //
   const { cover, title, view, comment, share, author, createdAt } = post;
 
   const latestPostLarge = 0;
 
   const renderAvatar = (
     <Avatar
-      alt={author.name}
-      src={author.avatarUrl}
+      alt={projectDetail?.title}
+      src={projectDetail?.images[0]}
       sx={{
         zIndex: 9,
         width: 32,
@@ -83,48 +109,15 @@ export default function ProjectPage() {
         }),
       }}
     >
-      {title}
+      {projectDetail?.title}
     </Link>
-  );
-
-  const renderInfo = (
-    <Stack
-      direction="row"
-      flexWrap="wrap"
-      spacing={1.5}
-      justifyContent="flex-end"
-      sx={{
-        mt: 3,
-        color: 'text.disabled',
-      }}
-    >
-      {[
-        // { number: comment, icon: 'eva:message-circle-fill' },
-        { number: view, icon: 'eva:eye-fill' },
-        { number: share, icon: 'eva:share-fill' },
-      ].map((info) => (
-        <Stack
-          key={1}
-          direction="row"
-          sx={{
-            ...(latestPostLarge && {
-              opacity: 0.48,
-              color: 'common.white',
-            }),
-          }}
-        >
-          <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-          <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
-        </Stack>
-      ))}
-    </Stack>
   );
 
   const renderCover = (
     <Box
       component="img"
       alt={title}
-      src={cover}
+      src={projectDetail?.images[1]}
       sx={{
         top: 0,
         width: 1,
@@ -148,7 +141,7 @@ export default function ProjectPage() {
         }),
       }}
     >
-      {fDate(createdAt)}
+      {fDate(projectDetail?.createdAt)}
     </Typography>
   );
 
@@ -167,19 +160,26 @@ export default function ProjectPage() {
       }}
     />
   );
-
   return (
     <>
       <Helmet>
-        <title>JEA | Dashboard</title>
+        <title>JEA | Project</title>
       </Helmet>
 
       <Container
         sx={{
-          padding: '50px ',
+          padding: '60px ',
+          marginBottom: '40px',
         }}
       >
-        <Typography>Project Page</Typography>
+        <Typography
+          style={{
+            marginBottom: '20px',
+            fontWeight: 'bold',
+          }}
+        >
+          Project Page
+        </Typography>
         <Stack
           direction="row"
           spacing={2}
@@ -188,15 +188,15 @@ export default function ProjectPage() {
           }}
         >
           <Grid>
-            <Button>Edit Project</Button>
+            <Button>Edit Product</Button>
           </Grid>
           <Grid>
-            <Button>Delete Project</Button>
+            <Button>Delete Product</Button>
           </Grid>
         </Stack>
         <Stack direction="row" spacing={3}>
           <Grid
-            item
+            // item
             // md={8}
             sx={{
               height: '30vh',
@@ -248,22 +248,87 @@ export default function ProjectPage() {
 
                 {renderTitle}
 
-                <Stack>
-                  <Typography>
-                    Lorem ipsum dolor sit, adipisci provident eos beatae, inventore sequi alias
-                    nisi, veritatis necessitatibus libero eum mollitia suscipit perferendis
-                    consequuntur modi fugiat ratione eveniet dolores sit error accusamus dolorum
-                    voluptate! Veritatis, consequatur! emporibus quos sunt similique laborum iste
-                    enim ducimus dolorem quod dignissimos recusandae eligendi suscipit dolore amet,
-                    neque consectetur. Fuga voluptates, voluptatibus quisquam eos aspernatur maxime!
-                    Magnam ex non, fugiat necessitatibus, earum tempore excepturi dolor quia
-                    officiis dolorum explicabo adipisci nam, reprehenderit in consequatur quos porro
-                    aperiam aspernatur expedita pariatur asperiores dolore. Esse enim deserunt
-                    sequi.
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Price:</em>
+                    <span>
+                      {new Intl.NumberFormat('en-NG', {
+                        style: 'currency',
+                        currency: 'NGN',
+                      }).format(projectDetail?.price)}
+                    </span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Category:</em>
+                    <span>{projectDetail?.category?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>features:</em>
+                    <span>{projectDetail?.features?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>features:</em>
+                    <span>{projectDetail?.property_details?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em>Location:</em>
+                    <span>{projectDetail?.location?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                    <em style={{ marginRight: '0.5' }}>Number Of Room:</em>
+                    <span>{projectDetail?.number_of_room}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      marginTop: '20px',
+                      marginBottom: '40px',
+                    }}
+                  >
+                    {projectDetail?.description}
                   </Typography>
                 </Stack>
 
-                {renderInfo}
+                {/* {renderInfo} */}
               </Box>
             </Card>
           </Grid>
@@ -283,34 +348,16 @@ export default function ProjectPage() {
                 gap: '10px',
               }}
             >
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
-              <img
-                src="/assets/images/avatars/avatar_1.jpg"
-                alt=""
-                style={{
-                  width: '40%',
-                }}
-              />
+              {projectDetail?.images?.map((property, index) => (
+                <img
+                  key={index}
+                  src={property}
+                  alt=""
+                  style={{
+                    width: '40%',
+                  }}
+                />
+              ))}
             </Card>
           </Grid>
         </Stack>

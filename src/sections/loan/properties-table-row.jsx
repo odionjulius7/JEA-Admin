@@ -46,18 +46,13 @@ export default function PropertiesTableRow({
     <>
       <TableRow key={key} hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell align="center">
-          <Link to={`/property/${Id}`}>{Id}</Link>
+          <Link to={`/property/${Id}`}>{title}</Link>
         </TableCell>
-        <TableCell align="center">{title}</TableCell>
+        {/* <TableCell align="center">{title}</TableCell> */}
 
         <TableCell align="center">{location}</TableCell>
 
-        <TableCell align="center">
-          {new Intl.NumberFormat('en-NG', {
-            style: 'currency',
-            currency: 'NGN',
-          }).format(amount)}
-        </TableCell>
+        <TableCell align="center">{amount}</TableCell>
         <TableCell align="center">{moment(date).format('L')}</TableCell>
 
         <TableCell align="center">

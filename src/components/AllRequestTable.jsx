@@ -5,32 +5,26 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 // import { allLoanRecords, loanTransaction } from 'src/features/Loan/loanSlice';
 import moment from 'moment';
-import { Button } from '@mui/material';
-import { allProperty, resetState } from 'src/features/Property/propertySlice';
 
 const columns = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 120,
-  //   renderCell: (params) => <a href={`/property/${params.row.id}`}>{params.value}</a>,
-  // },
   {
     field: 'title',
-    headerName: 'Title',
-    width: 150,
-    renderCell: (params) => <a href={`/property/${params.row.id}`}>{params.value}</a>,
+    headerName: 'Inquirer Category',
+    width: 200,
+    renderCell: (params) => <a href={`/single-request/${params.row.id}`}>{params.value}</a>,
   },
   { field: 'location', headerName: 'Loction', width: 160 },
   {
     field: 'amount',
-    headerName: 'Property Value',
-    width: 160,
+    headerName: 'Maximum Budget',
+    // type: 'number',
+    width: 170,
   },
   {
-    field: 'category',
-    headerName: 'Property Category',
-    width: 180,
+    field: 'country',
+    headerName: 'Country',
+    // type: 'number',
+    width: 160,
   },
   {
     field: 'created',
@@ -38,72 +32,53 @@ const columns = [
     // type: 'number',
     width: 160,
   },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 140,
-    renderCell: (params) => (
-      <Button
-        variant="text"
-        color={(params.value === 'sold' && 'error') || 'success'}
-        style={{ padding: '0 1rem' }}
-      >
-        {params.value}
-      </Button>
-    ),
-  },
 ];
 
 const rows1 = [
   {
-    id: 1432,
+    id: 123,
     title: 'Duplex',
     location: 'Ajah',
+    country: 'Niger',
     amount: '50,000',
     created: '11/28/2023',
-    status: 'Sold',
-    // message: 'lorem ipsum make a ka dhh jhfdh',
   },
 ];
 
-export default function DashboardTable() {
+export default function RequestTable() {
   const dispatch = useDispatch();
-
-  const propertyState = useSelector((state) => state.property);
+  const loanState = useSelector((state) => state.loan);
   const authState = useSelector((state) => state);
   const token = authState?.auth.user?.data?.token;
 
-  const propertys = propertyState?.properties?.allProperty || [];
+  const loans1 = loanState?.loanTransactionData || [];
   function convertKoboToNaira(koboAmount) {
     const nairaAmount = koboAmount / 100; // 100 kobo equals 1 naira
     return nairaAmount;
   }
   //
-  const rows = propertys?.map((property, index) => {
+  const rows = loans1?.map((loan, index) => {
     // Create loan data for each item
-    const propsData = {
-      id: property?._id || 0,
-      title: property.title,
-      location: property.location,
-      category: property.category,
+    const loanData = {
+      lender: loan?.lender?.first_name,
+      borrower: loan?.borrower?.first_name,
       amount: new Intl.NumberFormat('en-NG', {
         style: 'currency',
         currency: 'NGN',
-      }).format(property?.price),
-      created: moment(property?.createdAt).format('L'),
-      status: 'available',
+      }).format(convertKoboToNaira(loan?.amount)),
+      repaymentDate: moment(loan?.createdAt).format('L'),
     };
     // You can also add the index if needed
-    propsData.index = index;
+    loanData.index = index;
 
-    return propsData;
+    return loanData;
   });
   // console.log(rows1);
 
-  useEffect(() => {
-    dispatch(resetState());
-    dispatch(allProperty(token));
-  }, [dispatch, token]);
+  // useEffect(() => {
+  //   // dispatch(resetState()); // at first render alway clear the state(like loading, success etc)
+  //   dispatch(loanTransaction(token));
+  // }, [dispatch, token]);
   return (
     <div
       style={{
@@ -112,15 +87,15 @@ export default function DashboardTable() {
         borderRadius: '20px',
         boxShadow:
           '0 0 2px 0 rgba(145, 158, 171, 0.08), 0 12px 24px -4px rgba(145, 158, 171, 0.08)',
-        width: '96%',
+        width: '80%',
       }}
     >
-      <h2 style={{ padding: '2rem 0rem 1rem 1rem' }}>Properies</h2>
+      <h2 style={{ padding: '2rem 0rem 1rem 1rem' }}>All Request</h2>
       <DataGrid
         style={{
           padding: '1rem',
         }}
-        rows={rows}
+        rows={rows1}
         columns={columns}
         initialState={{
           pagination: {

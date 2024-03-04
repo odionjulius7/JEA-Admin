@@ -1,2 +1,2 @@
-export const base_url = 'https://backend.reviel.co/api/v1/';
-// https://backend.reviel.co/api/v1/user/adminLogin
+export const base_url = 'https://jea-backend.onrender.com/api/';
+// https://jea-backend.onrender.com/api/property/all

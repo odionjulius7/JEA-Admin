@@ -4,9 +4,9 @@ import { generateAxiosConfig } from '../../utils/axiosconfig';
 // import { config } from "utils/axiosconfig";
 
 const login = async (user) => {
-  const response = await axios.post(`${base_url}user/adminLogin`, user);
+  const response = await axios.post(`${base_url}admin/login`, user);
   if (response.data) {
-    localStorage.setItem('reviel', JSON.stringify(response.data));
+    localStorage.setItem('jea', JSON.stringify(response.data));
   }
 
   return response.data;
