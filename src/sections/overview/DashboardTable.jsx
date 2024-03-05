@@ -21,7 +21,7 @@ const columns = [
     width: 150,
     renderCell: (params) => <a href={`/property/${params.row.id}`}>{params.value}</a>,
   },
-  { field: 'location', headerName: 'Loction', width: 160 },
+  { field: 'location', headerName: 'Location', width: 160 },
   {
     field: 'amount',
     headerName: 'Property Value',
