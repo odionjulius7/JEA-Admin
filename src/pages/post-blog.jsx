@@ -1,16 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from '@mui/material';
+import { Box, Card, Container, Grid, Stack, TextField } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -19,7 +8,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import { alpha, useTheme } from '@mui/material/styles';
 
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useTheme } from '@mui/material/styles';
+
+import CircularProgress from '@mui/material/CircularProgress';
 
 // import { bgGradient } from 'src/theme/css';
 
@@ -195,8 +185,14 @@ export default function PostBlogPage() {
                       variant="contained"
                       color="inherit"
                     >
-                      {/* {propertyState?.isLoading ? 'posting' : 'Post'} */}
-                      post
+                      {blogState?.isLoading ? (
+                        <Box sx={{ display: 'flex' }}>
+                          <CircularProgress />
+                        </Box>
+                      ) : (
+                        'Post'
+                      )}
+                      {/* post */}
                     </LoadingButton>
                   </Stack>
                 </Card>

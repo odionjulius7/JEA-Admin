@@ -13,6 +13,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
@@ -130,7 +132,13 @@ export default function LoginView() {
         onClick={formik.handleSubmit}
         // onSubmit={formik.handleSubmit}
       >
-        {isLoading ? 'signing you in' : 'Login'}
+        {isLoading ? (
+          <Box sx={{ display: 'flex' }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          'Login'
+        )}
       </LoadingButton>
     </>
   );
@@ -174,10 +182,11 @@ export default function LoginView() {
           <Typography
             sx={{
               margin: '0 0 2rem 0',
+              textAlign: 'center',
             }}
             variant="h4"
           >
-            Sign in to JEA
+            JEA
           </Typography>
 
           {renderForm}

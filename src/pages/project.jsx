@@ -271,31 +271,7 @@ export default function ProjectPage() {
                     <span>{projectDetail?.category?.toUpperCase()}</span>
                   </Typography>
                 </Stack>
-                <Stack
-                  sx={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
-                    <em>features:</em>
-                    <span>{projectDetail?.features?.toUpperCase()}</span>
-                  </Typography>
-                </Stack>
-                <Stack
-                  sx={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
-                    <em>features:</em>
-                    <span>{projectDetail?.property_details?.toUpperCase()}</span>
-                  </Typography>
-                </Stack>
-                <Stack
-                  sx={{
-                    marginBottom: '5px',
-                  }}
-                >
+                <Stack style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                   <Typography style={{ display: 'flex', gap: '10px' }}>
                     <em>Location:</em>
                     <span>{projectDetail?.location?.toUpperCase()}</span>
@@ -309,6 +285,34 @@ export default function ProjectPage() {
                   <Typography style={{ display: 'flex', gap: '10px' }}>
                     <em style={{ marginRight: '0.5' }}>Number Of Room:</em>
                     <span>{projectDetail?.number_of_room}</span>
+                  </Typography>
+                </Stack>
+                <Stack>
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>Neighborhood Info:</em>
+
+                    <span>
+                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.neighborhood_info }} />
+                    </span>
+                  </Typography>
+                </Stack>
+
+                <Stack>
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>Details:</em>
+                    <span>
+                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.property_details }} />
+                    </span>
+                  </Typography>
+                </Stack>
+
+                <Stack>
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>features:</em>
+
+                    <span>
+                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.features }} />
+                    </span>
                   </Typography>
                 </Stack>
                 <Stack

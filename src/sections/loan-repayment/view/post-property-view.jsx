@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { bgGradient } from 'src/theme/css';
 
@@ -19,28 +20,27 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TextArea from 'antd/es/input/TextArea';
 
-// import ImageUploadProperty from '../image-upload';
-// import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { toast } from 'react-toastify';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-// import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { toast } from 'react-toastify';
 
 import { postProperty, resetState } from 'src/features/Property/propertySlice';
 
 import './imagestyle.css';
-import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
-  property_details: yup.string(),
+  // property_details: yup.string(),
+  tag: yup.string(),
   title: yup.string().required('Title is required'),
   price: yup.number().required('Price is required'),
   number_of_room: yup.string(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
   features: yup.string(),
-  category: yup.string(),
+  category: yup.string().required('Category is required'),
   // images: yup.array(),
 });
 
@@ -52,24 +52,22 @@ export default function PostPropertyView() {
   const token = authState?.auth.user?.token;
   const theme = useTheme();
 
-  // const handleClick = () => {
-  //   router.push('/dashboard');
-  // };
-  // Formik state, check doc
-
-  // TKE
   const [images, setImages] = useState([]);
+  const [details, setDetails] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [features, setFeatures] = useState('');
 
   const formik = useFormik({
     initialValues: {
-      property_details: '',
       title: '',
       price: 0,
       number_of_room: '',
       location: '',
       description: '',
-      features: '',
       category: '',
+      tag: '',
+      // neighborhood_info: '',
+      // features: '',
       // images: [],
     },
     validationSchema: schema,
@@ -80,11 +78,14 @@ export default function PostPropertyView() {
         formData.append('title', values.title);
         formData.append('price', values.price);
         formData.append('number_of_room', values.number_of_room);
-        formData.append('property_details', values.property_details);
         formData.append('description', values.description);
-        formData.append('features', values.features);
         formData.append('category', values.category);
         formData.append('location', values.location);
+        formData.append('tag', values.tag);
+        //
+        formData.append('property_details', details);
+        formData.append('neighborhood_info', neighborhood);
+        formData.append('features', features);
         for (let i = 0; i < images.length; i += 1) {
           formData.append('images', images[i]);
         }
@@ -110,13 +111,7 @@ export default function PostPropertyView() {
   });
 
   const imgSizes = images?.find((item) => item?.size > 2000000);
-  // const imgSizing = () => {
-  //   if (imgSizes) {
-  //     return toast.error('file size is too large, each image should not exceed 2mb');
-  //   }
-  // };
 
-  // upload multiple images
   const handleImage = (event) => {
     setImages([...images, ...event.target.files]);
   };
@@ -164,11 +159,30 @@ export default function PostPropertyView() {
               value={formik.values.category}
               onChange={formik.handleChange}
               label="Property Category"
+              error={formik.touched.category && Boolean(formik.errors.category)}
+              helperText={formik.touched.category && formik.errors.category}
             >
               <MenuItem value="buy">Buy</MenuItem>
               <MenuItem value="rent">Rent</MenuItem>
               <MenuItem value="land">Land</MenuItem>
-              <MenuItem value="shortLet">Short Let</MenuItem>
+              <MenuItem value="short let">Short Let</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="category-label">Tag Property ..(optional)</InputLabel>
+            <Select
+              labelId="tag-label"
+              id="tag"
+              name="tag"
+              value={formik.values.tag}
+              onChange={formik.handleChange}
+              label="Tag Property"
+              error={formik.touched.tag && Boolean(formik.errors.tag)}
+              helperText={formik.touched.tag && formik.errors.tag}
+            >
+              <MenuItem value="featured">Featured</MenuItem>
+              <MenuItem value="property of the week">Property Of The Week</MenuItem>
+              <MenuItem value="available luxury">Available Luxury</MenuItem>
             </Select>
           </FormControl>
 
@@ -182,12 +196,51 @@ export default function PostPropertyView() {
             helperText={formik.touched.price && formik.errors.price}
           />
 
-          <TextArea
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Details!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDetails(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Features And Amenities!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setFeatures(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Neighborhood Info!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setNeighborhood(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
+          {/* <TextArea
             rows={4}
-            placeholder="Property Details"
+            placeholder="Neighborhood Info."
             maxLength={300}
-            name="property_details"
-            value={formik.values.property_details}
+            name="neighborhood_info"
+            value={formik.values.neighborhood_info}
             onChange={formik.handleChange}
           />
 
@@ -198,7 +251,7 @@ export default function PostPropertyView() {
             name="features"
             value={formik.values.features}
             onChange={formik.handleChange}
-          />
+          /> */}
 
           <TextArea
             rows={4}
@@ -229,9 +282,24 @@ export default function PostPropertyView() {
             </div>
           </Stack>
 
-          <div style={{ display: 'flex', flexDirection: 'wrap', gap: '2rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '15px',
+              maxWidth: '90%',
+              flexWrap: 'wrap',
+              // minHeight: '200px',
+            }}
+          >
             {images?.map((file, index) => (
-              <div className="image-display" style={{ height: 'auto', width: '40%' }} key={index}>
+              <div className="image-display" style={{ height: 'auto', width: '30%' }} key={index}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  style={{
+                    width: '90%',
+                  }}
+                />{' '}
                 <span
                   role="button"
                   tabIndex={0}
@@ -246,7 +314,6 @@ export default function PostPropertyView() {
                 >
                   x
                 </span>
-                <img src={URL.createObjectURL(file)} alt={file.name} />
               </div>
             ))}
           </div>
@@ -262,7 +329,13 @@ export default function PostPropertyView() {
             // onClick={formik.handleSubmit}
             // onSubmit={formik.handleSubmit}
           >
-            {propertyState?.isLoading ? 'posting' : 'Post'}
+            {propertyState?.isLoading ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              'Post'
+            )}
           </LoadingButton>
         </Stack>
       </form>

@@ -25,6 +25,7 @@ export const AllRequestsPage = lazy(() => import('src/pages/allRequests'));
 export const RequestPage = lazy(() => import('src/pages/singleRequest'));
 export const ProjectPage = lazy(() => import('src/pages/project'));
 export const SingleBlogPage = lazy(() => import('src/pages/single-blog'));
+export const FeaturedProjectPage = lazy(() => import('src/pages/post-featured-project'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 export default function Router() {
@@ -67,6 +68,14 @@ export default function Router() {
           element: (
             <ProtectedRoute>
               <UserPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'post-featured-proj',
+          element: (
+            <ProtectedRoute>
+              <FeaturedProjectPage />
             </ProtectedRoute>
           ),
         },

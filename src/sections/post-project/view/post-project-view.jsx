@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { bgGradient } from 'src/theme/css';
 
 import * as yup from 'yup';
@@ -18,6 +20,9 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TextArea from 'antd/es/input/TextArea';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { toast } from 'react-toastify';
 import { postProj, resetState } from 'src/features/Property/propertySlice';
@@ -35,7 +40,6 @@ const schema = yup.object().shape({
   description: yup.string(),
   features: yup.string(),
   category: yup.string(),
-  // images: yup.array(),
 });
 
 export default function PostProjectView() {
@@ -46,13 +50,10 @@ export default function PostProjectView() {
   const token = authState?.auth.user?.token;
   const theme = useTheme();
 
-  // const handleClick = () => {
-  //   router.push('/dashboard');
-  // };
-  // Formik state, check doc
-
-  // TKE
   const [images, setImages] = useState([]);
+  const [details, setDetails] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [features, setFeatures] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -74,11 +75,13 @@ export default function PostProjectView() {
         formData.append('title', values.title);
         formData.append('price', values.price);
         formData.append('number_of_room', values.number_of_room);
-        formData.append('property_details', values.property_details);
         formData.append('description', values.description);
-        formData.append('features', values.features);
         formData.append('category', values.category);
         formData.append('location', values.location);
+
+        formData.append('property_details', details);
+        formData.append('neighborhood_info', neighborhood);
+        formData.append('features', features);
         for (let i = 0; i < images.length; i += 1) {
           formData.append('images', images[i]);
         }
@@ -159,30 +162,67 @@ export default function PostProjectView() {
           <TextField
             label="Price"
             name="price"
-            // type="number"
-            // value={formik.values.price}
             onChange={formik.handleChange}
             error={formik.touched.price && Boolean(formik.errors.price)}
             helperText={formik.touched.price && formik.errors.price}
           />
 
-          <TextArea
+          {/* <TextArea
             rows={4}
             placeholder="Details"
             maxLength={300}
             name="property_details"
             value={formik.values.property_details}
             onChange={formik.handleChange}
-          />
+          /> */}
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Neighborhood Info!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setNeighborhood(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
 
-          <TextArea
+          {/* <TextArea
             rows={4}
             placeholder="Features"
             maxLength={300}
             name="features"
             value={formik.values.features}
             onChange={formik.handleChange}
-          />
+          /> */}
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Features And Amenities!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setFeatures(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              data="<p>Details!</p>"
+              onReady={(editor) => {}}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                setDetails(data);
+              }}
+              onBlur={(event, editor) => {}}
+              onFocus={(event, editor) => {}}
+            />
+          </div>
 
           <TextArea
             rows={4}
@@ -246,7 +286,13 @@ export default function PostProjectView() {
             // onClick={formik.handleSubmit}
             // onSubmit={formik.handleSubmit}
           >
-            {projState?.isLoading ? 'posting' : 'Post'}
+            {projState?.isLoading ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              'Post'
+            )}
           </LoadingButton>
         </Stack>
       </form>

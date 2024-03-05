@@ -108,39 +108,6 @@ export default function PropertyPage() {
     </Link>
   );
 
-  // const renderInfo = (
-  //   <Stack
-  //     direction="row"
-  //     flexWrap="wrap"
-  //     spacing={1.5}
-  //     justifyContent="flex-end"
-  //     sx={{
-  //       mt: 3,
-  //       color: 'text.disabled',
-  //     }}
-  //   >
-  //     {[
-  //       // { number: comment, icon: 'eva:message-circle-fill' },
-  //       { number: view, icon: 'eva:eye-fill' },
-  //       { number: share, icon: 'eva:share-fill' },
-  //     ].map((info, index) => (
-  //       <Stack
-  //         key={index}
-  //         direction="row"
-  //         sx={{
-  //           ...(latestPostLarge && {
-  //             opacity: 0.48,
-  //             color: 'common.white',
-  //           }),
-  //         }}
-  //       >
-  //         <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-  //         {/* <Typography variant="caption">{fShortenNumber(info.number)}</Typography> */}
-  //       </Stack>
-  //     ))}
-  //   </Stack>
-  // );
-
   const renderCover = (
     <Box
       component="img"
@@ -281,7 +248,7 @@ export default function PropertyPage() {
                     marginBottom: '5px',
                   }}
                 >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                  <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
                     <em>Price:</em>
                     <span>
                       {new Intl.NumberFormat('en-NG', {
@@ -291,32 +258,13 @@ export default function PropertyPage() {
                     </span>
                   </Typography>
                 </Stack>
+
                 <Stack
                   sx={{
                     marginBottom: '5px',
                   }}
                 >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
-                    <em>Category:</em>
-                    <span>{propertyDetail?.category?.toUpperCase()}</span>
-                  </Typography>
-                </Stack>
-                <Stack
-                  sx={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
-                    <em>features:</em>
-                    <span>{propertyDetail?.features?.toUpperCase()}</span>
-                  </Typography>
-                </Stack>
-                <Stack
-                  sx={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                  <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
                     <em>Location:</em>
                     <span>{propertyDetail?.location?.toUpperCase()}</span>
                   </Typography>
@@ -326,7 +274,7 @@ export default function PropertyPage() {
                     marginBottom: '5px',
                   }}
                 >
-                  <Typography style={{ display: 'flex', gap: '10px' }}>
+                  <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
                     <em style={{ marginRight: '0.5' }}>Number Of Room:</em>
                     <span>{propertyDetail?.number_of_room}</span>
                   </Typography>
@@ -334,8 +282,10 @@ export default function PropertyPage() {
                 <Stack
                   sx={{
                     marginBottom: '5px',
+                    marginTop: '1rem',
                   }}
                 >
+                  Description:
                   <Typography
                     sx={{
                       marginTop: '20px',
@@ -346,6 +296,61 @@ export default function PropertyPage() {
                   </Typography>
                 </Stack>
 
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
+                    <em>Category:</em>
+                    <span>{propertyDetail?.category?.toUpperCase()}</span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>features:</em>
+                    <span>
+                      <div dangerouslySetInnerHTML={{ __html: propertyDetail?.features }} />
+                    </span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>Property Details:</em>
+                    <span>
+                      <div dangerouslySetInnerHTML={{ __html: propertyDetail?.property_details }} />
+                    </span>
+                  </Typography>
+                </Stack>
+                <Stack
+                  sx={{
+                    marginBottom: '5px',
+                  }}
+                >
+                  <Typography
+                    style={{
+                      display: 'flex',
+                      gap: '30px',
+                      marginTop: '1rem',
+                      marginBottom: '2rem',
+                    }}
+                  >
+                    <em>Neighborhood Info.:</em>
+                    <span>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: propertyDetail?.neighborhood_info }}
+                      />
+                    </span>
+                  </Typography>
+                </Stack>
                 {/* {renderInfo} */}
               </Box>
             </Card>
