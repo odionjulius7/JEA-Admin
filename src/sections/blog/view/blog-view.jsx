@@ -1,8 +1,13 @@
+import { useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+
+import { useDispatch, useSelector } from 'react-redux';
+
+import { allBlog, resetState } from 'src/features/Property/propertySlice';
 
 import { posts } from 'src/_mock/blog';
 
@@ -15,6 +20,19 @@ import PostSearch from '../post-search';
 // ----------------------------------------------------------------------
 
 export default function BlogView() {
+  const dispatch = useDispatch();
+  const blogState = useSelector((state) => state.property);
+
+  const authState = useSelector((state) => state);
+  const token = authState?.auth.user?.token;
+
+  const blogs = blogState?.blogs?.blog || [];
+  console.log(blogs);
+
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(allBlog(token));
+  }, [dispatch, token]);
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -37,7 +55,7 @@ export default function BlogView() {
       </Stack>
 
       <Grid container spacing={3}>
-        {posts.map((post, index) => (
+        {blogs.map((post, index) => (
           <PostCard key={post.id} post={post} index={index} />
         ))}
       </Grid>

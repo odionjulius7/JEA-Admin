@@ -19,33 +19,33 @@ import { Link } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 export default function PostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  // const { cover, title, view, comment, share, author, createdAt } = post;
 
   const latestPostLarge = index === 0;
 
   const latestPost = index === 1 || index === 2;
 
-  const renderAvatar = (
-    <Avatar
-      alt={author.name}
-      src={author.avatarUrl}
-      sx={{
-        zIndex: 9,
-        width: 32,
-        height: 32,
-        position: 'absolute',
-        left: (theme) => theme.spacing(3),
-        bottom: (theme) => theme.spacing(-2),
-        ...((latestPostLarge || latestPost) && {
-          zIndex: 9,
-          top: 24,
-          left: 24,
-          width: 40,
-          height: 40,
-        }),
-      }}
-    />
-  );
+  // const renderAvatar = (
+  //   <Avatar
+  //     alt={author.name}
+  //     src={author.avatarUrl}
+  //     sx={{
+  //       zIndex: 9,
+  //       width: 32,
+  //       height: 32,
+  //       position: 'absolute',
+  //       left: (theme) => theme.spacing(3),
+  //       bottom: (theme) => theme.spacing(-2),
+  //       ...((latestPostLarge || latestPost) && {
+  //         zIndex: 9,
+  //         top: 24,
+  //         left: 24,
+  //         width: 40,
+  //         height: 40,
+  //       }),
+  //     }}
+  //   />
+  // );
 
   const renderTitle = (
     <Link
@@ -69,7 +69,7 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {title}
+      {post?.title}
     </Link>
   );
 
@@ -84,11 +84,7 @@ export default function PostCard({ post, index }) {
         color: 'text.disabled',
       }}
     >
-      {[
-        { number: comment, icon: 'eva:message-circle-fill' },
-        { number: view, icon: 'eva:eye-fill' },
-        { number: share, icon: 'eva:share-fill' },
-      ].map((info, _index) => (
+      {[{ icon: 'eva:eye-fill' }].map((info, _index) => (
         <Stack
           key={_index}
           direction="row"
@@ -100,7 +96,7 @@ export default function PostCard({ post, index }) {
           }}
         >
           <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-          <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
+          <Typography variant="caption">{fShortenNumber(33)}</Typography>
         </Stack>
       ))}
     </Stack>
@@ -109,8 +105,8 @@ export default function PostCard({ post, index }) {
   const renderCover = (
     <Box
       component="img"
-      alt={title}
-      src={cover}
+      alt={post?.title}
+      src={post?.image}
       sx={{
         top: 0,
         width: 1,
@@ -134,14 +130,15 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {fDate(createdAt)}
+      {fDate(post?.createdAt)}
     </Typography>
   );
 
   const renderShape = (
     <SvgColor
       color="paper"
-      src="/assets/icons/shape-avatar.svg"
+      src={post?.image}
+      // src="/assets/icons/shape-avatar.svg"
       sx={{
         width: 80,
         height: 36,
@@ -182,7 +179,7 @@ export default function PostCard({ post, index }) {
         >
           {renderShape}
 
-          {renderAvatar}
+          {/* {renderAvatar} */}
 
           {renderCover}
         </Box>

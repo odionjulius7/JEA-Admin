@@ -1,5 +1,7 @@
 /* eslint-disable perfectionist/sort-imports */
 import 'src/global.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
@@ -13,6 +15,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      <ToastContainer />
       <Router />
     </ThemeProvider>
   );

@@ -98,7 +98,7 @@ export default function UserRecordedLoanTable() {
         minHeight: 200,
         backgroundColor: '#FFFFFF',
         borderRadius: '20px',
-        width: '95%',
+        width: '100%',
         boxShadow:
           '0 0 2px 0 rgba(145, 158, 171, 0.08), 0 12px 24px -4px rgba(145, 158, 171, 0.08)',
         // padding: '0.5rem',

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,138 +16,268 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from 'src/features/auth/authSlice';
 
 import TextArea from 'antd/es/input/TextArea';
 
-import ImageUploadProperty from '../image-upload';
+// import ImageUploadProperty from '../image-upload';
+// import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { toast } from 'react-toastify';
+
+// import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+
+import { postProperty, resetState } from 'src/features/Property/propertySlice';
+
+import './imagestyle.css';
+import { Navigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
-  email: yup.string().email('Email should be valid').required('Email is Required'),
-  password: yup.string().required('Password is Required'),
+  property_details: yup.string(),
+  title: yup.string().required('Title is required'),
+  price: yup.number().required('Price is required'),
+  number_of_room: yup.string(),
+  location: yup.string().required('Location is required'),
+  description: yup.string(),
+  features: yup.string(),
+  category: yup.string(),
+  // images: yup.array(),
 });
 
 export default function PostPropertyView() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
-
-  const { user, isError, isSuccess, isLoading, message } = authState.auth;
-  const token = user?.data?.token;
-
+  const propertyState = useSelector((state) => state.property);
+  console.log(propertyState?.isSuccess);
+  const token = authState?.auth.user?.token;
   const theme = useTheme();
 
   // const handleClick = () => {
   //   router.push('/dashboard');
   // };
-
   // Formik state, check doc
+
+  // TKE
+  const [images, setImages] = useState([]);
+
   const formik = useFormik({
-    // initial form state
     initialValues: {
-      email: '',
-      password: '',
+      property_details: '',
+      title: '',
+      price: 0,
+      number_of_room: '',
+      location: '',
+      description: '',
+      features: '',
+      category: '',
+      // images: [],
     },
-    validationSchema: schema, // to validate the yup setup schema
-    onSubmit: (values) => {
-      // pass the value of the data got from formik to the login action
-      dispatch(login(values));
+    validationSchema: schema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const formData = new FormData();
+        // Append form fields to formData
+        formData.append('title', values.title);
+        formData.append('price', values.price);
+        formData.append('number_of_room', values.number_of_room);
+        formData.append('property_details', values.property_details);
+        formData.append('description', values.description);
+        formData.append('features', values.features);
+        formData.append('category', values.category);
+        formData.append('location', values.location);
+        for (let i = 0; i < images.length; i += 1) {
+          formData.append('images', images[i]);
+        }
+
+        const data = { formData, token };
+        // Now you can dispatch your action with the formData
+        await dispatch(postProperty(data));
+
+        // Reset form or handle success as needed
+        formik.resetForm();
+        setImages([]); // Clear the image state after successful submission
+        dispatch(resetState());
+      } catch (error) {
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(resetState());
+        }, 300);
+        console.error('Error submitting form:', error);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
+  const imgSizes = images?.find((item) => item?.size > 2000000);
+  // const imgSizing = () => {
+  //   if (imgSizes) {
+  //     return toast.error('file size is too large, each image should not exceed 2mb');
+  //   }
+  // };
+
+  // upload multiple images
+  const handleImage = (event) => {
+    setImages([...images, ...event.target.files]);
+  };
+
+  const removeFile = (key) => {
+    const newFiles = images.filter((file, index) => key !== index);
+    setImages(newFiles);
+  };
+
   const renderForm = (
     <>
-      <Stack spacing={4}>
-        <TextField label="Property Title" />
-        <div
-          className="error mt-2"
-          style={{
-            color: 'red',
-            fontSize: '12px',
-            marginTop: '0px',
-          }}
-        >
-          {formik.touched.email && formik.errors.email}
-        </div>
-        <TextField label="Property Location" />
-        <div
-          className="error mt-2"
-          style={{
-            color: 'red',
-            fontSize: '12px',
-            marginTop: '0px',
-          }}
-        >
-          {formik.touched.email && formik.errors.email}
-        </div>
-        <TextField label="Property Price" />
-        <div
-          className="error mt-2"
-          style={{
-            color: 'red',
-            fontSize: '12px',
-            marginTop: '0px',
-          }}
-        >
-          {formik.touched.email && formik.errors.email}
-        </div>
+      <form onSubmit={formik.handleSubmit}>
+        <Stack spacing={4}>
+          <TextField
+            label="Property Title"
+            name="title"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            error={formik.touched.title && Boolean(formik.errors.title)}
+            helperText={formik.touched.title && formik.errors.title}
+          />
 
-        <TextArea
-          style={{
-            color: '#000000',
-          }}
-          rows={4}
-          placeholder="Property Description"
-          maxLength={300}
-        />
+          <TextField
+            label="Property Location"
+            name="location"
+            value={formik.values.location}
+            onChange={formik.handleChange}
+            error={formik.touched.location && Boolean(formik.errors.location)}
+            helperText={formik.touched.location && formik.errors.location}
+          />
+          <TextField
+            label="Number Of Room"
+            name="number_of_room"
+            value={formik.values.number_of_room}
+            onChange={formik.handleChange}
+            error={formik.touched.number_of_room && Boolean(formik.errors.number_of_room)}
+            helperText={formik.touched.number_of_room && formik.errors.number_of_room}
+          />
+          <FormControl fullWidth>
+            <InputLabel id="category-label">Property Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="category"
+              name="category"
+              value={formik.values.category}
+              onChange={formik.handleChange}
+              label="Property Category"
+            >
+              <MenuItem value="buy">Buy</MenuItem>
+              <MenuItem value="rent">Rent</MenuItem>
+              <MenuItem value="land">Land</MenuItem>
+              <MenuItem value="shortLet">Short Let</MenuItem>
+            </Select>
+          </FormControl>
 
-        <TextArea
-          style={{
-            color: '#000000',
-          }}
-          rows={4}
-          placeholder="Property Details"
-          maxLength={300}
-        />
+          <TextField
+            label="Property Price"
+            name="price"
+            // type="number"
+            // value={formik.values.price}
+            onChange={formik.handleChange}
+            error={formik.touched.price && Boolean(formik.errors.price)}
+            helperText={formik.touched.price && formik.errors.price}
+          />
 
-        <TextArea
-          style={{
-            color: '#000000',
-          }}
-          rows={4}
-          placeholder="Property Amenities & Features"
-          maxLength={300}
-        />
+          <TextArea
+            rows={4}
+            placeholder="Property Details"
+            maxLength={300}
+            name="property_details"
+            value={formik.values.property_details}
+            onChange={formik.handleChange}
+          />
 
-        <TextArea
-          style={{
-            color: '#000000',
-          }}
-          rows={4}
-          placeholder="Property Neighborhood Information"
-          maxLength={300}
-        />
+          <TextArea
+            rows={4}
+            placeholder="Property Amenities & Features"
+            maxLength={300}
+            name="features"
+            value={formik.values.features}
+            onChange={formik.handleChange}
+          />
 
-        <ImageUploadProperty />
-      </Stack>
+          <TextArea
+            rows={4}
+            placeholder="Property Description"
+            maxLength={300}
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+          />
 
-      <LoadingButton
-        sx={{
-          marginTop: '25px',
-        }}
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={formik.handleSubmit}
-        // onSubmit={formik.handleSubmit}
-      >
-        Post
-      </LoadingButton>
+          <Stack>
+            <div className="upload-wrap">
+              <label htmlFor="inputTag" className="upload-label">
+                <img src="/assets/icons/shape-avatar.svg" alt="" />
+                <span>Upload Images</span>
+                <input
+                  multiple
+                  name="images"
+                  id="inputTag"
+                  type="file"
+                  className="upload-input"
+                  onChange={handleImage}
+                />
+              </label>
+              <span>
+                Max file size 2MB. <br /> CTRL+ click to select multiple images
+              </span>
+            </div>
+          </Stack>
+
+          <div style={{ display: 'flex', flexDirection: 'wrap', gap: '2rem' }}>
+            {images?.map((file, index) => (
+              <div className="image-display" style={{ height: 'auto', width: '40%' }} key={index}>
+                <span
+                  role="button"
+                  tabIndex={0}
+                  style={{
+                    border: '1px solid red',
+                    color: 'orangered',
+                    cursor: 'pointer',
+                  }}
+                  className="px-2"
+                  onClick={() => removeFile(index)}
+                  onKeyDown={(e) => e.key === 'Enter' && removeFile(index)}
+                >
+                  x
+                </span>
+                <img src={URL.createObjectURL(file)} alt={file.name} />
+              </div>
+            ))}
+          </div>
+          <LoadingButton
+            sx={{
+              marginTop: '25px',
+            }}
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            color="inherit"
+            // onClick={formik.handleSubmit}
+            // onSubmit={formik.handleSubmit}
+          >
+            {propertyState?.isLoading ? 'posting' : 'Post'}
+          </LoadingButton>
+        </Stack>
+      </form>
     </>
   );
+
+  useEffect(() => {
+    dispatch(resetState());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (propertyState?.isSuccess && propertyState?.postedProperty) {
+      toast.success('property posted Successfullly!');
+    }
+  }, [propertyState?.isSuccess, propertyState?.postedProperty]);
 
   return (
     <Container maxWidth="xl">

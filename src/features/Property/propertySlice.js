@@ -1,4 +1,5 @@
 import { createSlice, createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 import propertyService from './propertyServices';
 
@@ -31,6 +32,15 @@ export const getAproperty = createAsyncThunk('property/get-a-property', async (i
   }
 });
 
+export const postProperty = createAsyncThunk('property/post-property', async (data, thunkAPI) => {
+  try {
+    return await propertyService.postProperty(data);
+  } catch (error) {
+    toast.error('Property Post Failed, try again');
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 // Projects
 export const allProject = createAsyncThunk('project/get-project', async (token, thunkAPI) => {
   try {
@@ -44,6 +54,14 @@ export const getAproject = createAsyncThunk('project/get-a-project', async (ids,
   try {
     return await propertyService.getAproject(ids);
   } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+export const postProj = createAsyncThunk('project/post-project', async (data, thunkAPI) => {
+  try {
+    return await propertyService.postProj(data);
+  } catch (error) {
+    toast.error('Project Post Failed, try again');
     return thunkAPI.rejectWithValue(error);
   }
 });
@@ -90,7 +108,6 @@ export const propertySlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      // get a loan
       .addCase(getAproperty.pending, (state) => {
         state.isLoading = true;
       })
@@ -102,6 +119,22 @@ export const propertySlice = createSlice({
         state.message = 'success';
       })
       .addCase(getAproperty.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(postProperty.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postProperty.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.postedProperty = action.payload;
+        state.message = 'successfully posted';
+      })
+      .addCase(postProperty.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
@@ -136,6 +169,22 @@ export const propertySlice = createSlice({
         state.message = 'success';
       })
       .addCase(getAproject.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(postProj.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postProj.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.postedProject = action.payload;
+        state.message = 'success';
+      })
+      .addCase(postProj.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
