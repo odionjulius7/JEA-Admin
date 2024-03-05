@@ -49,7 +49,7 @@ export default function PostCard({ post, index }) {
 
   const renderTitle = (
     <Link
-      to="/single-blog/123"
+      to={`/single-blog/${post?._id}`}
       // color="inherit"
       // variant="subtitle2"
       // underline="hover"

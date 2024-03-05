@@ -65,6 +65,12 @@ const allRequest = async (token) => {
   // console.log(response);
   return response?.data;
 };
+const getaRequest = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  const response = await axios.get(`${base_url}property/request/${ids.id}`, config);
+  // console.log(response);
+  return response.data;
+};
 
 // Blogs
 const allBlog = async (token) => {
@@ -73,6 +79,20 @@ const allBlog = async (token) => {
   const response = await axios.get(`${base_url}blog`, config);
   // console.log(response);
   return response?.data;
+};
+const getABlog = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  const response = await axios.get(`${base_url}blog/${ids.id}`, config);
+  // console.log(response);
+  return response.data;
+};
+
+const postBlog = async (data) => {
+  const config = generateAxiosConfig2(data.token);
+
+  const response = await axios.post(`${base_url}blog`, data.formData, config);
+
+  return response.data;
 };
 
 const propertyService = {
@@ -85,8 +105,11 @@ const propertyService = {
   postProj,
   //
   allRequest,
+  getaRequest,
   //
   allBlog,
+  getABlog,
+  postBlog,
 };
 
 export default propertyService;

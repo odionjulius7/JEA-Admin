@@ -74,12 +74,35 @@ export const allRequest = createAsyncThunk('request/get-request', async (token, 
     return thunkAPI.rejectWithValue(error);
   }
 });
+export const getaRequest = createAsyncThunk('request/get-a-request', async (ids, thunkAPI) => {
+  try {
+    return await propertyService.getaRequest(ids);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
 
 // Blog
 export const allBlog = createAsyncThunk('blog/get-blog', async (token, thunkAPI) => {
   try {
     return await propertyService.allBlog(token);
   } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+export const getABlog = createAsyncThunk('blog/get-a-blog', async (ids, thunkAPI) => {
+  try {
+    return await propertyService.getABlog(ids);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const postBlog = createAsyncThunk('blog/post-blog', async (data, thunkAPI) => {
+  try {
+    return await propertyService.postBlog(data);
+  } catch (error) {
+    toast.error('Project Post Failed, try again');
     return thunkAPI.rejectWithValue(error);
   }
 });
@@ -207,6 +230,22 @@ export const propertySlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
+      .addCase(getaRequest.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getaRequest.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.singleRequest = action.payload;
+        state.message = 'success';
+      })
+      .addCase(getaRequest.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
       //  Blogs
       .addCase(allBlog.pending, (state) => {
         state.isLoading = true;
@@ -219,6 +258,38 @@ export const propertySlice = createSlice({
         state.message = 'success';
       })
       .addCase(allBlog.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(getABlog.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getABlog.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.singleBlog = action.payload;
+        state.message = 'success';
+      })
+      .addCase(getABlog.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(postBlog.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postBlog.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.postedBlog = action.payload;
+        state.message = 'success';
+      })
+      .addCase(postBlog.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;

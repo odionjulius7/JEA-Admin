@@ -70,24 +70,27 @@ export default function UserRecordedLoanTable() {
 
   const projs = projectState?.projects?.allProject || [];
 
-  const rows = projs?.map((project, index) => {
-    const propsData = {
-      id: project?._id || 0,
-      title: project.title,
-      location: project.location,
-      category: project.category,
-      amount: new Intl.NumberFormat('en-NG', {
-        style: 'currency',
-        currency: 'NGN',
-      }).format(project?.price),
-      created: moment(project?.createdAt).format('L'),
-      status: project?.category,
-    };
-    // You can also add the index if needed
-    propsData.index = index;
+  const rows = projs
+    .map((project, index) => {
+      const propsData = {
+        id: project?._id || 0,
+        title: project.title,
+        location: project.location,
+        category: project.category,
+        amount: new Intl.NumberFormat('en-NG', {
+          style: 'currency',
+          currency: 'NGN',
+        }).format(project?.price),
+        created: moment(project?.createdAt).format('L'),
+        status: project?.category,
+      };
+      // You can also add the index if needed
+      propsData.index = index;
 
-    return propsData;
-  });
+      return propsData;
+    })
+    .reverse();
+
   useEffect(() => {
     dispatch(resetState());
     dispatch(allProject(token));

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
@@ -23,10 +23,12 @@ import { fToNow } from 'src/utils/format-time';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { allRequest, resetState } from 'src/features/Property/propertySlice';
 
 // ----------------------------------------------------------------------
 
-const NOTIFICATIONS = [
+const NOTIFICATIONS1 = [
   {
     id: faker.string.uuid(),
     title: 'Property 1 requested',
@@ -48,9 +50,36 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
+  const dispatch = useDispatch();
+  const requestState = useSelector((state) => state.property);
+  const authState = useSelector((state) => state);
+
+  const token = authState?.auth.user?.token;
+
+  const requests = requestState?.requests?.allPropRequest || [];
+
+  // console.log(requests);
+
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(allRequest(token));
+  }, [dispatch, token]);
+
+  const NOTIFICATIONS = requests?.map((request, index) => ({
+    id: request._id,
+    title: request?.fullName,
+    description: 'The user has sent a property request',
+    avatar: null,
+    type: request?.property_category,
+    createdAt: request.createdAt,
+    isUnRead: request?.status,
+  }));
+
+  console.log(NOTIFICATIONS);
+
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const totalUnRead = NOTIFICATIONS.filter((item) => item.isUnRead === true).length;
 
   const [open, setOpen] = useState(null);
 
@@ -70,6 +99,15 @@ export default function NotificationsPopover() {
       }))
     );
   };
+
+  const filteredNotifications = NOTIFICATIONS.filter(
+    (notification) => notification.isUnRead === true
+  );
+  const filteredNotificationsFalse = NOTIFICATIONS.filter(
+    (notification) => notification.isUnRead === false
+  );
+
+  console.log(filteredNotificationsFalse);
 
   return (
     <>
@@ -112,7 +150,12 @@ export default function NotificationsPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
+        <Scrollbar
+          sx={{ height: { xs: 340, sm: 'auto' } }}
+          onClick={() => {
+            handleClose();
+          }}
+        >
           <List
             disablePadding
             subheader={
@@ -121,7 +164,7 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 1).map((notification) => (
+            {filteredNotifications?.map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
@@ -134,8 +177,12 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(1, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+            {filteredNotificationsFalse?.map((notification) => (
+              <NotificationItem
+                handleClose={handleClose}
+                key={notification.id}
+                notification={notification}
+              />
             ))}
           </List>
         </Scrollbar>
@@ -170,30 +217,41 @@ NotificationItem.propTypes = {
     description: PropTypes.string,
     type: PropTypes.string,
     avatar: PropTypes.any,
+    // handleClose: PropTypes.any,
   }),
 };
 
 function NotificationItem({ notification }) {
   const { avatar, title } = renderContent(notification);
 
+  console.log(notification);
+
   return (
-    <ListItemButton
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected',
-        }),
+    <Link
+      style={{
+        textDecoration: 'none',
       }}
+      to={`/single-request/${notification?.id}`}
+      // onClick={() => {
+      //   handleClose();
+      // }}
     >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Link to="/single-request/122">
+      <ListItemButton
+        sx={{
+          py: 1.5,
+          px: 2.5,
+          mt: '1px',
+          ...(notification.isUnRead && {
+            bgcolor: 'action.selected',
+          }),
+        }}
+      >
+        <ListItemAvatar>
+          <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={title}
+          secondary={
             <Typography
               variant="caption"
               sx={{
@@ -204,12 +262,13 @@ function NotificationItem({ notification }) {
               }}
             >
               <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
-              {fToNow(notification.createdAt)}
+              {fToNow(notification?.createdAt)}
             </Typography>
-          </Link>
-        }
-      />
-    </ListItemButton>
+            // </Link>
+          }
+        />
+      </ListItemButton>
+    </Link>
   );
 }
 

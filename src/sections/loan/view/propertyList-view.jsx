@@ -35,24 +35,26 @@ export default function PropertiesPage() {
 
   const propertys = propertyState?.properties?.allProperty || [];
 
-  const rows = propertys?.map((property, index) => {
-    const propsData = {
-      id: property?._id || 0,
-      title: property.title,
-      location: property.location,
-      category: property.category,
-      amount: new Intl.NumberFormat('en-NG', {
-        style: 'currency',
-        currency: 'NGN',
-      }).format(property?.price),
-      created: moment(property?.createdAt).format('L'),
-      status: 'available',
-    };
-    // You can also add the index if needed
-    propsData.index = index;
+  const rows = propertys
+    ?.map((property, index) => {
+      const propsData = {
+        id: property?._id || 0,
+        title: property.title,
+        location: property.location,
+        category: property.category,
+        amount: new Intl.NumberFormat('en-NG', {
+          style: 'currency',
+          currency: 'NGN',
+        }).format(property?.price),
+        created: moment(property?.createdAt).format('L'),
+        status: 'available',
+      };
+      // You can also add the index if needed
+      propsData.index = index;
 
-    return propsData;
-  });
+      return propsData;
+    })
+    .reverse();
 
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');

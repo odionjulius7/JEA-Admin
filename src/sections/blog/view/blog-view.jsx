@@ -26,8 +26,14 @@ export default function BlogView() {
   const authState = useSelector((state) => state);
   const token = authState?.auth.user?.token;
 
-  const blogs = blogState?.blogs?.blog || [];
-  console.log(blogs);
+  const blogs = [...(blogState?.blogs?.blog || [])].sort((a, b) => {
+    // Assuming createdAt is a timestamp or a string in a format that can be compared
+    const dateA = new Date(a.createdAt).getTime();
+    const dateB = new Date(b.createdAt).getTime();
+
+    // Sort in descending order (latest first)
+    return dateB - dateA;
+  });
 
   useEffect(() => {
     dispatch(resetState());
@@ -55,7 +61,7 @@ export default function BlogView() {
       </Stack>
 
       <Grid container spacing={3}>
-        {blogs.map((post, index) => (
+        {blogs?.map((post, index) => (
           <PostCard key={post.id} post={post} index={index} />
         ))}
       </Grid>

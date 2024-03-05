@@ -45,12 +45,10 @@ export const post = {
 export default function ProjectPage() {
   const dispatch = useDispatch();
   // const loanState = useSelector((state) => state.loan);
-  const propertyState = useSelector((state) => state.property);
   const projectState = useSelector((state) => state.property);
 
-  const propertyDetail = propertyState?.property?.property;
   const projectDetail = projectState?.project?.project;
-  console.log(projectDetail);
+  // console.log(projectDetail);
   // user auth
   const authState = useSelector((state) => state);
 
@@ -60,7 +58,7 @@ export default function ProjectPage() {
   useEffect(() => {
     const ids = { id, token };
     dispatch(resetState());
-    dispatch(getAproperty(ids));
+    // dispatch(getAproperty(ids));
     dispatch(getAproject(ids));
   }, [dispatch, token, id]);
 
