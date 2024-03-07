@@ -5,7 +5,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 // import { allUsersRecordedLoans } from 'src/features/Loan/loanSlice';
 import moment from 'moment';
+
 import { Button } from '@mui/material';
+
 import { allProject, resetState } from 'src/features/Property/propertySlice';
 // import { Button } from '@mui/material';
 
@@ -49,17 +51,17 @@ const columns = [
   },
 ];
 
-const rows1 = [
-  {
-    id: 1432,
-    title: 'Duplex',
-    location: 'Ajah',
-    amount: '50,000',
-    created: '11/28/2023',
-    status: 'Sold',
-    // message: 'lorem ipsum make a ka dhh jhfdh',
-  },
-];
+// const rows1 = [
+//   {
+//     id: 1432,
+//     title: 'Duplex',
+//     location: 'Ajah',
+//     amount: '50,000',
+//     created: '11/28/2023',
+//     status: 'Sold',
+//     // message: 'lorem ipsum make a ka dhh jhfdh',
+//   },
+// ];
 
 export default function UserRecordedLoanTable() {
   const dispatch = useDispatch();

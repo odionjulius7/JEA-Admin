@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
-
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { bgGradient } from 'src/theme/css';
@@ -22,92 +21,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextArea from 'antd/es/input/TextArea';
 
 import { toast } from 'react-toastify';
-import { postProj, resetState } from 'src/features/Property/propertySlice';
 
-import './imagestyle.css';
+import { postProperty, resetState } from 'src/features/Property/propertySlice';
+
+// import './imagestyle.css';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
   // property_details: yup.string(),
+  tag: yup.string(),
   title: yup.string().required('Title is required'),
   price: yup.number().required('Price is required'),
   number_of_room: yup.string(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
-  // features: yup.string(),
-  category: yup.string(),
+  agent_whatsapp: yup.string(),
+  agent_call: yup.string(),
+  category: yup.string().required('Category is required'),
+  // images: yup.array(),
 });
 
-export default function PostProjectView() {
+export default function PostFeaturedProjectView() {
+  //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
-  const projState = useSelector((state) => state.property);
-  // console.log(projState?.isSuccess);
+  const propertyState = useSelector((state) => state.property);
+  console.log(propertyState?.isSuccess);
   const token = authState?.auth.user?.token;
   const theme = useTheme();
+
   const [images, setImages] = useState([]);
-
-  // const [details, setDetails] = useState('');
-  // const [neighborhood, setNeighborhood] = useState('');
-  // const [features, setFeatures] = useState('');
-
-  // const [property_details, setProperty_details] = useState({
-  //   price: '',
-  //   address: '',
-  //   additional_fees: '',
-  //   property_id: '',
-  //   property_type: '',
-  //   year_built: '',
-  //   category: '',
-  //   status: '',
-  //   Number_of_Stories: '',
-  //   garage_capacity: '',
-  //   recent_renovations: '',
-  //   youtube_url: '',
-  // });
-
-  // const [features, setFeatures] = useState({
-  //   feature_1: '',
-  //   feature_2: '',
-  //   feature_3: '',
-  //   feature_4: '',
-  //   feature_5: '',
-  //   feature_6: '',
-  //   feature_7: '',
-  //   feature_8: '',
-  // });
-  // const [neighborhood_info, setNeighborhood_info] = useState({
-  //   neighborhood_info1: '',
-  //   neighborhood_info2: '',
-  //   neighborhood_info3: '',
-  //   neighborhood_info4: '',
-  //   neighborhood_info5: '',
-  //   neighborhood_info6: '',
-  // });
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setProperty_details((prevDetails) => ({
-  //     ...prevDetails,
-  //     [name]: value,
-  //   }));
-  // };
-  // const handleChangeFatures = (e) => {
-  //   const { name, value } = e.target;
-  //   setFeatures((prevFeatures) => ({
-  //     ...prevFeatures,
-  //     [name]: value,
-  //   }));
-  // };
-
-  // const handleChangeInfo = (e) => {
-  //   const { name, value } = e.target;
-  //   setNeighborhood_info((prevDetails) => ({
-  //     ...prevDetails,
-  //     [name]: value,
-  //   }));
-  // };
 
   const formik = useFormik({
     initialValues: {
@@ -117,6 +61,7 @@ export default function PostProjectView() {
       location: '',
       description: '',
       category: '',
+      tag: '',
       agent_whatsapp: '',
       agent_call: '',
       //
@@ -159,11 +104,12 @@ export default function PostProjectView() {
         formData.append('description', values.description);
         formData.append('category', values.category);
         formData.append('location', values.location);
-
+        formData.append('tag', values.tag);
         formData.append('agent_call', values.agent_call);
         formData.append('agent_whatsapp', values.agent_whatsapp);
+
         //
-        // formData.append('price', values.price);
+        formData.append('price', values.price);
         formData.append('address', values.address);
         formData.append('additional_fees', values.additional_fees);
         formData.append('property_id', values.property_id);
@@ -193,13 +139,14 @@ export default function PostProjectView() {
         formData.append('feature_6', values.feature_6);
         formData.append('feature_7', values.feature_7);
         formData.append('feature_8', values.feature_8);
+
         for (let i = 0; i < images.length; i += 1) {
           formData.append('images', images[i]);
         }
 
         const data = { formData, token };
         // Now you can dispatch your action with the formData
-        await dispatch(postProj(data));
+        await dispatch(postProperty(data));
 
         // Reset form or handle success as needed
         formik.resetForm();
@@ -217,6 +164,8 @@ export default function PostProjectView() {
     },
   });
 
+  // const imgSizes = images?.find((item) => item?.size > 2000000);
+
   const handleImage = (event) => {
     setImages([...images, ...event.target.files]);
   };
@@ -231,7 +180,7 @@ export default function PostProjectView() {
       <form onSubmit={formik.handleSubmit}>
         <Stack spacing={4}>
           <TextField
-            label="Title"
+            label="Property Title"
             name="title"
             value={formik.values.title}
             onChange={formik.handleChange}
@@ -240,20 +189,12 @@ export default function PostProjectView() {
           />
 
           <TextField
-            label="Project Location"
+            label="Property Location"
             name="location"
             value={formik.values.location}
             onChange={formik.handleChange}
             error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
-          />
-          <TextField
-            label="Number Of Room"
-            name="number_of_room"
-            value={formik.values.number_of_room}
-            onChange={formik.handleChange}
-            error={formik.touched.number_of_room && Boolean(formik.errors.number_of_room)}
-            helperText={formik.touched.number_of_room && formik.errors.number_of_room}
           />
           <TextField
             label="Agent Call Num."
@@ -271,8 +212,16 @@ export default function PostProjectView() {
             error={formik.touched.agent_whatsapp && Boolean(formik.errors.agent_whatsapp)}
             helperText={formik.touched.agent_whatsapp && formik.errors.agent_whatsapp}
           />
+          <TextField
+            label="Number Of Room"
+            name="number_of_room"
+            value={formik.values.number_of_room}
+            onChange={formik.handleChange}
+            error={formik.touched.number_of_room && Boolean(formik.errors.number_of_room)}
+            helperText={formik.touched.number_of_room && formik.errors.number_of_room}
+          />
           <FormControl fullWidth>
-            <InputLabel id="category-label">Project Status Category</InputLabel>
+            <InputLabel id="category-label">Property Category</InputLabel>
             <Select
               labelId="category-label"
               id="category"
@@ -280,18 +229,49 @@ export default function PostProjectView() {
               value={formik.values.category}
               onChange={formik.handleChange}
               label="Property Category"
+              error={formik.touched.category && Boolean(formik.errors.category)}
+              helperText={formik.touched.category && formik.errors.category}
             >
-              <MenuItem value="completed">completed</MenuItem>
-              <MenuItem value="ongoing">ongoing</MenuItem>
+              <MenuItem value="buy">Buy</MenuItem>
+              <MenuItem value="rent">Rent</MenuItem>
+              <MenuItem value="land">Land</MenuItem>
+              <MenuItem value="short let">Short Let</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id="category-label">Tag Property ..(optional)</InputLabel>
+            <Select
+              labelId="tag-label"
+              id="tag"
+              name="tag"
+              value={formik.values.tag}
+              onChange={formik.handleChange}
+              label="Tag Property"
+              error={formik.touched.tag && Boolean(formik.errors.tag)}
+              helperText={formik.touched.tag && formik.errors.tag}
+            >
+              <MenuItem value="featured">Featured</MenuItem>
+              <MenuItem value="property of the week">Property Of The Week</MenuItem>
+              <MenuItem value="available luxury">Available Luxury</MenuItem>
             </Select>
           </FormControl>
 
           <TextField
-            label="Price"
+            label="Property Price"
             name="price"
+            // type="number"
+            // value={formik.values.price}
             onChange={formik.handleChange}
             error={formik.touched.price && Boolean(formik.errors.price)}
             helperText={formik.touched.price && formik.errors.price}
+          />
+          <TextArea
+            rows={4}
+            placeholder="Property Description"
+            maxLength={300}
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
           />
 
           <div
@@ -581,15 +561,6 @@ export default function PostProjectView() {
             />
           </div>
 
-          <TextArea
-            rows={4}
-            placeholder="Property Description"
-            maxLength={300}
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-          />
-
           <Stack>
             <div className="upload-wrap">
               <label htmlFor="inputTag" className="upload-label">
@@ -610,9 +581,24 @@ export default function PostProjectView() {
             </div>
           </Stack>
 
-          <div style={{ display: 'flex', flexDirection: 'wrap', gap: '2rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '15px',
+              maxWidth: '90%',
+              flexWrap: 'wrap',
+              // minHeight: '200px',
+            }}
+          >
             {images?.map((file, index) => (
-              <div className="image-display" style={{ height: 'auto', width: '40%' }} key={index}>
+              <div className="image-display" style={{ height: 'auto', width: '30%' }} key={index}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  style={{
+                    width: '90%',
+                  }}
+                />{' '}
                 <span
                   role="button"
                   tabIndex={0}
@@ -627,11 +613,9 @@ export default function PostProjectView() {
                 >
                   x
                 </span>
-                <img src={URL.createObjectURL(file)} alt={file.name} />
               </div>
             ))}
           </div>
-
           <LoadingButton
             sx={{
               marginTop: '25px',
@@ -644,7 +628,7 @@ export default function PostProjectView() {
             // onClick={formik.handleSubmit}
             // onSubmit={formik.handleSubmit}
           >
-            {projState?.isLoading ? (
+            {propertyState?.isLoading ? (
               <Box sx={{ display: 'flex' }}>
                 <CircularProgress />
               </Box>
@@ -662,15 +646,15 @@ export default function PostProjectView() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (projState?.isSuccess && projState?.postedProject) {
-      toast.success('Project posted Successfullly!');
+    if (propertyState?.isSuccess && propertyState?.postedProperty) {
+      toast.success('property posted Successfullly!');
     }
-  }, [projState?.isSuccess, projState?.postedProject]);
+  }, [propertyState?.isSuccess, propertyState?.postedProperty]);
 
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Post Project
+        Post Property
       </Typography>
 
       <Grid container spacing={3}>
@@ -690,7 +674,7 @@ export default function PostProjectView() {
               sx={{
                 p: 5,
                 width: 1,
-                maxWidth: 620,
+                maxWidth: 820,
               }}
             >
               {renderForm}

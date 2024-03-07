@@ -75,7 +75,7 @@ export default function NotificationsPopover() {
     isUnRead: request?.status,
   }));
 
-  console.log(NOTIFICATIONS);
+  // console.log(NOTIFICATIONS);
 
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
@@ -107,7 +107,7 @@ export default function NotificationsPopover() {
     (notification) => notification.isUnRead === false
   );
 
-  console.log(filteredNotificationsFalse);
+  // console.log(filteredNotificationsFalse);
 
   return (
     <>
@@ -164,7 +164,7 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {filteredNotifications?.map((notification) => (
+            {filteredNotificationsFalse?.map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
@@ -177,7 +177,7 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {filteredNotificationsFalse?.map((notification) => (
+            {filteredNotifications?.map((notification) => (
               <NotificationItem
                 handleClose={handleClose}
                 key={notification.id}
