@@ -323,12 +323,12 @@ export default function PostPropertyView() {
                 value={formik.values.property_id}
                 onChange={formik.handleChange}
               />
-              <TextField
+              {/* <TextField
                 label="Additional Fees"
                 name="additional_fees"
                 value={formik.values.additional_fees}
                 onChange={formik.handleChange}
-              />
+              /> */}
             </Stack>
             <Stack
               spacing={2}
