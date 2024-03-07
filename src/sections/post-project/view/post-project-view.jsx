@@ -543,9 +543,24 @@ export default function PostProjectView() {
             </div>
           </Stack>
 
-          <div style={{ display: 'flex', flexDirection: 'wrap', gap: '2rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              gap: '15px',
+              maxWidth: '90%',
+              flexWrap: 'wrap',
+              // minHeight: '200px',
+            }}
+          >
             {images?.map((file, index) => (
-              <div className="image-display" style={{ height: 'auto', width: '40%' }} key={index}>
+              <div className="image-display" style={{ height: 'auto', width: '30%' }} key={index}>
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  style={{
+                    width: '90%',
+                  }}
+                />{' '}
                 <span
                   role="button"
                   tabIndex={0}
@@ -560,7 +575,6 @@ export default function PostProjectView() {
                 >
                   x
                 </span>
-                <img src={URL.createObjectURL(file)} alt={file.name} />
               </div>
             ))}
           </div>
@@ -574,8 +588,6 @@ export default function PostProjectView() {
             type="submit"
             variant="contained"
             color="inherit"
-            // onClick={formik.handleSubmit}
-            // onSubmit={formik.handleSubmit}
           >
             {projState?.isLoading ? (
               <Box sx={{ display: 'flex' }}>

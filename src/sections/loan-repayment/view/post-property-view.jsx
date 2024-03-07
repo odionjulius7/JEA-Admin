@@ -33,7 +33,7 @@ const schema = yup.object().shape({
   tag: yup.string(),
   title: yup.string().required('Title is required'),
   price: yup.number().required('Price is required'),
-  number_of_room: yup.string(),
+  number_of_room: yup.number(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
   agent_whatsapp: yup.string(),
@@ -260,8 +260,6 @@ export default function PostPropertyView() {
           <TextField
             label="Property Price"
             name="price"
-            // type="number"
-            // value={formik.values.price}
             onChange={formik.handleChange}
             error={formik.touched.price && Boolean(formik.errors.price)}
             helperText={formik.touched.price && formik.errors.price}

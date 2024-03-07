@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
+
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { bgGradient } from 'src/theme/css';
@@ -21,8 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextArea from 'antd/es/input/TextArea';
 
 import { toast } from 'react-toastify';
-
-import { postProperty, resetState } from 'src/features/Property/propertySlice';
+import { postProj, resetState } from 'src/features/Property/propertySlice';
 
 // import './imagestyle.css';
 
@@ -30,38 +30,32 @@ import { postProperty, resetState } from 'src/features/Property/propertySlice';
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
   // property_details: yup.string(),
-  tag: yup.string(),
   title: yup.string().required('Title is required'),
   price: yup.number().required('Price is required'),
   number_of_room: yup.string(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
-  agent_whatsapp: yup.string(),
-  agent_call: yup.string(),
-  category: yup.string().required('Category is required'),
-  // images: yup.array(),
+  // features: yup.string(),
+  category: yup.string(),
 });
 
-export default function PostFeaturedProjectView() {
-  //
+export default function PostFeaturedProsjectView() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
-  const propertyState = useSelector((state) => state.property);
-  console.log(propertyState?.isSuccess);
+  const projState = useSelector((state) => state.property);
   const token = authState?.auth.user?.token;
   const theme = useTheme();
-
   const [images, setImages] = useState([]);
 
   const formik = useFormik({
     initialValues: {
       title: '',
+      tag: 'featured',
       price: 0,
       number_of_room: '',
       location: '',
       description: '',
       category: '',
-      tag: '',
       agent_whatsapp: '',
       agent_call: '',
       //
@@ -99,17 +93,17 @@ export default function PostFeaturedProjectView() {
         const formData = new FormData();
         // Append form fields to formData
         formData.append('title', values.title);
+        formData.append('tag', 'featured');
         formData.append('price', values.price);
         formData.append('number_of_room', values.number_of_room);
         formData.append('description', values.description);
         formData.append('category', values.category);
         formData.append('location', values.location);
-        formData.append('tag', values.tag);
+
         formData.append('agent_call', values.agent_call);
         formData.append('agent_whatsapp', values.agent_whatsapp);
-
         //
-        formData.append('price', values.price);
+        // formData.append('price', values.price);
         formData.append('address', values.address);
         formData.append('additional_fees', values.additional_fees);
         formData.append('property_id', values.property_id);
@@ -146,7 +140,7 @@ export default function PostFeaturedProjectView() {
 
         const data = { formData, token };
         // Now you can dispatch your action with the formData
-        await dispatch(postProperty(data));
+        await dispatch(postProj(data));
 
         // Reset form or handle success as needed
         formik.resetForm();
@@ -164,8 +158,6 @@ export default function PostFeaturedProjectView() {
     },
   });
 
-  // const imgSizes = images?.find((item) => item?.size > 2000000);
-
   const handleImage = (event) => {
     setImages([...images, ...event.target.files]);
   };
@@ -180,7 +172,7 @@ export default function PostFeaturedProjectView() {
       <form onSubmit={formik.handleSubmit}>
         <Stack spacing={4}>
           <TextField
-            label="Property Title"
+            label="Title"
             name="title"
             value={formik.values.title}
             onChange={formik.handleChange}
@@ -189,12 +181,20 @@ export default function PostFeaturedProjectView() {
           />
 
           <TextField
-            label="Property Location"
+            label="Project Location"
             name="location"
             value={formik.values.location}
             onChange={formik.handleChange}
             error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
+          />
+          <TextField
+            label="Number Of Room"
+            name="number_of_room"
+            value={formik.values.number_of_room}
+            onChange={formik.handleChange}
+            error={formik.touched.number_of_room && Boolean(formik.errors.number_of_room)}
+            helperText={formik.touched.number_of_room && formik.errors.number_of_room}
           />
           <TextField
             label="Agent Call Num."
@@ -212,16 +212,8 @@ export default function PostFeaturedProjectView() {
             error={formik.touched.agent_whatsapp && Boolean(formik.errors.agent_whatsapp)}
             helperText={formik.touched.agent_whatsapp && formik.errors.agent_whatsapp}
           />
-          <TextField
-            label="Number Of Room"
-            name="number_of_room"
-            value={formik.values.number_of_room}
-            onChange={formik.handleChange}
-            error={formik.touched.number_of_room && Boolean(formik.errors.number_of_room)}
-            helperText={formik.touched.number_of_room && formik.errors.number_of_room}
-          />
           <FormControl fullWidth>
-            <InputLabel id="category-label">Property Category</InputLabel>
+            <InputLabel id="category-label">Project Status Category</InputLabel>
             <Select
               labelId="category-label"
               id="category"
@@ -229,49 +221,18 @@ export default function PostFeaturedProjectView() {
               value={formik.values.category}
               onChange={formik.handleChange}
               label="Property Category"
-              error={formik.touched.category && Boolean(formik.errors.category)}
-              helperText={formik.touched.category && formik.errors.category}
             >
-              <MenuItem value="buy">Buy</MenuItem>
-              <MenuItem value="rent">Rent</MenuItem>
-              <MenuItem value="land">Land</MenuItem>
-              <MenuItem value="short let">Short Let</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="category-label">Tag Property ..(optional)</InputLabel>
-            <Select
-              labelId="tag-label"
-              id="tag"
-              name="tag"
-              value={formik.values.tag}
-              onChange={formik.handleChange}
-              label="Tag Property"
-              error={formik.touched.tag && Boolean(formik.errors.tag)}
-              helperText={formik.touched.tag && formik.errors.tag}
-            >
-              <MenuItem value="featured">Featured</MenuItem>
-              <MenuItem value="property of the week">Property Of The Week</MenuItem>
-              <MenuItem value="available luxury">Available Luxury</MenuItem>
+              <MenuItem value="completed">completed</MenuItem>
+              <MenuItem value="ongoing">ongoing</MenuItem>
             </Select>
           </FormControl>
 
           <TextField
-            label="Property Price"
+            label="Price"
             name="price"
-            // type="number"
-            // value={formik.values.price}
             onChange={formik.handleChange}
             error={formik.touched.price && Boolean(formik.errors.price)}
             helperText={formik.touched.price && formik.errors.price}
-          />
-          <TextArea
-            rows={4}
-            placeholder="Property Description"
-            maxLength={300}
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
           />
 
           <div
@@ -320,12 +281,6 @@ export default function PostFeaturedProjectView() {
                 label="Property Id"
                 name="property_id"
                 value={formik.values.property_id}
-                onChange={formik.handleChange}
-              />
-              <TextField
-                label="Additional Fees"
-                name="additional_fees"
-                value={formik.values.additional_fees}
                 onChange={formik.handleChange}
               />
             </Stack>
@@ -561,6 +516,15 @@ export default function PostFeaturedProjectView() {
             />
           </div>
 
+          <TextArea
+            rows={4}
+            placeholder="Property Description"
+            maxLength={300}
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+          />
+
           <Stack>
             <div className="upload-wrap">
               <label htmlFor="inputTag" className="upload-label">
@@ -616,6 +580,7 @@ export default function PostFeaturedProjectView() {
               </div>
             ))}
           </div>
+
           <LoadingButton
             sx={{
               marginTop: '25px',
@@ -625,10 +590,8 @@ export default function PostFeaturedProjectView() {
             type="submit"
             variant="contained"
             color="inherit"
-            // onClick={formik.handleSubmit}
-            // onSubmit={formik.handleSubmit}
           >
-            {propertyState?.isLoading ? (
+            {projState?.isLoading ? (
               <Box sx={{ display: 'flex' }}>
                 <CircularProgress />
               </Box>
@@ -646,15 +609,15 @@ export default function PostFeaturedProjectView() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (propertyState?.isSuccess && propertyState?.postedProperty) {
-      toast.success('property posted Successfullly!');
+    if (projState?.isSuccess && projState?.postedProject) {
+      toast.success('Project posted Successfullly!');
     }
-  }, [propertyState?.isSuccess, propertyState?.postedProperty]);
+  }, [projState?.isSuccess, projState?.postedProject]);
 
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Post Property
+        Post Project
       </Typography>
 
       <Grid container spacing={3}>
@@ -674,7 +637,7 @@ export default function PostFeaturedProjectView() {
               sx={{
                 p: 5,
                 width: 1,
-                maxWidth: 820,
+                maxWidth: 620,
               }}
             >
               {renderForm}
