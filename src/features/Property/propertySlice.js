@@ -15,6 +15,8 @@ const initialState = {
   message: '',
   isSuccessDelete: false,
   isLoadingDelete: false,
+  isSuccessFeat: false,
+  isSuccessUpdate1: false,
 };
 
 // Properties
@@ -83,6 +85,17 @@ export const updateProj = createAsyncThunk('project/update-project', async (ids,
     return thunkAPI.rejectWithValue(error);
   }
 });
+export const updateFeaturedProj = createAsyncThunk(
+  'project/feature-a-project',
+  async (ids, thunkAPI) => {
+    try {
+      return await propertyService.updateFeaturedProj(ids);
+    } catch (error) {
+      toast.error('Failed to supdate property, try again');
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const deleteProj = createAsyncThunk('project/delete-project', async (ids, thunkAPI) => {
   try {
@@ -192,6 +205,7 @@ export const propertySlice = createSlice({
       })
       .addCase(updateProperty.pending, (state) => {
         state.isLoadingUpdate = true;
+        state.isSuccessUpdate = false;
       })
       .addCase(updateProperty.fulfilled, (state, action) => {
         state.isError = false;
@@ -289,18 +303,19 @@ export const propertySlice = createSlice({
         state.isLoading = false;
       })
       .addCase(updateProj.pending, (state) => {
-        state.isLoadingUpdate = true;
+        state.isLoadingUpdate1 = true;
+        state.isSuccessUpdate1 = false;
       })
       .addCase(updateProj.fulfilled, (state, action) => {
         state.isError = false;
-        state.isLoadingUpdate = false;
-        state.isSuccessUpdate = true;
+        state.isLoadingUpdate1 = false;
+        state.isSuccessUpdate1 = true;
         state.updatedProj = action.payload;
         state.message = 'successfully posted';
       })
       .addCase(updateProj.rejected, (state, action) => {
         state.isError = true;
-        state.isSuccessUpdate = false;
+        state.isSuccessUpdate1 = false;
         state.message = action.error;
         state.isLoadingUpdate = false;
       })
@@ -320,6 +335,24 @@ export const propertySlice = createSlice({
         state.message = action.error;
         state.isLoadingDelete = false;
       })
+      .addCase(updateFeaturedProj.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateFeaturedProj.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessFeat = true;
+        state.featuredProj = action.payload;
+        state.message = 'successfully updated';
+      })
+
+      .addCase(updateFeaturedProj.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessFeat = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+
       //  Requests
       .addCase(allRequest.pending, (state) => {
         state.isLoading = true;

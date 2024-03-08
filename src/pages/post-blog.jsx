@@ -27,7 +27,6 @@ import { postBlog, resetState } from 'src/features/Property/propertySlice';
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
-  // images: yup.array(),
 });
 
 // ----------------------------------------------------------------------

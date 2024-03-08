@@ -53,12 +53,11 @@ export const post = {
 export default function ProjectPage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  // const loanState = useSelector((state) => state.loan);
+
   const projectState = useSelector((state) => state.property);
 
   const projectDetail = projectState?.project?.project;
-  console.log(projectState);
-  // user auth
+
   const authState = useSelector((state) => state);
 
   const token = authState?.auth.user?.token;
@@ -67,12 +66,11 @@ export default function ProjectPage() {
   useEffect(() => {
     const ids = { id, token };
     dispatch(resetState());
-    // dispatch(getAproperty(ids));
     dispatch(getAproject(ids));
   }, [dispatch, token, id]);
 
   //
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const { title } = post;
 
   const latestPostLarge = 0;
 
@@ -170,7 +168,6 @@ export default function ProjectPage() {
 
   useEffect(() => {
     if (projectState?.isSuccessDelete) {
-      // Redirect to "/properties" when isSuccessDelete is true
       router.push('/projects');
       // Show success toast message
       toast.success('Property deleted successfully!', {
@@ -202,32 +199,43 @@ export default function ProjectPage() {
         </Typography>
         <Stack
           direction="row"
-          spacing={2}
+          spacing={4}
           sx={{
             marginBottom: '20px',
           }}
         >
           <Grid>
-            <Button>Update Project</Button>
+            <Button onClick={() => router.push(`/edit-project/${id}`)}>Edit Project</Button>
           </Grid>
           <Grid>
-            {projectState?.isLoadingDelete ? (
-              <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
-            ) : (
-              <Button
-                style={{
-                  border: '1px solid orangered',
-                  color: 'orangered',
-                }}
-                onClick={() => dispatch(deleteProj({ id, token }))}
-              >
-                Delete Project
-              </Button>
-            )}
+            <Button onClick={() => router.push(`/featured-proj/${projectDetail._id}`)}>
+              Feature This Project
+            </Button>
           </Grid>
         </Stack>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            margin: '1rem',
+          }}
+        >
+          {projectState?.isLoadingDelete ? (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Button
+              style={{
+                border: '1px solid orangered',
+                color: 'orangered',
+              }}
+              onClick={() => dispatch(deleteProj({ id, token }))}
+            >
+              Delete Project
+            </Button>
+          )}
+        </div>
         <Stack direction="row" spacing={3}>
           <Grid
             // item
@@ -304,13 +312,13 @@ export default function ProjectPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '10px' }}>
                     <em>Category:</em>
-                    <span>{projectDetail?.category?.toUpperCase()}</span>
+                    <span>{projectDetail?.category}</span>
                   </Typography>
                 </Stack>
                 <Stack style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                   <Typography style={{ display: 'flex', gap: '10px' }}>
                     <em>Location:</em>
-                    <span>{projectDetail?.location?.toUpperCase()}</span>
+                    <span>{projectDetail?.location}</span>
                   </Typography>
                 </Stack>
                 <Stack

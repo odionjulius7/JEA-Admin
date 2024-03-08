@@ -5,6 +5,45 @@
 ## Reviel App
 
 <!--
+exports.updateBlog = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const blog = await  User.findByIdAndUpdate(id, image, {
+      new: true,
+    });;
+
+    const response = new Response(
+      true,
+      200,
+      "Blog post updated successfully",
+      blog
+    );
+    res.status(response.code).json(response);
+  } catch (err) {
+    console.log(err);
+    const response = new Response(false, 500, "Server Error", err);
+    res.status(response.code).json(response);
+  }
+};
+
+upload.single("image"),
+
+  cloudinary.uploader.upload(req.file.path, async (error, result) => {
+      if (result) {
+        let image = result.secure_url;
+        await userService.updateUserWithId(id, { image });
+
+        const response = new Response(
+          true,
+          200,
+          "Image uploaded successfully",
+          image
+        );
+        userLogger.info(`User Image Updated - ${id}`);
+        return res.status(response.code).json(response);
+      }
+    });
+
   const [property_details, setProperty_details] = useState({
     price: '',
     address: '',

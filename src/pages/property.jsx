@@ -51,7 +51,7 @@ export default function PropertyPage() {
   const propertyState = useSelector((state) => state.property);
 
   const propertyDetail = propertyState?.property?.property;
-  console.log(propertyState);
+
   // user auth
   const authState = useSelector((state) => state);
 
@@ -201,7 +201,15 @@ export default function PropertyPage() {
           }}
         >
           <Grid>
-            <Button>Update Product</Button>
+            <Button
+              style={{
+                border: '1px solid blue',
+                color: '#000',
+              }}
+              onClick={() => router.push(`/edit-property/${propertyDetail._id}`)}
+            >
+              Edit Property
+            </Button>
           </Grid>
           <Grid>
             {propertyState?.isLoadingDelete ? (

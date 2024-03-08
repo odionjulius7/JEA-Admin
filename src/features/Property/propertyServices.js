@@ -78,6 +78,22 @@ const updateProj = async (ids) => {
     return null;
   }
 };
+const updateFeaturedProj = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+
+  try {
+    const response = await axios.put(
+      `${base_url}project/featured/${ids.id}`,
+      ids.formData, // Pass 'formData' directly
+      config
+    );
+    return response.data?.data;
+  } catch (error) {
+    console.log(error);
+    // Handle the error as needed
+    return null;
+  }
+};
 
 const deleteProj = async (ids) => {
   const config = generateAxiosConfig(ids.token);
@@ -144,6 +160,7 @@ const propertyService = {
   postProj,
   updateProj,
   deleteProj,
+  updateFeaturedProj,
   //
   allRequest,
   getaRequest,

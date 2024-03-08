@@ -25,7 +25,9 @@ export const AllRequestsPage = lazy(() => import('src/pages/allRequests'));
 export const RequestPage = lazy(() => import('src/pages/singleRequest'));
 export const ProjectPage = lazy(() => import('src/pages/project'));
 export const SingleBlogPage = lazy(() => import('src/pages/single-blog'));
-export const FeaturedProjectPage = lazy(() => import('src/pages/post-featured-project'));
+export const EditPropertyPage = lazy(() => import('src/pages/EditProperty'));
+export const FeatureProjectPage = lazy(() => import('src/pages/featureProject'));
+export const EditProjectPage = lazy(() => import('src/pages/EditProject'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 export default function Router() {
@@ -71,11 +73,28 @@ export default function Router() {
             </ProtectedRoute>
           ),
         },
+
         {
-          path: 'post-featured-proj',
+          path: 'edit-property/:id',
           element: (
             <ProtectedRoute>
-              <FeaturedProjectPage />
+              <EditPropertyPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'edit-project/:id',
+          element: (
+            <ProtectedRoute>
+              <EditProjectPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'featured-proj/:id',
+          element: (
+            <ProtectedRoute>
+              <FeatureProjectPage />
             </ProtectedRoute>
           ),
         },
