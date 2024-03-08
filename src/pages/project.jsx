@@ -208,24 +208,24 @@ export default function ProjectPage() {
           }}
         >
           <Grid>
-            <Button
-              style={{
-                border: '1px solid orangered',
-                color: 'orangered',
-              }}
-              onClick={() => dispatch(deleteProj({ id, token }))}
-            >
-              {projectState?.isLoadingDelete ? (
-                <Box sx={{ display: 'flex' }}>
-                  <CircularProgress />
-                </Box>
-              ) : (
-                'Delete Product'
-              )}
-            </Button>
+            <Button>Update Project</Button>
           </Grid>
           <Grid>
-            <Button>Delete Product</Button>
+            {projectState?.isLoadingDelete ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Button
+                style={{
+                  border: '1px solid orangered',
+                  color: 'orangered',
+                }}
+                onClick={() => dispatch(deleteProj({ id, token }))}
+              >
+                Delete Project
+              </Button>
+            )}
           </Grid>
         </Stack>
         <Stack direction="row" spacing={3}>

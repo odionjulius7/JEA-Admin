@@ -201,24 +201,24 @@ export default function PropertyPage() {
           }}
         >
           <Grid>
-            <Button>Edit Product</Button>
+            <Button>Update Product</Button>
           </Grid>
           <Grid>
-            <Button
-              style={{
-                border: '1px solid orangered',
-                color: 'orangered',
-              }}
-              onClick={() => dispatch(deleteProperty({ id, token }))}
-            >
-              {propertyState?.isLoadingDelete ? (
-                <Box sx={{ display: 'flex' }}>
-                  <CircularProgress />
-                </Box>
-              ) : (
-                'Delete Product'
-              )}
-            </Button>
+            {propertyState?.isLoadingDelete ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Button
+                style={{
+                  border: '1px solid orangered',
+                  color: 'orangered',
+                }}
+                onClick={() => dispatch(deleteProperty({ id, token }))}
+              >
+                Delete Product
+              </Button>
+            )}
           </Grid>
         </Stack>
         <Stack direction="row" spacing={3}>
