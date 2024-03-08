@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -13,17 +13,17 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import * as yup from 'yup';
 import { useRouter } from 'src/routes/hooks';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { bgGradient } from 'src/theme/css';
 
-import * as yup from 'yup';
-import { useFormik } from 'formik';
+import { recoverPassword } from 'src/features/auth/authSlice';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { useDispatch, useSelector } from 'react-redux';
-import { recoverPassword } from 'src/features/auth/authSlice';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc

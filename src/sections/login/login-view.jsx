@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
-// import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -38,9 +36,9 @@ export default function LoginView() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
 
-  console.log(authState);
+  // console.log(authState);
 
-  const { user, isError, isSuccess, isLoading, message } = authState.auth;
+  const { user, isLoading } = authState.auth;
   const token = user?.token;
 
   const theme = useTheme();
@@ -49,11 +47,6 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // const handleClick = () => {
-  //   router.push('/dashboard');
-  // };
-
-  // Formik state, check doc
   const formik = useFormik({
     // initial form state
     initialValues: {

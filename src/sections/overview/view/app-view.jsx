@@ -9,20 +9,17 @@ import Typography from '@mui/material/Typography';
 import {
   allBlog,
   allProject,
-  allProperty,
   allRequest,
+  allProperty,
   resetState,
 } from 'src/features/Property/propertySlice';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppCurrentVisits from '../app-current-visits';
-
 import AppWebsiteVisits from '../app-website-visits';
-
-import AppWidgetSummary from '../app-widget-summary';
-
 import DashboardTable from '../DashboardTable';
+import AppWidgetSummary from '../app-widget-summary';
 
 export default function AppView() {
   const dispatch = useDispatch();

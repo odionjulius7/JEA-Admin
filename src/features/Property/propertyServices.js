@@ -33,6 +33,24 @@ const postProperty = async (data) => {
   return response.data;
 };
 
+const updateProperty = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  try {
+    const response = await axios.put(`${base_url}property/${ids.id}`, ids.data, config);
+    return response.data?.data;
+  } catch (error) {
+    console.log(error);
+    // Handle the error as needed
+    return null;
+  }
+};
+
+const deleteProperty = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  const response = await axios.delete(`${base_url}property/${ids.id}`, config);
+  return response.data;
+};
+
 // Projects
 const allProject = async (token) => {
   const config = generateAxiosConfig(token);
@@ -46,6 +64,24 @@ const getAproject = async (ids) => {
   const config = generateAxiosConfig(ids.token);
   const response = await axios.get(`${base_url}project/${ids.id}`, config);
   // console.log(response);
+  return response.data;
+};
+
+const updateProj = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  try {
+    const response = await axios.put(`${base_url}project/${ids.id}`, ids.data, config);
+    return response.data?.data;
+  } catch (error) {
+    console.log(error);
+    // Handle the error as needed
+    return null;
+  }
+};
+
+const deleteProj = async (ids) => {
+  const config = generateAxiosConfig(ids.token);
+  const response = await axios.delete(`${base_url}project/${ids.id}`, config);
   return response.data;
 };
 
@@ -65,6 +101,7 @@ const allRequest = async (token) => {
   // console.log(response);
   return response?.data;
 };
+
 const getaRequest = async (ids) => {
   const config = generateAxiosConfig(ids.token);
   const response = await axios.get(`${base_url}property/request/${ids.id}`, config);
@@ -99,10 +136,14 @@ const propertyService = {
   allProperty,
   getAproperty,
   postProperty,
+  updateProperty,
+  deleteProperty,
   //
   allProject,
   getAproject,
   postProj,
+  updateProj,
+  deleteProj,
   //
   allRequest,
   getaRequest,

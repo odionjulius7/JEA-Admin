@@ -1,10 +1,9 @@
 import * as React from 'react';
+import moment from 'moment';
 import { useEffect } from 'react';
 
-import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
-// import { allLoanRecords, loanTransaction } from 'src/features/Loan/loanSlice';
-import moment from 'moment';
+import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 import { allProperty, resetState } from 'src/features/Property/propertySlice';
 
@@ -54,17 +53,17 @@ const columns = [
   },
 ];
 
-const rows1 = [
-  {
-    id: 1432,
-    title: 'Duplex',
-    location: 'Ajah',
-    amount: '50,000',
-    created: '11/28/2023',
-    status: 'Sold',
-    // message: 'lorem ipsum make a ka dhh jhfdh',
-  },
-];
+// const rows1 = [
+//   {
+//     id: 1432,
+//     title: 'Duplex',
+//     location: 'Ajah',
+//     amount: '50,000',
+//     created: '11/28/2023',
+//     status: 'Sold',
+//     // message: 'lorem ipsum make a ka dhh jhfdh',
+//   },
+// ];
 
 export default function DashboardTable() {
   const dispatch = useDispatch();
@@ -74,10 +73,10 @@ export default function DashboardTable() {
   const token = authState?.auth.user?.data?.token;
 
   const propertys = propertyState?.properties?.allProperty || [];
-  function convertKoboToNaira(koboAmount) {
-    const nairaAmount = koboAmount / 100; // 100 kobo equals 1 naira
-    return nairaAmount;
-  }
+  // function convertKoboToNaira(koboAmount) {
+  //   const nairaAmount = koboAmount / 100; // 100 kobo equals 1 naira
+  //   return nairaAmount;
+  // }
   //
   const rows = propertys?.map((property, index) => {
     // Create loan data for each item

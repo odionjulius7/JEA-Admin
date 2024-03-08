@@ -14,11 +14,15 @@ import Typography from '@mui/material/Typography';
 
 import { fDate } from 'src/utils/format-time';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAproperty, resetState } from 'src/features/Property/propertySlice';
+import { deleteProperty, getAproperty, resetState } from 'src/features/Property/propertySlice';
+import { useRouter } from 'src/routes/hooks';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -42,11 +46,12 @@ export const post = {
 
 export default function PropertyPage() {
   const dispatch = useDispatch();
+  const router = useRouter();
   // const loanState = useSelector((state) => state.loan);
   const propertyState = useSelector((state) => state.property);
 
   const propertyDetail = propertyState?.property?.property;
-  console.log(propertyDetail);
+  console.log(propertyState);
   // user auth
   const authState = useSelector((state) => state);
 
@@ -59,8 +64,21 @@ export default function PropertyPage() {
     dispatch(getAproperty(ids));
   }, [dispatch, token, id]);
 
+  useEffect(() => {
+    if (propertyState?.isSuccessDelete) {
+      // Redirect to "/properties" when isSuccessDelete is true
+      router.push('/property-list');
+      // Show success toast message
+      toast.success('Property deleted successfully!', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000, // Adjust as needed
+      });
+    }
+  }, [router, propertyState?.isSuccessDelete]);
+
+  // const ids = { id, token };
   //
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const { title } = post;
 
   const latestPostLarge = 0;
 
@@ -186,7 +204,21 @@ export default function PropertyPage() {
             <Button>Edit Product</Button>
           </Grid>
           <Grid>
-            <Button>Delete Product</Button>
+            <Button
+              style={{
+                border: '1px solid orangered',
+                color: 'orangered',
+              }}
+              onClick={() => dispatch(deleteProperty({ id, token }))}
+            >
+              {propertyState?.isLoadingDelete ? (
+                <Box sx={{ display: 'flex' }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                'Delete Product'
+              )}
+            </Button>
           </Grid>
         </Stack>
         <Stack direction="row" spacing={3}>
@@ -313,9 +345,9 @@ export default function PropertyPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>features:</em>
-                    <span>
+                    {/* <span>
                       <div dangerouslySetInnerHTML={{ __html: propertyDetail?.features }} />
-                    </span>
+                    </span> */}
                   </Typography>
                 </Stack>
                 <Stack
@@ -325,9 +357,9 @@ export default function PropertyPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Property Details:</em>
-                    <span>
+                    {/* <span>
                       <div dangerouslySetInnerHTML={{ __html: propertyDetail?.property_details }} />
-                    </span>
+                    </span> */}
                   </Typography>
                 </Stack>
                 <Stack
@@ -345,9 +377,9 @@ export default function PropertyPage() {
                   >
                     <em>Neighborhood Info.:</em>
                     <span>
-                      <div
+                      {/* <div
                         dangerouslySetInnerHTML={{ __html: propertyDetail?.neighborhood_info }}
-                      />
+                      /> */}
                     </span>
                   </Typography>
                 </Stack>

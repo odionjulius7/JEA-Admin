@@ -13,14 +13,22 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
+
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAproject, getAproperty, resetState } from 'src/features/Property/propertySlice';
+import {
+  deleteProj,
+  getAproject,
+  getAproperty,
+  resetState,
+} from 'src/features/Property/propertySlice';
+import { toast } from 'react-toastify';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -44,11 +52,12 @@ export const post = {
 
 export default function ProjectPage() {
   const dispatch = useDispatch();
+  const router = useRouter();
   // const loanState = useSelector((state) => state.loan);
   const projectState = useSelector((state) => state.property);
 
   const projectDetail = projectState?.project?.project;
-  // console.log(projectDetail);
+  console.log(projectState);
   // user auth
   const authState = useSelector((state) => state);
 
@@ -158,6 +167,19 @@ export default function ProjectPage() {
       }}
     />
   );
+
+  useEffect(() => {
+    if (projectState?.isSuccessDelete) {
+      // Redirect to "/properties" when isSuccessDelete is true
+      router.push('/projects');
+      // Show success toast message
+      toast.success('Property deleted successfully!', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000, // Adjust as needed
+      });
+    }
+  }, [router, projectState?.isSuccessDelete]);
+
   return (
     <>
       <Helmet>
@@ -186,7 +208,21 @@ export default function ProjectPage() {
           }}
         >
           <Grid>
-            <Button>Edit Product</Button>
+            <Button
+              style={{
+                border: '1px solid orangered',
+                color: 'orangered',
+              }}
+              onClick={() => dispatch(deleteProj({ id, token }))}
+            >
+              {projectState?.isLoadingDelete ? (
+                <Box sx={{ display: 'flex' }}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                'Delete Product'
+              )}
+            </Button>
           </Grid>
           <Grid>
             <Button>Delete Product</Button>

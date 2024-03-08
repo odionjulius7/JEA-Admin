@@ -1,5 +1,5 @@
-import { createSlice, createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+import { createSlice, createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import propertyService from './propertyServices';
 
@@ -13,6 +13,8 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   message: '',
+  isSuccessDelete: false,
+  isLoadingDelete: false,
 };
 
 // Properties
@@ -41,10 +43,50 @@ export const postProperty = createAsyncThunk('property/post-property', async (da
   }
 });
 
+export const updateProperty = createAsyncThunk(
+  'property/update-property',
+  async (ids, thunkAPI) => {
+    try {
+      return await propertyService.updateProperty(ids);
+    } catch (error) {
+      toast.error('Failed to supdate property, try again');
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteProperty = createAsyncThunk(
+  'property/delete-property',
+  async (ids, thunkAPI) => {
+    try {
+      return await propertyService.deleteProperty(ids);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // Projects
 export const allProject = createAsyncThunk('project/get-project', async (token, thunkAPI) => {
   try {
     return await propertyService.allProject(token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const updateProj = createAsyncThunk('project/update-project', async (ids, thunkAPI) => {
+  try {
+    return await propertyService.updateProj(ids);
+  } catch (error) {
+    toast.error('Failed to supdate property, try again');
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const deleteProj = createAsyncThunk('project/delete-project', async (ids, thunkAPI) => {
+  try {
+    return await propertyService.deleteProj(ids);
   } catch (error) {
     return thunkAPI.rejectWithValue(error);
   }
@@ -57,6 +99,7 @@ export const getAproject = createAsyncThunk('project/get-a-project', async (ids,
     return thunkAPI.rejectWithValue(error);
   }
 });
+
 export const postProj = createAsyncThunk('project/post-project', async (data, thunkAPI) => {
   try {
     return await propertyService.postProj(data);
@@ -147,6 +190,38 @@ export const propertySlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
+      .addCase(updateProperty.pending, (state) => {
+        state.isLoadingUpdate = true;
+      })
+      .addCase(updateProperty.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoadingUpdate = false;
+        state.isSuccessUpdate = true;
+        state.updatedProperty = action.payload;
+        state.message = 'successfully posted';
+      })
+      .addCase(updateProperty.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessUpdate = false;
+        state.message = action.error;
+        state.isLoadingUpdate = false;
+      })
+      .addCase(deleteProperty.pending, (state) => {
+        state.isLoadingDelete = true;
+      })
+      .addCase(deleteProperty.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoadingDelete = false;
+        state.isSuccessDelete = true;
+        state.deletedProperty = action.payload;
+        state.message = 'successfully posted';
+      })
+      .addCase(deleteProperty.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessDelete = false;
+        state.message = action.error;
+        state.isLoadingDelete = false;
+      })
       .addCase(postProperty.pending, (state) => {
         state.isLoading = true;
       })
@@ -212,6 +287,38 @@ export const propertySlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         state.isLoading = false;
+      })
+      .addCase(updateProj.pending, (state) => {
+        state.isLoadingUpdate = true;
+      })
+      .addCase(updateProj.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoadingUpdate = false;
+        state.isSuccessUpdate = true;
+        state.updatedProj = action.payload;
+        state.message = 'successfully posted';
+      })
+      .addCase(updateProj.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessUpdate = false;
+        state.message = action.error;
+        state.isLoadingUpdate = false;
+      })
+      .addCase(deleteProj.pending, (state) => {
+        state.isLoadingDelete = true;
+      })
+      .addCase(deleteProj.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoadingDelete = false;
+        state.isSuccessDelete = true;
+        state.deletedProj = action.payload;
+        state.message = 'successfully posted';
+      })
+      .addCase(deleteProj.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessDelete = false;
+        state.message = action.error;
+        state.isLoadingDelete = false;
       })
       //  Requests
       .addCase(allRequest.pending, (state) => {
