@@ -17,9 +17,9 @@ export default function ProjectsPage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">All Projects</Typography>
         <Link to="/post-featured-proj">
-          <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+          {/* <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
             Post Featured Project
-          </Button>
+          </Button> */}
         </Link>
       </Stack>
       {/* <Card> */}

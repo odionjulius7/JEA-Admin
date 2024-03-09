@@ -50,16 +50,16 @@ const navConfig = [
     ],
   },
   {
-    title: 'Blogs Management',
+    title: 'Agent Management',
     icon: icon('ic_blog'),
     items: [
+      // {
+      //   title: 'All Blogs',
+      //   path: '/blog',
+      //   icon: icon('ic_cart'),
+      // },
       {
-        title: 'All Blogs',
-        path: '/blog',
-        icon: icon('ic_cart'),
-      },
-      {
-        title: 'Post Blog',
+        title: 'Post Agent',
         path: '/post-blog',
         icon: icon('ic_cart'),
       },

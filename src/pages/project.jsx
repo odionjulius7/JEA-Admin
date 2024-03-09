@@ -335,18 +335,84 @@ export default function ProjectPage() {
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Neighborhood Info:</em>
 
-                    <span>
-                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.neighborhood_info }} />
-                    </span>
+                    <ul>
+                      {projectDetail?.neighborhood_info1 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info1}</li>
+                      )}
+                      {projectDetail?.neighborhood_info2 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info2}</li>
+                      )}
+                      {projectDetail?.neighborhood_info3 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info3}</li>
+                      )}
+                      {projectDetail?.neighborhood_info4 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info4}</li>
+                      )}
+                      {projectDetail?.neighborhood_info5 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info5}</li>
+                      )}
+                      {projectDetail?.neighborhood_info6 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info6}</li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
 
                 <Stack>
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Details:</em>
-                    <span>
-                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.property_details }} />
-                    </span>
+                    <ul>
+                      {projectDetail?.price && (
+                        <li className="font_15">Price: {projectDetail?.price}</li>
+                      )}
+                      {projectDetail?.address && (
+                        <li className="font_15">Address: {projectDetail?.address}.</li>
+                      )}
+                      {projectDetail?.additional_fees && (
+                        <li className="font_15">
+                          Additional fees (For only rent categories):{' '}
+                          {projectDetail?.additional_fees}
+                        </li>
+                      )}
+                      {projectDetail?.property_id && (
+                        <li className="font_15">Property ID: {projectDetail?.property_id}</li>
+                      )}
+                      {projectDetail?.property_type && (
+                        <li className="font_15">{projectDetail?.property_type}</li>
+                      )}
+                      {projectDetail?.year_built && (
+                        <li className="font_15">{projectDetail?.year_built}</li>
+                      )}
+                      {projectDetail?.details_category && (
+                        <li className="font_15">{projectDetail?.details_category}</li>
+                      )}
+                      {projectDetail?.status && (
+                        <li className="font_15">{projectDetail?.status}</li>
+                      )}
+                      {projectDetail?.Number_of_Stories && (
+                        <li className="font_15">{projectDetail?.Number_of_Stories}</li>
+                      )}
+                      {projectDetail?.garage_capacity && (
+                        <li className="font_15">{projectDetail?.property_id}</li>
+                      )}
+                      {projectDetail?.recent_renovations && (
+                        <li className="font_15">
+                          Recent Renovations: {projectDetail?.recent_renovations}
+                        </li>
+                      )}
+                      {projectDetail?.youtube_url && (
+                        <li className="font_15">
+                          <a
+                            style={{
+                              color: 'blue',
+                            }}
+                            href={projectDetail?.youtube_url}
+                          >
+                            Youtube Link
+                          </a>
+                        </li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
 
@@ -354,9 +420,29 @@ export default function ProjectPage() {
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>features:</em>
 
-                    <span>
-                      <div dangerouslySetInnerHTML={{ __html: projectDetail?.features }} />
-                    </span>
+                    <ul>
+                      {projectDetail?.feature_1 && (
+                        <li className="font_15">{projectDetail?.feature_1}</li>
+                      )}
+                      {projectDetail?.feature_2 && (
+                        <li className="font_15">{projectDetail?.feature_2}</li>
+                      )}
+                      {projectDetail?.feature_4 && (
+                        <li className="font_15">{projectDetail?.feature_4}</li>
+                      )}
+                      {projectDetail?.feature_5 && (
+                        <li className="font_15">{projectDetail?.feature_5}</li>
+                      )}
+                      {projectDetail?.feature_6 && (
+                        <li className="font_15">{projectDetail?.feature_6}</li>
+                      )}
+                      {projectDetail?.feature_7 && (
+                        <li className="font_15">{projectDetail?.feature_7}</li>
+                      )}
+                      {projectDetail?.feature_8 && (
+                        <li className="font_15">{projectDetail?.feature_8}</li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
                 <Stack

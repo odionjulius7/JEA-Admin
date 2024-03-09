@@ -172,7 +172,7 @@ export default function EditPropertyPage() {
         <TextArea
           rows={4}
           placeholder="Property Description"
-          maxLength={300}
+          maxLength={800}
           name="description"
           value={formik.values.description}
           onChange={formik.handleChange}

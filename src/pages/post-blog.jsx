@@ -22,6 +22,7 @@ import { toast } from 'react-toastify';
 
 import './imagestyle.css';
 import { postBlog, resetState } from 'src/features/Property/propertySlice';
+import TextArea from 'antd/es/input/TextArea';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
@@ -34,15 +35,15 @@ export default function PostBlogPage() {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const blogState = useSelector((state) => state.property);
-  console.log(blogState?.isSuccess);
+
   const token = authState?.auth.user?.token;
 
   const [image, setImage] = useState('');
-  const [body, setBody] = useState('');
 
   const formik = useFormik({
     initialValues: {
       title: '',
+      body: '',
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -50,7 +51,7 @@ export default function PostBlogPage() {
         const formData = new FormData();
         // Append form fields to formData
         formData.append('title', values.title);
-        formData.append('body', body);
+        formData.append('body', values.body);
         // Append image to formData
         if (image) {
           formData.append('image', image);
@@ -59,7 +60,6 @@ export default function PostBlogPage() {
         await dispatch(postBlog(data));
         formik.resetForm();
         setImage('');
-        setBody('');
         dispatch(resetState());
       } catch (error) {
         formik.resetForm();
@@ -90,7 +90,7 @@ export default function PostBlogPage() {
   return (
     <>
       <Helmet>
-        <title>JEA | Post Blog</title>
+        <title>JEA | Post </title>
       </Helmet>
       <Container maxWidth="xl">
         <Grid container spacing={3}>
@@ -99,7 +99,7 @@ export default function PostBlogPage() {
               padding: '3rem 2rem',
             }}
           >
-            Post Blog Page
+            Post Agent
           </h2>
           <Box
             sx={{
@@ -120,7 +120,7 @@ export default function PostBlogPage() {
                   <Stack spacing={3}>
                     {/*  */}
                     <TextField
-                      label="Title"
+                      label="Name"
                       name="title"
                       value={formik.values.title}
                       onChange={formik.handleChange}
@@ -128,28 +128,11 @@ export default function PostBlogPage() {
                       helperText={formik.touched.title && formik.errors.title}
                     />
                     <div>
-                      <CKEditor
-                        editor={ClassicEditor}
-                        data="<p>Hello!</p>"
-                        // data={
-                        //   userToCreate.membership
-                        //     ? userToCreate.membership?.benefits
-                        //     : "<p>Hello!</p>"
-                        // }
-                        onReady={(editor) => {
-                          // You can store the "editor" and use when it is needed.
-                          // console.log("Editor is ready to use!", editor);
-                        }}
-                        onChange={(event, editor) => {
-                          const data = editor.getData();
-                          setBody(data);
-                        }}
-                        onBlur={(event, editor) => {
-                          // console.log("Blur.", editor);
-                        }}
-                        onFocus={(event, editor) => {
-                          // console.log("Focus.", editor);
-                        }}
+                      <TextField
+                        label="Job Description"
+                        name="body"
+                        value={formik.values.body}
+                        onChange={formik.handleChange}
                       />
                     </div>
                     <Stack>

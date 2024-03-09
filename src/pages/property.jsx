@@ -306,7 +306,7 @@ export default function PropertyPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
                     <em>Location:</em>
-                    <span>{propertyDetail?.location?.toUpperCase()}</span>
+                    <span>{propertyDetail?.location}</span>
                   </Typography>
                 </Stack>
                 <Stack
@@ -343,7 +343,7 @@ export default function PropertyPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '10px', marginTop: '1rem' }}>
                     <em>Category:</em>
-                    <span>{propertyDetail?.category?.toUpperCase()}</span>
+                    <span>{propertyDetail?.category}</span>
                   </Typography>
                 </Stack>
                 <Stack
@@ -352,10 +352,30 @@ export default function PropertyPage() {
                   }}
                 >
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
-                    <em>features:</em>
-                    {/* <span>
-                      <div dangerouslySetInnerHTML={{ __html: propertyDetail?.features }} />
-                    </span> */}
+                    <em>features & Amenities:</em>
+                    <ul>
+                      {propertyDetail?.feature_1 && (
+                        <li className="font_15">{propertyDetail?.feature_1}</li>
+                      )}
+                      {propertyDetail?.feature_2 && (
+                        <li className="font_15">{propertyDetail?.feature_2}</li>
+                      )}
+                      {propertyDetail?.feature_4 && (
+                        <li className="font_15">{propertyDetail?.feature_4}</li>
+                      )}
+                      {propertyDetail?.feature_5 && (
+                        <li className="font_15">{propertyDetail?.feature_5}</li>
+                      )}
+                      {propertyDetail?.feature_6 && (
+                        <li className="font_15">{propertyDetail?.feature_6}</li>
+                      )}
+                      {propertyDetail?.feature_7 && (
+                        <li className="font_15">{propertyDetail?.feature_7}</li>
+                      )}
+                      {propertyDetail?.feature_8 && (
+                        <li className="font_15">{propertyDetail?.feature_8}</li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
                 <Stack
@@ -365,9 +385,58 @@ export default function PropertyPage() {
                 >
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Property Details:</em>
-                    {/* <span>
-                      <div dangerouslySetInnerHTML={{ __html: propertyDetail?.property_details }} />
-                    </span> */}
+                    <ul>
+                      {propertyDetail?.price && (
+                        <li className="font_15">Price: {propertyDetail?.price}</li>
+                      )}
+                      {propertyDetail?.address && (
+                        <li className="font_15">Address: {propertyDetail?.address}.</li>
+                      )}
+                      {propertyDetail?.additional_fees && (
+                        <li className="font_15">
+                          Additional fees (For only rent categories):{' '}
+                          {propertyDetail?.additional_fees}
+                        </li>
+                      )}
+                      {propertyDetail?.property_id && (
+                        <li className="font_15">Property ID: {propertyDetail?.property_id}</li>
+                      )}
+                      {propertyDetail?.property_type && (
+                        <li className="font_15">{propertyDetail?.property_type}</li>
+                      )}
+                      {propertyDetail?.year_built && (
+                        <li className="font_15">{propertyDetail?.year_built}</li>
+                      )}
+                      {propertyDetail?.details_category && (
+                        <li className="font_15">{propertyDetail?.details_category}</li>
+                      )}
+                      {propertyDetail?.status && (
+                        <li className="font_15">{propertyDetail?.status}</li>
+                      )}
+                      {propertyDetail?.Number_of_Stories && (
+                        <li className="font_15">{propertyDetail?.Number_of_Stories}</li>
+                      )}
+                      {propertyDetail?.garage_capacity && (
+                        <li className="font_15">{propertyDetail?.property_id}</li>
+                      )}
+                      {propertyDetail?.recent_renovations && (
+                        <li className="font_15">
+                          Recent Renovations: {propertyDetail?.recent_renovations}
+                        </li>
+                      )}
+                      {propertyDetail?.youtube_url && (
+                        <li className="font_15">
+                          <a
+                            style={{
+                              color: 'blue',
+                            }}
+                            href={propertyDetail?.youtube_url}
+                          >
+                            Youtube Link
+                          </a>
+                        </li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
                 <Stack
@@ -384,11 +453,26 @@ export default function PropertyPage() {
                     }}
                   >
                     <em>Neighborhood Info.:</em>
-                    <span>
-                      {/* <div
-                        dangerouslySetInnerHTML={{ __html: propertyDetail?.neighborhood_info }}
-                      /> */}
-                    </span>
+                    <ul>
+                      {propertyDetail?.neighborhood_info1 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info1}</li>
+                      )}
+                      {propertyDetail?.neighborhood_info2 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info2}</li>
+                      )}
+                      {propertyDetail?.neighborhood_info3 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info3}</li>
+                      )}
+                      {propertyDetail?.neighborhood_info4 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info4}</li>
+                      )}
+                      {propertyDetail?.neighborhood_info5 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info5}</li>
+                      )}
+                      {propertyDetail?.neighborhood_info6 && (
+                        <li className="font_15">{propertyDetail?.neighborhood_info6}</li>
+                      )}
+                    </ul>
                   </Typography>
                 </Stack>
                 {/* {renderInfo} */}
