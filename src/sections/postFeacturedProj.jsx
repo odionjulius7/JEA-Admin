@@ -640,7 +640,10 @@ export default function PostFeaturedProsjectView() {
     if (projState?.isSuccess && projState?.postedProject) {
       toast.success('Project posted Successfullly!');
     }
-  }, [projState?.isSuccess, projState?.postedProject]);
+    if (projState?.isError) {
+      toast.error('Failed! If problem persist try log in again');
+    }
+  }, [projState?.isSuccess, projState?.postedProject, projState?.isError]);
 
   return (
     <Container maxWidth="xl">

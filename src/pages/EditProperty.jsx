@@ -498,7 +498,10 @@ export default function EditPropertyPage() {
       toast.success('Property Updated Successfullly!');
       router.push(`/property/${id}`);
     }
-  }, [propertyState?.isSuccessUpdate, router, id]);
+    if (propertyState?.isError) {
+      toast.error('Failed!, If problem persist try login again');
+    }
+  }, [propertyState?.isSuccessUpdate, propertyState?.isError, router, id]);
 
   return (
     <Container maxWidth="xl">

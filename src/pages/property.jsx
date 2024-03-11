@@ -195,7 +195,7 @@ export default function PropertyPage() {
         </Typography>
         <Stack
           direction="row"
-          spacing={2}
+          spacing={12}
           sx={{
             marginBottom: '20px',
           }}

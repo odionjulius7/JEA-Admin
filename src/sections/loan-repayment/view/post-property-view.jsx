@@ -646,7 +646,10 @@ export default function PostPropertyView() {
     if (propertyState?.isSuccess && propertyState?.postedProperty) {
       toast.success('property posted Successfullly!');
     }
-  }, [propertyState?.isSuccess, propertyState?.postedProperty]);
+    if (propertyState?.isError) {
+      toast.error('Failed!, If problem persist try login again');
+    }
+  }, [propertyState?.isSuccess, propertyState?.postedProperty, propertyState?.isError]);
 
   return (
     <Container maxWidth="xl">

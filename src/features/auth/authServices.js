@@ -13,11 +13,11 @@ const login = async (user) => {
 };
 
 const changePassword = async (user) => {
-  const { token, new_password, old_password } = user;
+  const { token, new_password, old_password, email } = user;
   const config = generateAxiosConfig(token);
   const response = await axios.post(
-    `${base_url}user/password`,
-    { old_password, new_password },
+    `${base_url}admin/change/password`,
+    { old_password, new_password, email },
     config
   );
 
@@ -26,13 +26,13 @@ const changePassword = async (user) => {
 const forgotPassword = async (user) => {
   const { token, email } = user;
   // const config = generateAxiosConfig(token);
-  const response = await axios.post(`${base_url}user/forgot`, { email });
+  const response = await axios.post(`${base_url}admin/forgot`, { email });
 
   return response.data;
 };
 //
 const recoverPassword = async (user) => {
-  const response = await axios.post(`${base_url}user/reset`, user);
+  const response = await axios.post(`${base_url}admin/reset`, user);
   console.log(response);
   return response.data;
 };

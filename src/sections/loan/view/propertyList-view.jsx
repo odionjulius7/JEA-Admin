@@ -47,7 +47,7 @@ export default function PropertiesPage() {
           currency: 'NGN',
         }).format(property?.price),
         created: moment(property?.createdAt).format('L'),
-        status: 'available',
+        status: property?.status ? property?.status : 'available',
       };
       // You can also add the index if needed
       propsData.index = index;

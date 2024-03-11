@@ -553,7 +553,11 @@ export default function EditProjectPage() {
       toast.success('Project Update Successfullly!');
       router.push(`/project/${id}`);
     }
-  }, [projectState?.isSuccessUpdate1, router, id]);
+    if (projectState?.isError) {
+      toast.error('Failed! If problem persist try login again');
+      router.push(`/project/${id}`);
+    }
+  }, [projectState?.isSuccessUpdate1, projectState?.isError, router, id]);
 
   return (
     <Container maxWidth="xl">

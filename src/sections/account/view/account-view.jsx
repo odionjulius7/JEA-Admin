@@ -40,12 +40,14 @@ export default function AccountPage() {
     initialValues: {
       old_password: '',
       new_password: '',
+      email: '',
     },
     validationSchema: schema, // to validate the yup setup schema
     onSubmit: (values) => {
       const userData = {
         old_password: values?.old_password,
         new_password: values?.new_password,
+        email: values?.email,
         token,
       };
       // pass the value of the data got from formik to the login action
@@ -76,6 +78,15 @@ export default function AccountPage() {
           margin: '1rem 0',
         }}
       >
+        <TextField
+          sx={{
+            margin: '1rem 0',
+          }}
+          name="email"
+          label="Email"
+          value={formik.values.email}
+          onChange={formik.handleChange('email')}
+        />
         <TextField
           name="old_password"
           label="Current Password"
