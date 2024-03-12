@@ -159,7 +159,7 @@ export default function EditPropertyPage() {
             <MenuItem value="buy">Buy</MenuItem>
             <MenuItem value="rent">Rent</MenuItem>
             <MenuItem value="land">Land</MenuItem>
-            <MenuItem value="short let">Short Let</MenuItem>
+            <MenuItem value="shortlet">Shortlet</MenuItem>
           </Select>
         </FormControl>
 
