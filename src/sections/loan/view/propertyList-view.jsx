@@ -161,7 +161,7 @@ export default function PropertiesPage() {
         <UserTableToolbar
           // numSelected={selected.length}
           setPostStatus={setPostStatus}
-          filterName={creditid}
+          filterName={searchTerm}
           onFilterName={handleSearchChange}
         />
 
