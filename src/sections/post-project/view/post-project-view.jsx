@@ -22,9 +22,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextArea from 'antd/es/input/TextArea';
 
 import { toast } from 'react-toastify';
-import { postProj, resetState } from 'src/features/Property/propertySlice';
+import { allFeatsNLogos, postProj, resetState } from 'src/features/Property/propertySlice';
+
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 import './imagestyle.css';
+
+//
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = ['Oliver Hansen', 'Van Henry', 'April Tucker', 'Ralph Hubbard'];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
@@ -40,12 +65,29 @@ const schema = yup.object().shape({
 });
 
 export default function PostProjectView() {
+  // const theme = useTheme();
+  const [personName, setPersonName] = useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
+  console.log(personName);
+  //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const projState = useSelector((state) => state.property);
   const token = authState?.auth.user?.token;
   const theme = useTheme();
   const [images, setImages] = useState([]);
+
+  const allFeatArr = projState?.allFeatNLogo?.allFeat || [];
+  // console.log(allFeatArr);
 
   const formik = useFormik({
     initialValues: {
@@ -131,6 +173,10 @@ export default function PostProjectView() {
         formData.append('feature_6', values.feature_6);
         formData.append('feature_7', values.feature_7);
         formData.append('feature_8', values.feature_8);
+
+        //
+        // const personNameJson = JSON.stringify(personName);
+        // formData.append('featuresAndLogos', personName);
 
         for (let i = 0; i < images.length; i += 1) {
           formData.append('images', images[i]);
@@ -225,6 +271,32 @@ export default function PostProjectView() {
             <MenuItem value="ongoing">ongoing</MenuItem>
           </Select>
         </FormControl>
+
+        {/* multiselect */}
+        {/* <FormControl fullWidth>
+          <InputLabel id="demo-multiple-name-label">Features And Logos</InputLabel>
+          <Select
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput label="Features And Logos" />}
+            MenuProps={MenuProps}
+            // name='featuresAndLogos'
+          >
+            {allFeatArr.map((name) => (
+              <MenuItem
+                key={name?.title}
+                value={name?._id}
+                style={getStyles(name?.title, personName, theme)}
+              >
+                {name?.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl> */}
+        {/* multiselect */}
 
         <TextField
           label="Price"
@@ -604,6 +676,7 @@ export default function PostProjectView() {
 
   useEffect(() => {
     dispatch(resetState());
+    dispatch(allFeatsNLogos());
   }, [dispatch]);
 
   useEffect(() => {

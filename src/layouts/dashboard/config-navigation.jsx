@@ -70,6 +70,11 @@ const navConfig = [
     path: 'all-requests',
     icon: icon('ic_lock'),
   },
+  {
+    title: 'Post FeaturesNLogo',
+    path: 'post-features-logo',
+    icon: icon('ic_lock'),
+  },
   // {
   //   title: 'Property Requested',
   //   path: 'single-property',

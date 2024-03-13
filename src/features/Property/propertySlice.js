@@ -163,6 +163,24 @@ export const postBlog = createAsyncThunk('blog/post-blog', async (data, thunkAPI
   }
 });
 
+//
+export const postFeatNLogo = createAsyncThunk('feat/post-featNlogo', async (data, thunkAPI) => {
+  try {
+    return await propertyService.postFeatNLogo(data);
+  } catch (error) {
+    toast.error('Project Post Failed, try again');
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const allFeatsNLogos = createAsyncThunk('feat/get-logo', async (token, thunkAPI) => {
+  try {
+    return await propertyService.allFeatsNLogos(token);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const resetState = createAction('Reset_all');
 //
 export const propertySlice = createSlice({
@@ -430,6 +448,39 @@ export const propertySlice = createSlice({
         state.message = 'success';
       })
       .addCase(postBlog.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      // Feat N Logo
+      .addCase(postFeatNLogo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postFeatNLogo.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.postedFeatNLogo = action.payload;
+        state.message = 'success';
+      })
+      .addCase(postFeatNLogo.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(allFeatsNLogos.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(allFeatsNLogos.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.allFeatNLogo = action.payload;
+        state.message = 'success';
+      })
+      .addCase(allFeatsNLogos.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;

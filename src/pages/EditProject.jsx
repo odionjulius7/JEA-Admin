@@ -22,12 +22,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextArea from 'antd/es/input/TextArea';
 
 import { toast } from 'react-toastify';
-import { getAproject, postProj, resetState, updateProj } from 'src/features/Property/propertySlice';
+import {
+  allFeatsNLogos,
+  getAproject,
+  postProj,
+  resetState,
+  updateProj,
+} from 'src/features/Property/propertySlice';
 
 import './imagestyle.css';
 import { useParams } from 'react-router-dom';
 import { useRouter } from 'src/routes/hooks';
 
+import OutlinedInput from '@mui/material/OutlinedInput';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = ['Oliver Hansen', 'Van Henry', 'April Tucker', 'Ralph Hubbard'];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
@@ -42,6 +71,20 @@ const schema = yup.object().shape({
 });
 
 export default function EditProjectPage() {
+  // const theme = useTheme();
+  const [personName, setPersonName] = useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
+  console.log(personName);
+  //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const projectState = useSelector((state) => state.property);
@@ -51,6 +94,7 @@ export default function EditProjectPage() {
   const { id } = useParams();
 
   const projectDetail = projectState?.project?.project;
+  const allFeatArr = projectState?.allFeatNLogo?.allFeat || [];
 
   const formik = useFormik({
     initialValues: {
@@ -159,6 +203,39 @@ export default function EditProjectPage() {
 
   const renderForm = (
     <form onSubmit={formik.handleSubmit}>
+      {/* multiselect */}
+      <Stack
+        spacing={4}
+        style={{
+          margin: '0.5rem 0 1.4rem 0',
+        }}
+      >
+        <FormControl fullWidth>
+          <InputLabel id="demo-multiple-name-label">Add Features And Logos</InputLabel>
+          <Select
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            multiple
+            value={personName}
+            onChange={handleChange}
+            input={<OutlinedInput label="Features And Logos" />}
+            MenuProps={MenuProps}
+            // name='featuresAndLogos'
+          >
+            {allFeatArr.map((name) => (
+              <MenuItem
+                key={name?.title}
+                value={name?._id}
+                style={getStyles(name?.title, personName, theme)}
+              >
+                {name?.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Stack>
+      {/* multiselect */}
+
       <Stack spacing={4}>
         <TextField
           label="Title"
@@ -541,6 +618,7 @@ export default function EditProjectPage() {
   useEffect(() => {
     const ids = { id, token };
     dispatch(resetState());
+    dispatch(allFeatsNLogos());
     dispatch(getAproject(ids));
   }, [dispatch, token, id]);
 

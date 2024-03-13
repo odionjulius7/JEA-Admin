@@ -148,6 +148,22 @@ const postBlog = async (data) => {
   return response.data;
 };
 
+// features N Logo
+const postFeatNLogo = async (data) => {
+  const config = generateAxiosConfig2(data.token);
+
+  const response = await axios.post(`${base_url}project/features/logo`, data.formData, config);
+
+  return response.data;
+};
+const allFeatsNLogos = async (token) => {
+  const config = generateAxiosConfig(token);
+  // const response = await axios.get(`${base_url}loan/admin?deleted=false`, config);
+  const response = await axios.get(`${base_url}project/features/logo/all`, config);
+  // console.log(response);
+  return response?.data;
+};
+
 const propertyService = {
   allProperty,
   getAproperty,
@@ -168,6 +184,9 @@ const propertyService = {
   allBlog,
   getABlog,
   postBlog,
+  //
+  postFeatNLogo,
+  allFeatsNLogos,
 };
 
 export default propertyService;

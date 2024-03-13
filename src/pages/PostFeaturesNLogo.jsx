@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import './imagestyle.css';
-import { postBlog, resetState } from 'src/features/Property/propertySlice';
+import { postBlog, postFeatNLogo, resetState } from 'src/features/Property/propertySlice';
 import TextArea from 'antd/es/input/TextArea';
 
 // ----------------------------------------------------------------------
@@ -31,10 +31,11 @@ const schema = yup.object().shape({
 });
 
 // ----------------------------------------------------------------------
-export default function PostBlogPage() {
+export default function PostFeaturesNLogoPage() {
+  //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
-  const blogState = useSelector((state) => state.property);
+  const featState = useSelector((state) => state.property);
 
   const token = authState?.auth.user?.token;
 
@@ -43,7 +44,6 @@ export default function PostBlogPage() {
   const formik = useFormik({
     initialValues: {
       title: '',
-      body: '',
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -51,13 +51,12 @@ export default function PostBlogPage() {
         const formData = new FormData();
         // Append form fields to formData
         formData.append('title', values.title);
-        formData.append('body', values.body);
         // Append image to formData
         if (image) {
-          formData.append('image', image);
+          formData.append('f-image', image);
         }
         const data = { formData, token };
-        await dispatch(postBlog(data));
+        await dispatch(postFeatNLogo(data));
         formik.resetForm();
         setImage('');
         dispatch(resetState());
@@ -82,18 +81,15 @@ export default function PostBlogPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (blogState?.isSuccess && blogState?.postedBlog) {
-      toast.success('Posted successfullly!');
+    if (featState?.isSuccess && featState?.postedFeatNLogo) {
+      toast.success('property posted Successfullly!');
     }
-    if (blogState?.isError) {
-      toast.error('Posted failed!');
-    }
-  }, [blogState?.isSuccess, blogState?.postedBlog, blogState?.isError]);
+  }, [featState?.isSuccess, featState?.postedFeatNLogo]);
 
   return (
     <>
       <Helmet>
-        <title>JEA | Post </title>
+        <title>JEA | Features N Logo </title>
       </Helmet>
       <Container maxWidth="xl">
         <Grid container spacing={3}>
@@ -102,7 +98,7 @@ export default function PostBlogPage() {
               padding: '3rem 2rem',
             }}
           >
-            Post Agent
+            Post Features N Logo
           </h2>
           <Box
             sx={{
@@ -118,6 +114,7 @@ export default function PostBlogPage() {
                     p: 5,
                     width: 1,
                     maxWidth: 620,
+                    // background: 'black',
                   }}
                 >
                   <Stack spacing={3}>
@@ -130,19 +127,11 @@ export default function PostBlogPage() {
                       error={formik.touched.title && Boolean(formik.errors.title)}
                       helperText={formik.touched.title && formik.errors.title}
                     />
-                    <div>
-                      <TextField
-                        label="Job Description"
-                        name="body"
-                        value={formik.values.body}
-                        onChange={formik.handleChange}
-                      />
-                    </div>
                     <Stack>
                       <div className="upload-wrap">
                         <label htmlFor="inputTag" className="upload-label">
                           <img src="/assets/icons/shape-avatar.svg" alt="" />
-                          <span>Upload Images</span>
+                          <span>Upload Logo</span>
                           <input
                             name="image"
                             id="inputTag"
@@ -151,12 +140,10 @@ export default function PostBlogPage() {
                             onChange={handleImage}
                           />
                         </label>
-                        <span>
-                          Max file size 2MB. <br /> CTRL+ click to select multiple images
-                        </span>
+                        <span>Max file size 2MB.</span>
                       </div>
                     </Stack>
-                    <div style={{ width: '400px', height: 'auto' }}>
+                    <div style={{ width: '100px', height: '100px' }}>
                       {image && <img src={URL.createObjectURL(image)} alt="Selected" />}
                     </div>
 
@@ -170,7 +157,7 @@ export default function PostBlogPage() {
                       variant="contained"
                       color="inherit"
                     >
-                      {blogState?.isLoading ? (
+                      {featState?.isLoading ? (
                         <Box sx={{ display: 'flex' }}>
                           <CircularProgress />
                         </Box>
