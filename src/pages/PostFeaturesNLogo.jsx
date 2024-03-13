@@ -143,7 +143,16 @@ export default function PostFeaturesNLogoPage() {
                         <span>Max file size 2MB.</span>
                       </div>
                     </Stack>
-                    <div style={{ width: '100px', height: '100px' }}>
+                    <div
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        background: 'grey',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
                       {image && <img src={URL.createObjectURL(image)} alt="Selected" />}
                     </div>
 
