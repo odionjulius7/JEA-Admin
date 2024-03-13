@@ -134,6 +134,9 @@ export default function EditProjectPage() {
       feature_6: projectDetail?.feature_6 || '',
       feature_7: projectDetail?.feature_7 || '',
       feature_8: projectDetail?.feature_8 || '',
+      //
+      longitude: projectDetail?.longitude || '',
+      latitude: projectDetail?.latitude || '',
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -214,6 +217,18 @@ export default function EditProjectPage() {
           onChange={formik.handleChange}
           error={formik.touched.location && Boolean(formik.errors.location)}
           helperText={formik.touched.location && formik.errors.location}
+        />
+        <TextField
+          label="Location Longitude"
+          name="longitude"
+          value={formik.values.longitude}
+          onChange={formik.handleChange}
+        />
+        <TextField
+          label="Location Latitude"
+          name="latitude"
+          value={formik.values.latitude}
+          onChange={formik.handleChange}
         />
         <TextField
           label="Number Of Room"

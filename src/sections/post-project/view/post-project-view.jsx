@@ -77,7 +77,7 @@ export default function PostProjectView() {
       typeof value === 'string' ? value.split(',') : value
     );
   };
-  console.log(personName);
+  // console.log(personName);
   //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
@@ -127,12 +127,18 @@ export default function PostProjectView() {
       feature_6: '',
       feature_7: '',
       feature_8: '',
+      //
+      latitude: '',
+      longitude: '',
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const formData = new FormData();
         // Append form fields to formData
+        formData.append('latitude', values.latitude);
+        formData.append('longitude', values.longitude);
+        //
         formData.append('title', values.title);
         formData.append('price', values.price);
         formData.append('number_of_room', values.number_of_room);
@@ -230,6 +236,18 @@ export default function PostProjectView() {
           onChange={formik.handleChange}
           error={formik.touched.location && Boolean(formik.errors.location)}
           helperText={formik.touched.location && formik.errors.location}
+        />
+        <TextField
+          label="Location Longitude"
+          name="longitude"
+          value={formik.values.longitude}
+          onChange={formik.handleChange}
+        />
+        <TextField
+          label="Location Latitude"
+          name="latitude"
+          value={formik.values.latitude}
+          onChange={formik.handleChange}
         />
         <TextField
           label="Number Of Room"

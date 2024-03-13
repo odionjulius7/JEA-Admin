@@ -34,8 +34,14 @@ export default function PropertiesPage() {
   const token = authState?.auth.user?.data?.token;
 
   const propertys = propertyState?.properties?.allProperty || [];
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const rows = propertys
+  // Filter properties based on the search term
+  const filteredProperties = propertys.filter((property) =>
+    property.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const rows = filteredProperties
     ?.map((property, index) => {
       const propsData = {
         id: property?._id || 0,
@@ -56,6 +62,12 @@ export default function PropertiesPage() {
     })
     .reverse();
 
+  // Handler for updating search term
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  //
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
 
@@ -150,7 +162,7 @@ export default function PropertiesPage() {
           // numSelected={selected.length}
           setPostStatus={setPostStatus}
           filterName={creditid}
-          onFilterName={handleUsernameChange}
+          onFilterName={handleSearchChange}
         />
 
         <Scrollbar>
