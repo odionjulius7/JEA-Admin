@@ -66,25 +66,13 @@ const schema = yup.object().shape({
   number_of_room: yup.string(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
+  latitude: yup.number(),
+  longitude: yup.number(),
   // features: yup.string(),
   category: yup.string().required('Category is required'),
 });
 
 export default function EditProjectPage() {
-  // const theme = useTheme();
-  const [personName, setPersonName] = useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
-  };
-  console.log(personName);
-  //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const projectState = useSelector((state) => state.property);
@@ -95,6 +83,20 @@ export default function EditProjectPage() {
 
   const projectDetail = projectState?.project?.project;
   const allFeatArr = projectState?.allFeatNLogo?.allFeat || [];
+  // const theme = useTheme();
+  const [personName, setPersonName] = useState(projectDetail?.featuresAndLogos || []);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+  };
+  // console.log(personName);
+  //
 
   const formik = useFormik({
     initialValues: {
@@ -135,8 +137,8 @@ export default function EditProjectPage() {
       feature_7: projectDetail?.feature_7 || '',
       feature_8: projectDetail?.feature_8 || '',
       //
-      longitude: projectDetail?.longitude || '',
-      latitude: projectDetail?.latitude || '',
+      longitude: projectDetail?.longitude || 0,
+      latitude: projectDetail?.latitude || 0,
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -223,12 +225,16 @@ export default function EditProjectPage() {
           name="longitude"
           value={formik.values.longitude}
           onChange={formik.handleChange}
+          error={formik.touched.longitude && Boolean(formik.errors.longitude)}
+          helperText={formik.touched.longitude && formik.errors.longitude}
         />
         <TextField
           label="Location Latitude"
           name="latitude"
           value={formik.values.latitude}
           onChange={formik.handleChange}
+          error={formik.touched.latitude && Boolean(formik.errors.latitude)}
+          helperText={formik.touched.latitude && formik.errors.latitude}
         />
         <TextField
           label="Number Of Room"

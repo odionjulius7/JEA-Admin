@@ -60,6 +60,8 @@ const schema = yup.object().shape({
   number_of_room: yup.string(),
   location: yup.string().required('Location is required'),
   description: yup.string(),
+  latitude: yup.number(),
+  longitude: yup.number(),
   // features: yup.string(),
   category: yup.string().required('Category is required'),
 });
@@ -128,8 +130,8 @@ export default function PostProjectView() {
       feature_7: '',
       feature_8: '',
       //
-      latitude: '',
-      longitude: '',
+      latitude: 0,
+      longitude: 0,
     },
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
@@ -242,12 +244,16 @@ export default function PostProjectView() {
           name="longitude"
           value={formik.values.longitude}
           onChange={formik.handleChange}
+          error={formik.touched.longitude && Boolean(formik.errors.longitude)}
+          helperText={formik.touched.longitude && formik.errors.longitude}
         />
         <TextField
           label="Location Latitude"
           name="latitude"
           value={formik.values.latitude}
           onChange={formik.handleChange}
+          error={formik.touched.latitude && Boolean(formik.errors.latitude)}
+          helperText={formik.touched.latitude && formik.errors.latitude}
         />
         <TextField
           label="Number Of Room"
