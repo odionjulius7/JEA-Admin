@@ -89,7 +89,7 @@ export default function PostFeaturesNLogoPage() {
   return (
     <>
       <Helmet>
-        <title>JEA | Features N Logo </title>
+        <title>JEA | Features N Icons </title>
       </Helmet>
       <Container maxWidth="xl">
         <Grid container spacing={3}>
@@ -98,7 +98,7 @@ export default function PostFeaturesNLogoPage() {
               padding: '3rem 2rem',
             }}
           >
-            Post Features N Logo
+            Post Features And Icons
           </h2>
           <Box
             sx={{

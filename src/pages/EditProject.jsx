@@ -140,48 +140,9 @@ export default function EditProjectPage() {
       try {
         const formData = new FormData();
         // Append form fields to formData
-        formData.append('title', values.title);
-        formData.append('price', values.price);
-        formData.append('number_of_room', values.number_of_room);
-        formData.append('description', values.description);
-        formData.append('category', values.category);
-        formData.append('location', values.location);
+        const data = { ...values, featuresAndLogos: personName };
 
-        formData.append('agent_call', values.agent_call);
-        formData.append('agent_whatsapp', values.agent_whatsapp);
-        //
-        // formData.append('price', values.price);
-        formData.append('address', values.address);
-        formData.append('additional_fees', values.additional_fees);
-        formData.append('property_id', values.property_id);
-        formData.append('property_type', values.property_type);
-        formData.append('year_built', values.year_built);
-        formData.append('details_category', values.details_category); // Assuming details_category is the correct field
-        formData.append('status', values.status);
-        formData.append('Number_of_Stories', values.Number_of_Stories);
-        formData.append('garage_capacity', values.garage_capacity);
-        formData.append('recent_renovations', values.recent_renovations);
-        formData.append('youtube_url', values.youtube_url);
-
-        // Append neighborhood_info fields to formData
-        formData.append('neighborhood_info1', values.neighborhood_info1);
-        formData.append('neighborhood_info2', values.neighborhood_info2);
-        formData.append('neighborhood_info3', values.neighborhood_info3);
-        formData.append('neighborhood_info4', values.neighborhood_info4);
-        formData.append('neighborhood_info5', values.neighborhood_info5);
-        formData.append('neighborhood_info6', values.neighborhood_info6);
-
-        // Append features fields to formData
-        formData.append('feature_1', values.feature_1);
-        formData.append('feature_2', values.feature_2);
-        formData.append('feature_3', values.feature_3);
-        formData.append('feature_4', values.feature_4);
-        formData.append('feature_5', values.feature_5);
-        formData.append('feature_6', values.feature_6);
-        formData.append('feature_7', values.feature_7);
-        formData.append('feature_8', values.feature_8);
-
-        const ids = { data: values, token, id };
+        const ids = { data, token, id };
         // Now you can dispatch your action with the formData
         await dispatch(updateProj(ids));
 
@@ -211,7 +172,7 @@ export default function EditProjectPage() {
         }}
       >
         <FormControl fullWidth>
-          <InputLabel id="demo-multiple-name-label">Add Features And Logos</InputLabel>
+          <InputLabel id="demo-multiple-name-label">Add Features And Icons</InputLabel>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"

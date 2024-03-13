@@ -71,7 +71,7 @@ const navConfig = [
     icon: icon('ic_lock'),
   },
   {
-    title: 'Post FeaturesNLogo',
+    title: 'Features And Icons',
     path: 'post-features-logo',
     icon: icon('ic_lock'),
   },
