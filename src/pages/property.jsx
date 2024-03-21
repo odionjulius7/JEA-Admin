@@ -18,11 +18,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { useRouter } from 'src/routes/hooks';
+
+import { toast } from 'react-toastify';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProperty, getAproperty, resetState } from 'src/features/Property/propertySlice';
-import { useRouter } from 'src/routes/hooks';
-import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -355,26 +357,57 @@ export default function PropertyPage() {
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>features & Amenities:</em>
                     <ul>
-                      {propertyDetail?.feature_1 && (
-                        <li className="font_15">{propertyDetail?.feature_1}</li>
+                      {propertyDetail?.price && (
+                        <li className="font_15">
+                          Price:{' '}
+                          {new Intl.NumberFormat('en-NG', {
+                            style: 'currency',
+                            currency: 'NGN',
+                            minimumFractionDigits: 0,
+                          }).format(propertyDetail?.price)}
+                        </li>
                       )}
-                      {propertyDetail?.feature_2 && (
-                        <li className="font_15">{propertyDetail?.feature_2}</li>
+                      {propertyDetail?.address && (
+                        <li className="font_15">Address: {propertyDetail?.address}.</li>
                       )}
-                      {propertyDetail?.feature_4 && (
-                        <li className="font_15">{propertyDetail?.feature_4}</li>
+                      {propertyDetail?.additional_fees && (
+                        <li className="font_15">
+                          Additional fees (For only rent categories):{' '}
+                          {propertyDetail?.additional_fees}
+                        </li>
                       )}
-                      {propertyDetail?.feature_5 && (
-                        <li className="font_15">{propertyDetail?.feature_5}</li>
+                      {propertyDetail?.property_id && (
+                        <li className="font_15">Property ID: {propertyDetail?.property_id}</li>
                       )}
-                      {propertyDetail?.feature_6 && (
-                        <li className="font_15">{propertyDetail?.feature_6}</li>
+                      {propertyDetail?.property_type && (
+                        <li className="font_15">Property Type: {propertyDetail?.property_type}</li>
                       )}
-                      {propertyDetail?.feature_7 && (
-                        <li className="font_15">{propertyDetail?.feature_7}</li>
+                      {propertyDetail?.year_built && (
+                        <li className="font_15">Year Built: {propertyDetail?.year_built}</li>
                       )}
-                      {propertyDetail?.feature_8 && (
-                        <li className="font_15">{propertyDetail?.feature_8}</li>
+                      {propertyDetail?.details_category && (
+                        <li className="font_15">Category: {propertyDetail?.details_category}</li>
+                      )}
+                      {propertyDetail?.status && (
+                        <li className="font_15">Status: {propertyDetail?.status}</li>
+                      )}
+                      {propertyDetail?.number_of_room && (
+                        <li className="font_15">
+                          Number of Rooms: {propertyDetail?.number_of_room}
+                        </li>
+                      )}
+                      {propertyDetail?.Number_of_Stories && (
+                        <li className="font_15">
+                          Number of Stories: {propertyDetail?.Number_of_Stories}
+                        </li>
+                      )}
+                      {propertyDetail?.garage_capacity && (
+                        <li className="font_15">Garage Capacity: {propertyDetail?.property_id}</li>
+                      )}
+                      {propertyDetail?.recent_renovations && (
+                        <li className="font_15">
+                          Recent Renovations: {propertyDetail?.recent_renovations}
+                        </li>
                       )}
                     </ul>
                   </Typography>

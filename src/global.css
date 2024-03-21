@@ -32,3 +32,12 @@ ol li,
 div {
   text-transform: capitalize !important;
 }
+
+a {
+  text-decoration: none;
+  color: #545c65;
+}
+
+.css-19o1dg-MuiDataGrid-root .MuiDataGrid-row {
+  cursor: pointer !important;
+}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { DataGrid } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,8 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 
 import { Button } from '@mui/material';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+
+import Iconify from 'src/components/iconify';
 
 import { allProject, resetState } from 'src/features/Property/propertySlice';
+import { useNavigate } from 'react-router-dom';
 // import { Button } from '@mui/material';
 
 const columns = [
@@ -65,14 +70,26 @@ const columns = [
 
 export default function UserRecordedLoanTable() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const projectState = useSelector((state) => state.property);
   const authState = useSelector((state) => state);
   const token = authState?.auth.user?.data?.token;
 
   const projs = projectState?.projects?.allProject || [];
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const rows = projs
+  const filteredProjs = projs.filter((property) => {
+    const lowercaseTitle = property.title.toLowerCase().trim();
+    const lowercaseSearchTerm = searchTerm.toLowerCase().trim();
+
+    if (lowercaseSearchTerm === '') {
+      return true; // Return true for all properties if search term is empty
+    }
+    return lowercaseTitle.includes(lowercaseSearchTerm);
+  });
+
+  const rows = filteredProjs
     .map((project, index) => {
       const propsData = {
         id: project?._id || 0,
@@ -82,6 +99,7 @@ export default function UserRecordedLoanTable() {
         amount: new Intl.NumberFormat('en-NG', {
           style: 'currency',
           currency: 'NGN',
+          minimumFractionDigits: 0,
         }).format(project?.price),
         created: moment(project?.createdAt).format('L'),
         status: project?.category,
@@ -92,6 +110,11 @@ export default function UserRecordedLoanTable() {
       return propsData;
     })
     .reverse();
+
+  // Handler for updating search term
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   useEffect(() => {
     dispatch(resetState());
@@ -104,11 +127,27 @@ export default function UserRecordedLoanTable() {
         backgroundColor: '#FFFFFF',
         borderRadius: '20px',
         width: '100%',
+        padding: '1rem 0 0 1rem',
         boxShadow:
           '0 0 2px 0 rgba(145, 158, 171, 0.08), 0 12px 24px -4px rgba(145, 158, 171, 0.08)',
         // padding: '0.5rem',
       }}
     >
+      <div>
+        <OutlinedInput
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder="Search Projects..."
+          startAdornment={
+            <InputAdornment position="start">
+              <Iconify
+                icon="eva:search-fill"
+                sx={{ color: 'text.disabled', width: 20, height: 20 }}
+              />
+            </InputAdornment>
+          }
+        />
+      </div>
       <DataGrid
         style={{
           padding: '1rem',
@@ -122,6 +161,9 @@ export default function UserRecordedLoanTable() {
         }}
         pageSizeOptions={[5, 10, 20]}
         // checkboxSelection
+        onRowClick={(params, event) => {
+          navigate(`/project/${params.id}`);
+        }}
       />
     </div>
   );

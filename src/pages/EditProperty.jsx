@@ -13,26 +13,25 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { bgGradient } from 'src/theme/css';
 
-import * as yup from 'yup';
+// import * as yup from 'yup';
 import { useFormik } from 'formik';
 
+import { toast } from 'react-toastify';
+import TextArea from 'antd/es/input/TextArea';
 import { useDispatch, useSelector } from 'react-redux';
 
-import TextArea from 'antd/es/input/TextArea';
-
-import { toast } from 'react-toastify';
-
 import {
+  resetState,
   getAproperty,
   // postProperty,
-  resetState,
   updateProperty,
 } from 'src/features/Property/propertySlice';
 
-import './imagestyle.css';
 import { useParams } from 'react-router-dom';
-// import { update } from 'lodash';
 import { useRouter } from 'src/routes/hooks';
+
+import './imagestyle.css';
+// import { update } from 'lodash';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
@@ -323,6 +322,7 @@ export default function EditPropertyPage() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField
@@ -343,6 +343,7 @@ export default function EditPropertyPage() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField

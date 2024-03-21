@@ -19,12 +19,12 @@ import { useFormik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { toast } from 'react-toastify';
 import TextArea from 'antd/es/input/TextArea';
 
-import { toast } from 'react-toastify';
-import { allFeatsNLogos, postProj, resetState } from 'src/features/Property/propertySlice';
+import { postProj, allFeatsNLogos, resetState } from 'src/features/Property/propertySlice';
 
-import OutlinedInput from '@mui/material/OutlinedInput';
+// import OutlinedInput from '@mui/material/OutlinedInput';
 
 import './imagestyle.css';
 
@@ -475,6 +475,7 @@ export default function PostProjectView() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField
@@ -495,6 +496,7 @@ export default function PostProjectView() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField

@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 
 import Label from 'src/components/label';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Iconify from 'src/components/iconify';
 
@@ -30,6 +30,7 @@ export default function PropertiesTableRow({
   Id,
   key,
 }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -44,7 +45,19 @@ export default function PropertiesTableRow({
 
   return (
     <>
-      <TableRow key={key} hover tabIndex={-1} role="checkbox" selected={selected}>
+      <TableRow
+        key={key}
+        hover
+        tabIndex={-1}
+        role="checkbox"
+        selected={selected}
+        style={{
+          cursor: 'pointer',
+        }}
+        onClick={() => {
+          navigate(`/property/${Id}`);
+        }}
+      >
         <TableCell align="center">
           <Link to={`/property/${Id}`}>{title}</Link>
         </TableCell>

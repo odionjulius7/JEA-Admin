@@ -19,9 +19,8 @@ import moment from 'moment';
 import TableNoData from '../table-no-data';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
-
-import { emptyRows, applyFilter, getComparator } from '../utils';
 import PropertiesTableRow from '../properties-table-row';
+import { emptyRows, applyFilter, getComparator } from '../utils';
 import PropertiesTableHead from '../properties-table-head';
 
 // ----------------------------------------------------------------------
@@ -36,10 +35,22 @@ export default function PropertiesPage() {
   const propertys = propertyState?.properties?.allProperty || [];
   const [searchTerm, setSearchTerm] = useState('');
 
+  // console.log(propertys);
+
   // Filter properties based on the search term
-  const filteredProperties = propertys.filter((property) =>
-    property.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredProperties = propertys.filter((property) =>
+  //   property.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  const filteredProperties = propertys.filter((property) => {
+    const lowercaseTitle = property.title.toLowerCase().trim();
+    const lowercaseSearchTerm = searchTerm.toLowerCase().trim();
+
+    if (lowercaseSearchTerm === '') {
+      return true; // Return true for all properties if search term is empty
+    }
+    return lowercaseTitle.includes(lowercaseSearchTerm);
+  });
 
   const rows = filteredProperties
     ?.map((property, index) => {
@@ -51,6 +62,7 @@ export default function PropertiesPage() {
         amount: new Intl.NumberFormat('en-NG', {
           style: 'currency',
           currency: 'NGN',
+          minimumFractionDigits: 0,
         }).format(property?.price),
         created: moment(property?.createdAt).format('L'),
         status: property?.status ? property?.status : 'available',
@@ -73,17 +85,9 @@ export default function PropertiesPage() {
 
   const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState('');
+  // const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleSort = (event, creditId) => {
-    const isAsc = orderBy === creditId && order === 'asc';
-    if (creditId !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(creditId);
-    }
-  };
 
   //
   const handleChangePage = (event, newPage) => {
@@ -98,27 +102,27 @@ export default function PropertiesPage() {
   const dataFiltered = applyFilter({
     inputData: rows,
     comparator: getComparator(order, orderBy),
-    filterName,
+    searchTerm,
   });
 
-  const notFound = !dataFiltered.length && !!filterName;
+  const notFound = !dataFiltered.length && !!searchTerm;
 
   //
 
-  const [creditid, setCreditid] = useState('');
+  // const [searchTerm, setsearchTerm] = useState('');
   //
   // useEffect(() => {
   //   let timer;
   //   // Define a delay (e.g., 2000 milliseconds = 2 seconds)
   //   const delay = 2000;
   //   // Check if the 'name' has a value and it's not empty
-  //   if (creditid.trim() !== '') {
+  //   if (searchTerm.trim() !== '') {
   //     // Clear the existing timer, if any
   //     clearTimeout(timer);
   //     // Start a new timer to fetch data after the delay
   //     timer = setTimeout(() => {
   //       // Dispatch the action to fetch data using the 'name'
-  //       const nums = { creditid, token };
+  //       const nums = { searchTerm, token };
   //       dispatch(searchLoansByName(nums));
   //     }, delay);
   //   }
@@ -127,12 +131,12 @@ export default function PropertiesPage() {
   //   return () => {
   //     clearTimeout(timer);
   //   };
-  // }, [creditid, dispatch, token]);
+  // }, [searchTerm, dispatch, token]);
 
-  const handleUsernameChange = (e) => {
-    setCreditid(e.target.value); // Update the username state with the input value
-    // console.log(e.target.value);
-  };
+  // const handleUsernameChange = (e) => {
+  //   setsearchTerm(e.target.value); // Update the username state with the input value
+  //   // console.log(e.target.value);
+  // };
 
   const setPostStatus = (e) => {
     // console.log(e);
@@ -172,7 +176,7 @@ export default function PropertiesPage() {
                 order={order}
                 orderBy={orderBy}
                 rowCount={rows?.length}
-                onRequestSort={handleSort}
+                // onRequestSort={handleSort}
                 // numSelected={selected.length}
                 // onSelectAllClick={handleSelectAllClick}
                 headLabel={[
@@ -198,7 +202,7 @@ export default function PropertiesPage() {
                       status={row.status}
                       date={row.date}
                       // selected={selected.indexOf(row.name) !== -1}
-                      // handleClick={(event) => handleClick(event, row.creditId)}
+                      // handleClick={(event) => handleClick(event, row.searchTerm)}
                     />
                   ))}
 
@@ -207,7 +211,7 @@ export default function PropertiesPage() {
                   emptyRows={emptyRows(page, rowsPerPage, rows?.length)}
                 />
 
-                {notFound && <TableNoData query={filterName} />}
+                {notFound && <TableNoData query={searchTerm} />}
               </TableBody>
             </Table>
           </TableContainer>

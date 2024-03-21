@@ -1,5 +1,9 @@
 import SvgColor from 'src/components/svg-color';
 
+import { AiTwotoneHome } from 'react-icons/ai';
+import { BsFillHouseCheckFill, BsBasket } from 'react-icons/bs';
+import { MdOutlineSupportAgent } from 'react-icons/md';
+// import {  } from 'react-icons/bs';
 // ----------------------------------------------------------------------
 
 const icon = (name) => (
@@ -10,11 +14,18 @@ const navConfig = [
   {
     title: 'dashboard',
     path: '/',
+
     icon: icon('ic_analytics'),
   },
   {
     title: 'Property Management',
-    icon: icon('ic_cart'),
+    icon: (
+      <AiTwotoneHome
+        style={{
+          fontSize: '24px',
+        }}
+      />
+    ),
     items: [
       {
         title: 'All Properties',
@@ -35,7 +46,13 @@ const navConfig = [
   },
   {
     title: 'Project Management',
-    icon: icon('shape-avatar'),
+    icon: (
+      <BsFillHouseCheckFill
+        style={{
+          fontSize: '24px',
+        }}
+      />
+    ),
     items: [
       {
         title: 'All Projects',
@@ -47,17 +64,28 @@ const navConfig = [
         path: '/post-project',
         icon: icon('ic_cart'),
       },
+      {
+        title: 'Add Global Features',
+        path: 'post-features-logo',
+        icon: icon('ic_lock'),
+      },
     ],
   },
   {
     title: 'Agent Management',
-    icon: icon('ic_blog'),
+    icon: (
+      <MdOutlineSupportAgent
+        style={{
+          fontSize: '24px',
+        }}
+      />
+    ),
     items: [
-      // {
-      //   title: 'All Blogs',
-      //   path: '/blog',
-      //   icon: icon('ic_cart'),
-      // },
+      {
+        title: 'All Agents',
+        path: '/blog',
+        icon: icon('ic_cart'),
+      },
       {
         title: 'Post Agent',
         path: '/post-blog',
@@ -68,12 +96,13 @@ const navConfig = [
   {
     title: 'All Requests',
     path: 'all-requests',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Features And Icons',
-    path: 'post-features-logo',
-    icon: icon('ic_lock'),
+    icon: (
+      <BsBasket
+        style={{
+          fontSize: '24px',
+        }}
+      />
+    ),
   },
   // {
   //   title: 'Property Requested',

@@ -19,22 +19,25 @@ import { useFormik } from 'formik';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { toast } from 'react-toastify';
+
 import TextArea from 'antd/es/input/TextArea';
 
-import { toast } from 'react-toastify';
 import {
-  allFeatsNLogos,
   getAproject,
-  postProj,
+  allFeatsNLogos,
+  // postProj,
   resetState,
   updateProj,
 } from 'src/features/Property/propertySlice';
 
-import './imagestyle.css';
 import { useParams } from 'react-router-dom';
-import { useRouter } from 'src/routes/hooks';
 
 import OutlinedInput from '@mui/material/OutlinedInput';
+
+import { useRouter } from 'src/routes/hooks';
+
+import './imagestyle.css';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -47,7 +50,7 @@ const MenuProps = {
   },
 };
 
-const names = ['Oliver Hansen', 'Van Henry', 'April Tucker', 'Ralph Hubbard'];
+// const names = ['Oliver Hansen', 'Van Henry', 'April Tucker', 'Ralph Hubbard'];
 
 function getStyles(name, personName, theme) {
   return {
@@ -143,7 +146,7 @@ export default function EditProjectPage() {
     validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const formData = new FormData();
+        // const formData = new FormData();
         // Append form fields to formData
         const data = { ...values, featuresAndLogos: personName };
 
@@ -169,39 +172,6 @@ export default function EditProjectPage() {
 
   const renderForm = (
     <form onSubmit={formik.handleSubmit}>
-      {/* multiselect */}
-      <Stack
-        spacing={4}
-        style={{
-          margin: '0.5rem 0 1.4rem 0',
-        }}
-      >
-        <FormControl fullWidth>
-          <InputLabel id="demo-multiple-name-label">Add Features And Icons</InputLabel>
-          <Select
-            labelId="demo-multiple-name-label"
-            id="demo-multiple-name"
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput label="Features And Logos" />}
-            MenuProps={MenuProps}
-            // name='featuresAndLogos'
-          >
-            {allFeatArr.map((name) => (
-              <MenuItem
-                key={name?.title}
-                value={name?._id}
-                style={getStyles(name?.title, personName, theme)}
-              >
-                {name?.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Stack>
-      {/* multiselect */}
-
       <Stack spacing={4}>
         <TextField
           label="Title"
@@ -276,7 +246,38 @@ export default function EditProjectPage() {
             <MenuItem value="ongoing">ongoing</MenuItem>
           </Select>
         </FormControl>
-
+        {/* multiselect */}
+        <Stack
+          spacing={4}
+          style={{
+            margin: '1.5rem 0 0.5rem 0',
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel id="demo-multiple-name-label">Add Features & Icons</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              multiple
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput label="Features & Icons" />}
+              MenuProps={MenuProps}
+              // name='featuresAndLogos'
+            >
+              {allFeatArr.map((name) => (
+                <MenuItem
+                  key={name?.title}
+                  value={name?._id}
+                  style={getStyles(name?.title, personName, theme)}
+                >
+                  {name?.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+        {/* multiselect */}
         <TextField
           label="Price"
           name="price"
@@ -287,7 +288,7 @@ export default function EditProjectPage() {
 
         <div
           style={{
-            margin: '2rem',
+            margin: '1.5rem',
           }}
         >
           <h4
@@ -430,6 +431,7 @@ export default function EditProjectPage() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField
@@ -450,6 +452,7 @@ export default function EditProjectPage() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField

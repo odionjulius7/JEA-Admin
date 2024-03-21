@@ -57,7 +57,19 @@ export default function RequestTable() {
 
   const requests = requestState?.requests?.allPropRequest || [];
 
-  // console.log(requests);
+  const filteredRequests = requests.filter(
+    (request) =>
+      request.maximum_budget &&
+      request.fullName &&
+      request.location &&
+      request.number_of_room &&
+      request.property_category
+    // Check if the request has the desired properties or values
+    // Add more conditions if needed
+  );
+
+  // maximum_budget, fullName, location,number_of_room, property_category
+  console.log(filteredRequests);
 
   useEffect(() => {
     dispatch(resetState());
@@ -65,7 +77,7 @@ export default function RequestTable() {
   }, [dispatch, token]);
 
   //
-  const rows = requests?.map((request, index) => {
+  const rows = filteredRequests?.map((request, index) => {
     // Create loan data for each item
     const inData = {
       id: request?._id,

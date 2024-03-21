@@ -11,10 +11,10 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { bgGradient } from 'src/theme/css';
-
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+
+import { bgGradient } from 'src/theme/css';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -423,6 +423,7 @@ export default function PostPropertyView() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField
@@ -443,6 +444,7 @@ export default function PostPropertyView() {
               sx={{
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}
             >
               <TextField

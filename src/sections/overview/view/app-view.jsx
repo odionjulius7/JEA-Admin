@@ -65,6 +65,15 @@ export default function AppView() {
   const completedProj = projs.filter((proj) => proj.category === 'completed');
   const unCompletedProj = projs.filter((proj) => proj.category !== 'completed');
 
+  const filteredRequests = requestLth.filter(
+    (request) =>
+      request.maximum_budget &&
+      request.fullName &&
+      request.location &&
+      request.number_of_room &&
+      request.property_category
+  );
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -85,7 +94,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Requested Properties"
-            total={requestLth}
+            total={filteredRequests}
             color="info"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
@@ -122,7 +131,7 @@ export default function AppView() {
 
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
-            title="All Blogs"
+            title="All Agent"
             total={blogtLth}
             color="error"
             // icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}

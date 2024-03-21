@@ -1,19 +1,14 @@
-import * as React from 'react';
 import moment from 'moment';
+import * as React from 'react';
 import { useEffect } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
+
 import { allProperty, resetState } from 'src/features/Property/propertySlice';
+import { useNavigate } from 'react-router-dom';
 
 const columns = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 120,
-  //   renderCell: (params) => <a href={`/property/${params.row.id}`}>{params.value}</a>,
-  // },
   {
     field: 'title',
     headerName: 'Title',
@@ -67,6 +62,7 @@ const columns = [
 
 export default function DashboardTable() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const propertyState = useSelector((state) => state.property);
   const authState = useSelector((state) => state);
@@ -88,6 +84,7 @@ export default function DashboardTable() {
       amount: new Intl.NumberFormat('en-NG', {
         style: 'currency',
         currency: 'NGN',
+        minimumFractionDigits: 0,
       }).format(property?.price),
       created: moment(property?.createdAt).format('L'),
       status: 'available',
@@ -114,7 +111,7 @@ export default function DashboardTable() {
         width: '96%',
       }}
     >
-      <h2 style={{ padding: '2rem 0rem 1rem 1rem' }}>Properies</h2>
+      <h2 style={{ padding: '2rem 0rem 1rem 1rem' }}>Properies </h2>
       <DataGrid
         style={{
           padding: '1rem',
@@ -128,6 +125,9 @@ export default function DashboardTable() {
         }}
         pageSizeOptions={[5, 10]}
         // checkboxSelection
+        onRowClick={(params, event) => {
+          navigate(`/property/${params.id}`);
+        }}
       />
     </div>
   );

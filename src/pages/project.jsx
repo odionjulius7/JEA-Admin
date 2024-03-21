@@ -16,7 +16,7 @@ import { fDate } from 'src/utils/format-time';
 
 import CircularProgress from '@mui/material/CircularProgress';
 
-import Iconify from 'src/components/iconify';
+// import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 import { Button } from 'antd';
 import { useParams } from 'react-router-dom';
@@ -24,10 +24,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteProj,
   getAproject,
-  getAproperty,
+  // getAproperty,
   resetState,
 } from 'src/features/Property/propertySlice';
 import { toast } from 'react-toastify';
+
 import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
@@ -335,25 +336,58 @@ export default function ProjectPage() {
                 <Stack>
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Neighborhood Info:</em>
-
                     <ul>
-                      {projectDetail?.neighborhood_info1 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info1}</li>
+                      {projectDetail?.price && (
+                        <li className="font_15">
+                          Price:{' '}
+                          {new Intl.NumberFormat('en-NG', {
+                            style: 'currency',
+                            currency: 'NGN',
+                            minimumFractionDigits: 0,
+                          }).format(projectDetail?.price)}
+                        </li>
                       )}
-                      {projectDetail?.neighborhood_info2 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info2}</li>
+                      {projectDetail?.address && (
+                        <li className="font_15">Address: {projectDetail?.address}.</li>
                       )}
-                      {projectDetail?.neighborhood_info3 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info3}</li>
+                      {projectDetail?.additional_fees && (
+                        <li className="font_15">
+                          Additional fees (For only rent categories):{' '}
+                          {projectDetail?.additional_fees}
+                        </li>
                       )}
-                      {projectDetail?.neighborhood_info4 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info4}</li>
+                      {projectDetail?.property_id && (
+                        <li className="font_15">Property ID: {projectDetail?.property_id}</li>
                       )}
-                      {projectDetail?.neighborhood_info5 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info5}</li>
+                      {projectDetail?.property_type && (
+                        <li className="font_15">Property Type: {projectDetail?.property_type}</li>
                       )}
-                      {projectDetail?.neighborhood_info6 && (
-                        <li className="font_15">{projectDetail?.neighborhood_info6}</li>
+                      {projectDetail?.year_built && (
+                        <li className="font_15">Year Built: {projectDetail?.year_built}</li>
+                      )}
+                      {projectDetail?.details_category && (
+                        <li className="font_15">Category: {projectDetail?.details_category}</li>
+                      )}
+                      {projectDetail?.status && (
+                        <li className="font_15">Status: {projectDetail?.status}</li>
+                      )}
+                      {projectDetail?.number_of_room && (
+                        <li className="font_15">
+                          Number of Rooms: {projectDetail?.number_of_room}
+                        </li>
+                      )}
+                      {projectDetail?.Number_of_Stories && (
+                        <li className="font_15">
+                          Number of Stories: {projectDetail?.Number_of_Stories}
+                        </li>
+                      )}
+                      {projectDetail?.garage_capacity && (
+                        <li className="font_15">Garage Capacity: {projectDetail?.property_id}</li>
+                      )}
+                      {projectDetail?.recent_renovations && (
+                        <li className="font_15">
+                          Recent Renovations: {projectDetail?.recent_renovations}
+                        </li>
                       )}
                     </ul>
                   </Typography>
