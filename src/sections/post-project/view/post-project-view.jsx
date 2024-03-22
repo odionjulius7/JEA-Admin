@@ -14,6 +14,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { bgGradient } from 'src/theme/css';
 
+import { MdCloudUpload } from 'react-icons/md';
+
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -87,6 +89,8 @@ export default function PostProjectView() {
   const token = authState?.auth.user?.token;
   const theme = useTheme();
   const [images, setImages] = useState([]);
+
+  const [image, setImage] = useState('');
 
   const allFeatArr = projState?.allFeatNLogo?.allFeat || [];
   // console.log(allFeatArr);
@@ -186,9 +190,21 @@ export default function PostProjectView() {
         // const personNameJson = JSON.stringify(personName);
         // formData.append('featuresAndLogos', personName);
 
-        for (let i = 0; i < images.length; i += 1) {
-          formData.append('images', images[i]);
+        let newImages;
+        if (image) {
+          newImages = [...images, image];
+        } else {
+          newImages = [...images];
+        } // Concatenate the selected files with the existing images array
+
+        // Now you can append all images (including the logo if it exists) to formData
+        for (let i = 0; i < newImages.length; i += 1) {
+          formData.append('images', newImages[i]);
         }
+
+        // for (let i = 0; i < images.length; i += 1) {
+        //   formData.append('images', images[i]);
+        // }
 
         const data = { formData, token };
         // Now you can dispatch your action with the formData
@@ -210,6 +226,14 @@ export default function PostProjectView() {
     },
   });
 
+  //
+
+  const handleLogo = (event) => {
+    const selectedFile = event.target.files[0];
+    setImage(selectedFile);
+  };
+
+  // console.log(image);
   const handleImage = (event) => {
     setImages([...images, ...event.target.files]);
   };
@@ -621,6 +645,38 @@ export default function PostProjectView() {
           value={formik.values.description}
           onChange={formik.handleChange}
         />
+
+        <Stack>
+          <div
+            className="upload-wrap"
+            style={{
+              margin: '2rem',
+            }}
+          >
+            <label htmlFor="inputLogo" className="upload-label">
+              {/* <img src="/assets/icons/shape-avatar.svg" alt="" /> */}
+              <MdCloudUpload
+                style={{
+                  fontSize: '40px',
+                }}
+              />
+              <span>Upload Logo</span>
+              <input
+                name="image"
+                id="inputLogo"
+                type="file"
+                className="upload-input"
+                onChange={handleLogo}
+              />
+            </label>
+            <span>Max file size 2MB.</span>
+          </div>
+        </Stack>
+        <div style={{ width: '300px', height: 'auto', margin: '2rem' }}>
+          {image && <img src={URL.createObjectURL(image)} alt="Selected" />}
+        </div>
+
+        <hr />
 
         <Stack>
           <div className="upload-wrap">

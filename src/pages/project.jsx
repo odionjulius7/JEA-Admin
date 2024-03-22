@@ -30,6 +30,7 @@ import {
 import { toast } from 'react-toastify';
 
 import { useRouter } from 'src/routes/hooks';
+import FeatureProjectPage from './featureProject';
 
 // ----------------------------------------------------------------------
 
@@ -74,11 +75,11 @@ export default function ProjectPage() {
   const { title } = post;
 
   const latestPostLarge = 0;
-
+  // console.log(projectDetail);
   const renderAvatar = (
     <Avatar
       alt={projectDetail?.title}
-      src={projectDetail?.images[0]}
+      src={projectDetail?.logo}
       sx={{
         zIndex: 9,
         width: 32,
@@ -209,9 +210,10 @@ export default function ProjectPage() {
             <Button onClick={() => router.push(`/edit-project/${id}`)}>Edit Project</Button>
           </Grid>
           <Grid>
-            <Button onClick={() => router.push(`/featured-proj/${projectDetail._id}`)}>
+            {/* <Button onClick={() => router.push(`/featured-proj/${projectDetail._id}`)}>
               Feature This Project
-            </Button>
+            </Button> */}
+            <FeatureProjectPage />
           </Grid>
         </Stack>
         <div

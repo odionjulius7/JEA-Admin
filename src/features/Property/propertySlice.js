@@ -17,6 +17,7 @@ const initialState = {
   isLoadingDelete: false,
   isSuccessFeat: false,
   isSuccessUpdate1: false,
+  isLoadingFeat: false,
 };
 
 // Properties
@@ -354,11 +355,11 @@ export const propertySlice = createSlice({
         state.isLoadingDelete = false;
       })
       .addCase(updateFeaturedProj.pending, (state) => {
-        state.isLoading = true;
+        state.isLoadingFeat = true;
       })
       .addCase(updateFeaturedProj.fulfilled, (state, action) => {
         state.isError = false;
-        state.isLoading = false;
+        state.isLoadingFeat = false;
         state.isSuccessFeat = true;
         state.featuredProj = action.payload;
         state.message = 'successfully updated';
@@ -368,7 +369,7 @@ export const propertySlice = createSlice({
         state.isError = true;
         state.isSuccessFeat = false;
         state.message = action.error;
-        state.isLoading = false;
+        state.isLoadingFeat = false;
       })
 
       //  Requests

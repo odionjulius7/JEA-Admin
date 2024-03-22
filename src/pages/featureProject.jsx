@@ -33,7 +33,7 @@ export default function FeatureProjectPage() {
   const router = useRouter();
   const { id } = useParams();
   const [image, setImage] = useState('');
-
+  // console.log(id);
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -41,11 +41,11 @@ export default function FeatureProjectPage() {
     // validationSchema: schema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const formData = new FormData();
-        if (image) {
-          formData.append('logo', image);
-        }
-        const ids = { id, formData, token };
+        // const formData = new FormData();
+        // if (image) {
+        //   formData.append('logo', image);
+        // }
+        const ids = { id, token };
         await dispatch(updateFeaturedProj(ids));
         formik.resetForm();
         setImage('');
@@ -73,7 +73,7 @@ export default function FeatureProjectPage() {
 
   const renderForm = (
     <form onSubmit={formik.handleSubmit}>
-      <Stack>
+      {/* <Stack>
         <div
           className="upload-wrap"
           style={{
@@ -96,7 +96,7 @@ export default function FeatureProjectPage() {
       </Stack>
       <div style={{ width: '300px', height: 'auto', margin: '2rem' }}>
         {image && <img src={URL.createObjectURL(image)} alt="Selected" />}
-      </div>
+      </div> */}
       <Stack spacing={4}>
         <LoadingButton
           sx={{
@@ -138,36 +138,60 @@ export default function FeatureProjectPage() {
   }, [propertyState?.isSuccessFeat, id, router]);
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }}>
-        Feature This Project
-      </Typography>
-
-      <Grid container spacing={3}>
-        <Box
+    <form onSubmit={formik.handleSubmit}>
+      <Stack spacing={4}>
+        <LoadingButton
           sx={{
-            ...bgGradient({
-              color: alpha(theme.palette.background.default, 0.9),
-              imgUrl: '/assets/background/overlay_4.jpg',
-            }),
-            height: 1,
-            width: '100%',
-            padding: '50px',
+            marginTop: '25px',
           }}
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          color="inherit"
         >
-          <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
-            <Card
-              sx={{
-                p: 5,
-                width: 1,
-                maxWidth: 820,
-              }}
-            >
-              {renderForm}
-            </Card>
-          </Stack>
-        </Box>
-      </Grid>
-    </Container>
+          {propertyState?.isLoadingFeat ? (
+            <Box sx={{ display: 'flex' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            'Feature This Project'
+          )}
+        </LoadingButton>
+      </Stack>
+    </form>
   );
+  // return (
+  //   <Container maxWidth="xl">
+  //     <Typography variant="h4" sx={{ mb: 5 }}>
+  //       Feature This Project
+  //     </Typography>
+
+  //     <Grid container spacing={3}>
+  //       <Box
+  //         sx={{
+  //           ...bgGradient({
+  //             color: alpha(theme.palette.background.default, 0.9),
+  //             imgUrl: '/assets/background/overlay_4.jpg',
+  //           }),
+  //           height: 1,
+  //           width: '100%',
+  //           padding: '50px',
+  //         }}
+  //       >
+  //         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+  //           <Card
+  //             sx={{
+  //               p: 5,
+  //               width: 1,
+  //               maxWidth: 820,
+  //             }}
+  //           >
+  //             {renderForm}
+  //           </Card>
+  //         </Stack>
+  //       </Box>
+  //     </Grid>
+  //   </Container>
+  // );
 }
