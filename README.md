@@ -2,7 +2,7 @@
 
 <!-- Lending And Borrowing APP Admin Control -->
 
-## Reviel App
+## Jea App
 
 <!--
 exports.updateBlog = async (req, res) => {
