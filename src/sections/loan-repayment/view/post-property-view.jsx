@@ -363,12 +363,22 @@ export default function PostPropertyView() {
               marginTop: '1rem',
             }}
           >
-            <TextField
-              label="Status"
-              name="status"
-              value={formik.values.status}
-              onChange={formik.handleChange}
-            />
+            <FormControl fullWidth>
+              <InputLabel id="category-label">Status</InputLabel>
+              <Select
+                labelId="status"
+                id="status"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                label="Status"
+                error={formik.touched.status && Boolean(formik.errors.status)}
+                helperText={formik.touched.status && formik.errors.status}
+              >
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               label="Number of Stories"
               name="Number_of_Stories"

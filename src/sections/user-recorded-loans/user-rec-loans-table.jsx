@@ -118,7 +118,7 @@ export default function UserRecordedLoanTable() {
 
   useEffect(() => {
     dispatch(resetState());
-    dispatch(allProject(token));
+    dispatch(allProject());
   }, [dispatch, token]);
   return (
     <div

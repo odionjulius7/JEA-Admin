@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 //
 import Card from '@mui/material/Card';
@@ -8,6 +8,10 @@ import Container from '@mui/material/Container';
 import { DataGrid } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+
+import Iconify from 'src/components/iconify';
 //
 import moment from 'moment';
 
@@ -64,7 +68,19 @@ export default function BlogView() {
 
   const blogs = blogState?.blogs?.blog || [];
 
-  const rows = blogs?.map((property, index) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredblogs = blogs.filter((property) => {
+    const lowercaseTitle = property.title.toLowerCase().trim();
+    const lowercaseSearchTerm = searchTerm.toLowerCase().trim();
+
+    if (lowercaseSearchTerm === '') {
+      return true; // Return true for all properties if search term is empty
+    }
+    return lowercaseTitle.includes(lowercaseSearchTerm);
+  });
+
+  const rows = filteredblogs?.map((property, index) => {
     // Create loan data for each item
     const propsData = {
       id: property?._id || 0,
@@ -89,7 +105,10 @@ export default function BlogView() {
   // });
 
   // const [filterName, setFilterName] = useState('');
-
+  // Handler for updating search term
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
   useEffect(() => {
     dispatch(resetState());
     dispatch(allBlog(token));
@@ -106,11 +125,31 @@ export default function BlogView() {
           minHeight: 200,
           backgroundColor: '#FFFFFF',
           borderRadius: '20px',
+          padding: '1rem 0 0 1rem',
           boxShadow:
             '0 0 2px 0 rgba(145, 158, 171, 0.08), 0 12px 24px -4px rgba(145, 158, 171, 0.08)',
           width: '56%',
         }}
       >
+        <div
+          style={{
+            margin: '1rem',
+          }}
+        >
+          <OutlinedInput
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search Agents..."
+            startAdornment={
+              <InputAdornment position="start">
+                <Iconify
+                  icon="eva:search-fill"
+                  sx={{ color: 'text.disabled', width: 20, height: 20 }}
+                />
+              </InputAdornment>
+            }
+          />
+        </div>
         {/* <h2 style={{ padding: '2rem 0rem 1rem 1rem' }}>Properies</h2> */}
         <DataGrid
           style={{

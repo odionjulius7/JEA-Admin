@@ -18,6 +18,8 @@ const allProperty = async (token) => {
   //   console.log(response);
   return response?.data;
 };
+
+//
 const getAproperty = async (ids) => {
   const config = generateAxiosConfig(ids.token);
   const response = await axios.get(`${base_url}property/${ids.id}`, config);
@@ -59,6 +61,18 @@ const allProject = async (token) => {
   //   console.log(response);
   return response?.data;
 };
+// Projects
+const fetchFeatProject = async (token) => {
+  const tag = 'featured';
+  try {
+    const config = generateAxiosConfig(token);
+    const response = await axios.get(`${base_url}project/tag/${tag}`, config);
+    return response?.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return null; // Handle error appropriately in your application
+  }
+};
 
 const getAproject = async (ids) => {
   const config = generateAxiosConfig(ids.token);
@@ -78,12 +92,13 @@ const updateProj = async (ids) => {
     return null;
   }
 };
+
 const updateFeaturedProj = async (ids) => {
   const config = generateAxiosConfig(ids.token);
 
   try {
     const response = await axios.put(
-      `${base_url}project/featured/${ids.id}`,
+      `${base_url}project/featured/${ids.id}/${ids.oldId}`,
       ids.formData, // Pass 'formData' directly
       config
     );
@@ -177,6 +192,7 @@ const propertyService = {
   updateProj,
   deleteProj,
   updateFeaturedProj,
+  fetchFeatProject,
   //
   allRequest,
   getaRequest,

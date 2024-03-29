@@ -23,6 +23,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteProj,
+  fetchFeatProject,
   getAproject,
   // getAproperty,
   resetState,
@@ -57,6 +58,7 @@ export default function ProjectPage() {
   const router = useRouter();
 
   const projectState = useSelector((state) => state.property);
+  // console.log(projectState?.featProject?.project?._id);
 
   const projectDetail = projectState?.project?.project;
 
@@ -69,6 +71,7 @@ export default function ProjectPage() {
     const ids = { id, token };
     dispatch(resetState());
     dispatch(getAproject(ids));
+    dispatch(fetchFeatProject());
   }, [dispatch, token, id]);
 
   //
@@ -213,7 +216,7 @@ export default function ProjectPage() {
             {/* <Button onClick={() => router.push(`/featured-proj/${projectDetail._id}`)}>
               Feature This Project
             </Button> */}
-            <FeatureProjectPage />
+            <FeatureProjectPage oldId={projectState?.featProject?.project?._id} />
           </Grid>
         </Stack>
         <div
@@ -339,16 +342,32 @@ export default function ProjectPage() {
                   <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
                     <em>Neighborhood Info:</em>
                     <ul>
-                      {projectDetail?.price && (
-                        <li className="font_15">
-                          Price:{' '}
-                          {new Intl.NumberFormat('en-NG', {
-                            style: 'currency',
-                            currency: 'NGN',
-                            minimumFractionDigits: 0,
-                          }).format(projectDetail?.price)}
-                        </li>
+                      {projectDetail?.neighborhood_info1 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info1}</li>
                       )}
+                      {projectDetail?.neighborhood_info2 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info2}</li>
+                      )}
+                      {projectDetail?.neighborhood_info3 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info3}</li>
+                      )}
+                      {projectDetail?.neighborhood_info4 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info4}</li>
+                      )}
+                      {projectDetail?.neighborhood_info5 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info5}</li>
+                      )}
+                      {projectDetail?.neighborhood_info6 && (
+                        <li className="font_15">{projectDetail?.neighborhood_info6}</li>
+                      )}
+                    </ul>
+                  </Typography>
+                </Stack>
+
+                <Stack>
+                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
+                    <em>Details:</em>
+                    <ul>
                       {projectDetail?.address && (
                         <li className="font_15">Address: {projectDetail?.address}.</li>
                       )}
@@ -389,64 +408,6 @@ export default function ProjectPage() {
                       {projectDetail?.recent_renovations && (
                         <li className="font_15">
                           Recent Renovations: {projectDetail?.recent_renovations}
-                        </li>
-                      )}
-                    </ul>
-                  </Typography>
-                </Stack>
-
-                <Stack>
-                  <Typography style={{ display: 'flex', gap: '30px', marginTop: '1rem' }}>
-                    <em>Details:</em>
-                    <ul>
-                      {projectDetail?.price && (
-                        <li className="font_15">Price: {projectDetail?.price}</li>
-                      )}
-                      {projectDetail?.address && (
-                        <li className="font_15">Address: {projectDetail?.address}.</li>
-                      )}
-                      {projectDetail?.additional_fees && (
-                        <li className="font_15">
-                          Additional fees (For only rent categories):{' '}
-                          {projectDetail?.additional_fees}
-                        </li>
-                      )}
-                      {projectDetail?.property_id && (
-                        <li className="font_15">Property ID: {projectDetail?.property_id}</li>
-                      )}
-                      {projectDetail?.property_type && (
-                        <li className="font_15">{projectDetail?.property_type}</li>
-                      )}
-                      {projectDetail?.year_built && (
-                        <li className="font_15">{projectDetail?.year_built}</li>
-                      )}
-                      {projectDetail?.details_category && (
-                        <li className="font_15">{projectDetail?.details_category}</li>
-                      )}
-                      {projectDetail?.status && (
-                        <li className="font_15">{projectDetail?.status}</li>
-                      )}
-                      {projectDetail?.Number_of_Stories && (
-                        <li className="font_15">{projectDetail?.Number_of_Stories}</li>
-                      )}
-                      {projectDetail?.garage_capacity && (
-                        <li className="font_15">{projectDetail?.property_id}</li>
-                      )}
-                      {projectDetail?.recent_renovations && (
-                        <li className="font_15">
-                          Recent Renovations: {projectDetail?.recent_renovations}
-                        </li>
-                      )}
-                      {projectDetail?.youtube_url && (
-                        <li className="font_15">
-                          <a
-                            style={{
-                              color: 'blue',
-                            }}
-                            href={projectDetail?.youtube_url}
-                          >
-                            Youtube Link
-                          </a>
                         </li>
                       )}
                     </ul>

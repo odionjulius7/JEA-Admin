@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import { Container, Grid } from '@mui/material';
+// import { Container, Grid } from '@mui/material';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
+// import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { bgGradient } from 'src/theme/css';
+// import { bgGradient } from 'src/theme/css';
 
 // import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -25,10 +26,11 @@ import './imagestyle.css';
 import { useParams } from 'react-router-dom';
 import { useRouter } from 'src/routes/hooks';
 
-export default function FeatureProjectPage() {
+export default function FeatureProjectPage({ oldId }) {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const propertyState = useSelector((state) => state.property);
+  console.log(oldId);
   // console.log(propertyState);
   const router = useRouter();
   const { id } = useParams();
@@ -45,7 +47,7 @@ export default function FeatureProjectPage() {
         // if (image) {
         //   formData.append('logo', image);
         // }
-        const ids = { id, token };
+        const ids = { id, token, oldId };
         await dispatch(updateFeaturedProj(ids));
         formik.resetForm();
         setImage('');
@@ -195,3 +197,6 @@ export default function FeatureProjectPage() {
   //   </Container>
   // );
 }
+FeatureProjectPage.propTypes = {
+  oldId: PropTypes.any,
+};

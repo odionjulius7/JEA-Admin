@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bgGradient } from 'src/theme/css';
 
 import { toast } from 'react-toastify';
-import { postProj, resetState } from 'src/features/Property/propertySlice';
+import { fetchFeatProject, postProj, resetState } from 'src/features/Property/propertySlice';
 
 // import './imagestyle.css';
 

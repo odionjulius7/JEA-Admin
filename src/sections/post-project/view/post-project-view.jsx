@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { Container, Grid, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  OutlinedInput,
+} from '@mui/material';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -81,7 +89,7 @@ export default function PostProjectView() {
       typeof value === 'string' ? value.split(',') : value
     );
   };
-  // console.log(personName);
+  console.log(personName);
   //
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
@@ -102,6 +110,7 @@ export default function PostProjectView() {
       number_of_room: '',
       location: '',
       description: '',
+      short_description: '',
       category: '',
       agent_whatsapp: '',
       agent_call: '',
@@ -149,6 +158,7 @@ export default function PostProjectView() {
         formData.append('price', values.price);
         formData.append('number_of_room', values.number_of_room);
         formData.append('description', values.description);
+        formData.append('short_description', values.short_description);
         formData.append('category', values.category);
         formData.append('location', values.location);
 
@@ -188,6 +198,7 @@ export default function PostProjectView() {
 
         //
         // const personNameJson = JSON.stringify(personName);
+
         // formData.append('featuresAndLogos', personName);
 
         let newImages;
@@ -439,12 +450,31 @@ export default function PostProjectView() {
               marginTop: '1rem',
             }}
           >
-            <TextField
+            {/*  */}
+            {/* <TextField
               label="Status"
               name="status"
               value={formik.values.status}
               onChange={formik.handleChange}
-            />
+            /> */}
+
+            <FormControl fullWidth>
+              <InputLabel id="category-label">Status</InputLabel>
+              <Select
+                labelId="status"
+                id="status"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                label="Status"
+                error={formik.touched.status && Boolean(formik.errors.status)}
+                helperText={formik.touched.status && formik.errors.status}
+              >
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+              </Select>
+            </FormControl>
+            {/*  */}
             <TextField
               label="Number of Stories"
               name="Number_of_Stories"
@@ -637,6 +667,14 @@ export default function PostProjectView() {
           />
         </div>
 
+        <TextArea
+          rows={4}
+          placeholder=" Short Description"
+          maxLength={550}
+          name="short_description"
+          value={formik.values.short_description}
+          onChange={formik.handleChange}
+        />
         <TextArea
           rows={4}
           placeholder="Property Description"
