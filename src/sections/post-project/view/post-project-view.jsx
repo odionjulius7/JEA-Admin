@@ -201,6 +201,9 @@ export default function PostProjectView() {
 
         // formData.append('featuresAndLogos', personName);
 
+        const featuresAndLogosString = personName.join(',');
+        formData.append('featuresAndLogos', featuresAndLogosString);
+        console.log(featuresAndLogosString);
         let newImages;
         if (image) {
           newImages = [...images, image];
@@ -208,20 +211,13 @@ export default function PostProjectView() {
           newImages = [...images];
         } // Concatenate the selected files with the existing images array
 
-        // Now you can append all images (including the logo if it exists) to formData
         for (let i = 0; i < newImages.length; i += 1) {
           formData.append('images', newImages[i]);
         }
 
-        // for (let i = 0; i < images.length; i += 1) {
-        //   formData.append('images', images[i]);
-        // }
-
         const data = { formData, token };
-        // Now you can dispatch your action with the formData
         await dispatch(postProj(data));
 
-        // Reset form or handle success as needed
         formik.resetForm();
         setImages([]); // Clear the image state after successful submission
         dispatch(resetState());
@@ -332,7 +328,7 @@ export default function PostProjectView() {
         </FormControl>
 
         {/* multiselect */}
-        {/* <FormControl fullWidth>
+        <FormControl fullWidth>
           <InputLabel id="demo-multiple-name-label">Features And Logos</InputLabel>
           <Select
             labelId="demo-multiple-name-label"
@@ -354,7 +350,7 @@ export default function PostProjectView() {
               </MenuItem>
             ))}
           </Select>
-        </FormControl> */}
+        </FormControl>
         {/* multiselect */}
 
         <TextField
