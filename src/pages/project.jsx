@@ -72,7 +72,7 @@ export default function ProjectPage() {
     dispatch(resetState());
     dispatch(getAproject(ids));
     dispatch(fetchFeatProject());
-  }, [dispatch, token, id]);
+  }, [dispatch, token, id, projectState?.isSuccessFeat]);
 
   //
   const { title } = post;

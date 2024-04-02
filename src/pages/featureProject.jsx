@@ -30,7 +30,7 @@ export default function FeatureProjectPage({ oldId }) {
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const propertyState = useSelector((state) => state.property);
-  console.log(oldId);
+  console.log(propertyState);
   // console.log(propertyState);
   const router = useRouter();
   const { id } = useParams();
@@ -137,7 +137,11 @@ export default function FeatureProjectPage({ oldId }) {
       toast.success('Project featured Successfullly!');
       router.push(`/project/${id}`);
     }
-  }, [propertyState?.isSuccessFeat, id, router]);
+    if (propertyState?.isErrorFeat) {
+      toast.error('failed to featured project!');
+      router.push(`/project/${id}`);
+    }
+  }, [propertyState?.isSuccessFeat, propertyState?.isErrorFeat, id, router]);
 
   return (
     <form onSubmit={formik.handleSubmit}>

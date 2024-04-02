@@ -98,8 +98,8 @@ const updateFeaturedProj = async (ids) => {
 
   try {
     const response = await axios.put(
-      `http://localhost:5000/api/project/featured/${ids.id}`,
-      // `${base_url}project/featured/${ids.id}`,
+      // `http://localhost:5000/api/project/featured/${ids.id}`,
+      `${base_url}project/featured/${ids.id}`,
       { oldId: ids.oldId }, // Pass 'formData' directly
       config
     );

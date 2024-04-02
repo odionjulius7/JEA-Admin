@@ -19,6 +19,7 @@ const initialState = {
   isSuccessFeat: false,
   isSuccessUpdate1: false,
   isLoadingFeat: false,
+  isErrorFeat: false,
 };
 
 // Properties
@@ -385,7 +386,7 @@ export const propertySlice = createSlice({
         state.isLoadingFeat = true;
       })
       .addCase(updateFeaturedProj.fulfilled, (state, action) => {
-        state.isError = false;
+        state.isErrorFeat = false;
         state.isLoadingFeat = false;
         state.isSuccessFeat = true;
         state.featuredProj = action.payload;
@@ -393,7 +394,7 @@ export const propertySlice = createSlice({
       })
 
       .addCase(updateFeaturedProj.rejected, (state, action) => {
-        state.isError = true;
+        state.isErrorFeat = true;
         state.isSuccessFeat = false;
         state.message = action.error;
         state.isLoadingFeat = false;
