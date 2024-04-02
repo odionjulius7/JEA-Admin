@@ -86,7 +86,7 @@ export default function PostBlogPage() {
       toast.success('Posted successfullly!');
     }
     if (blogState?.isError) {
-      toast.error('Posted failed!');
+      toast.error('Post failed!');
     }
   }, [blogState?.isSuccess, blogState?.postedBlog, blogState?.isError]);
 
