@@ -169,14 +169,6 @@ export default function EditPropertyPage() {
           onChange={formik.handleChange}
           // value={formik.price}
         />
-        <TextArea
-          rows={4}
-          placeholder="Property Description"
-          maxLength={800}
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-        />
 
         <div
           style={{
@@ -470,6 +462,15 @@ export default function EditPropertyPage() {
             onChange={formik.handleChange}
           />
         </div>
+
+        <TextArea
+          rows={4}
+          placeholder="Property Description"
+          maxLength={800}
+          name="description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+        />
 
         <LoadingButton
           sx={{

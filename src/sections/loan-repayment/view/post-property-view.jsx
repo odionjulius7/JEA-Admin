@@ -263,14 +263,6 @@ export default function PostPropertyView() {
           error={formik.touched.price && Boolean(formik.errors.price)}
           helperText={formik.touched.price && formik.errors.price}
         />
-        <TextArea
-          rows={4}
-          placeholder="Property Description"
-          maxLength={800}
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-        />
 
         <div
           style={{
@@ -570,6 +562,15 @@ export default function PostPropertyView() {
             onChange={formik.handleChange}
           />
         </div>
+
+        <TextArea
+          rows={4}
+          placeholder="Property Description"
+          maxLength={800}
+          name="description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+        />
 
         <Stack>
           <div className="upload-wrap">
