@@ -282,6 +282,7 @@ export default function EditProjectPage() {
         <TextField
           label="Price"
           name="price"
+          value={formik.values.price}
           onChange={formik.handleChange}
           error={formik.touched.price && Boolean(formik.errors.price)}
           helperText={formik.touched.price && formik.errors.price}

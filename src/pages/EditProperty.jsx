@@ -165,8 +165,9 @@ export default function EditPropertyPage() {
         <TextField
           label="Property Price"
           name="price"
+          value={formik.values.price}
           onChange={formik.handleChange}
-          value={formik.price}
+          // value={formik.price}
         />
         <TextArea
           rows={4}
