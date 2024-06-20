@@ -30,7 +30,7 @@ import './imagestyle.css';
 // Yup validation setting, yup doc
 const schema = yup.object().shape({
   // property_details: yup.string(),
-  tag: yup.string(),
+
   title: yup.string().required('Title is required'),
   price: yup.number().required('Price is required'),
   number_of_room: yup.number(),
@@ -39,6 +39,7 @@ const schema = yup.object().shape({
   agent_whatsapp: yup.string(),
   agent_call: yup.string(),
   category: yup.string().required('Category is required'),
+  tag: yup.string().required('Tag is required'),
   // images: yup.array(),
 });
 
@@ -239,7 +240,7 @@ export default function PostPropertyView() {
           </Select>
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel id="category-label">Tag Property ..(optional)</InputLabel>
+          <InputLabel id="category-label">Tag Property</InputLabel>
           <Select
             labelId="tag-label"
             id="tag"
