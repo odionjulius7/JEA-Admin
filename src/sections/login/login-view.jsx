@@ -24,6 +24,7 @@ import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'src/features/auth/authSlice';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
@@ -40,7 +41,7 @@ export default function LoginView() {
 
   const { user, isLoading } = authState.auth;
   const token = user?.token;
-
+  console.log(user);
   const theme = useTheme();
 
   const router = useRouter();
@@ -57,6 +58,9 @@ export default function LoginView() {
     onSubmit: (values) => {
       // pass the value of the data got from formik to the login action
       dispatch(login(values));
+      // if (!user?.status) {
+      //   toast.error(user?.message);
+      // }
     },
   });
 
@@ -133,6 +137,13 @@ export default function LoginView() {
           'Login'
         )}
       </LoadingButton>
+      <div
+        style={{
+          color: 'orangered',
+        }}
+      >
+        <span>{user?.message}</span>
+      </div>
     </>
   );
 
