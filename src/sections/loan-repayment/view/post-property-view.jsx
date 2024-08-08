@@ -25,6 +25,7 @@ import { toast } from 'react-toastify';
 import { postProperty, resetState } from 'src/features/Property/propertySlice';
 
 import './imagestyle.css';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 // Yup validation setting, yup doc
@@ -46,11 +47,11 @@ const schema = yup.object().shape({
 export default function PostPropertyView() {
   // console.log(property_details);
 
-  //
+  const router = useRouter();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const propertyState = useSelector((state) => state.property);
-  console.log(propertyState?.isSuccess);
+  // console.log(propertyState?.isSuccess);
   const token = authState?.auth.user?.token;
   const theme = useTheme();
 
@@ -154,6 +155,7 @@ export default function PostPropertyView() {
         formik.resetForm();
         setImages([]); // Clear the image state after successful submission
         dispatch(resetState());
+        router.push('/property-list');
       } catch (error) {
         formik.resetForm();
         setTimeout(() => {
@@ -168,8 +170,28 @@ export default function PostPropertyView() {
 
   // const imgSizes = images?.find((item) => item?.size > 2000000);
 
+  // const handleImage = (event) => {
+  //   setImages([...images, ...event.target.files]);
+  // };
   const handleImage = (event) => {
-    setImages([...images, ...event.target.files]);
+    const files = Array.from(event.target.files);
+    const validFiles = [];
+    let invalidFile = false;
+
+    files.forEach((file) => {
+      if (file.size > 500000) {
+        // Check if file size exceeds 500KB
+        // toast.error(`File "${file.name}" exceeds 500KB. Please select a smaller file.`);
+        alert(`File "${file.name}" exceeds 500KB. Please select a smaller file.`);
+        invalidFile = true;
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (!invalidFile) {
+      setImages((prevImages) => [...prevImages, ...validFiles]);
+    }
   };
 
   const removeFile = (key) => {
@@ -575,7 +597,7 @@ export default function PostPropertyView() {
 
         <Stack>
           <div className="upload-wrap">
-            <label htmlFor="inputTag" className="upload-label">
+            {/* <label htmlFor="inputTag" className="upload-label">
               <img src="/assets/icons/shape-avatar.svg" alt="" />
               <span>Upload Images</span>
               <input
@@ -586,10 +608,38 @@ export default function PostPropertyView() {
                 className="upload-input"
                 onChange={handleImage}
               />
+            </label> 
+            
+            */}
+            <label htmlFor="file-input">
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Choose Images (500KB max each):
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Image Dimension (400 X 400 each):
+              </Typography>
+              <Stack direction="row" spacing={1}>
+                <LoadingButton
+                  variant="contained"
+                  component="span"
+                  color="primary"
+                  style={{
+                    height: '2rem',
+                  }}
+                >
+                  Upload Product images
+                </LoadingButton>
+              </Stack>
+              <input
+                accept="image/*"
+                id="file-input"
+                type="file"
+                name="images"
+                multiple
+                onChange={handleImage}
+                style={{ display: 'none' }}
+              />
             </label>
-            <span>
-              Max file size 2MB. <br /> CTRL+ click to select multiple images
-            </span>
           </div>
         </Stack>
 

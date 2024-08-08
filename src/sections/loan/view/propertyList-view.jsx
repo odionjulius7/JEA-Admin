@@ -163,7 +163,6 @@ export default function PropertiesPage() {
 
       <Card>
         <UserTableToolbar
-          // numSelected={selected.length}
           setPostStatus={setPostStatus}
           filterName={searchTerm}
           onFilterName={handleSearchChange}
@@ -176,9 +175,6 @@ export default function PropertiesPage() {
                 order={order}
                 orderBy={orderBy}
                 rowCount={rows?.length}
-                // onRequestSort={handleSort}
-                // numSelected={selected.length}
-                // onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   // { id: 'Id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title', align: 'center' },
@@ -200,7 +196,7 @@ export default function PropertiesPage() {
                       location={row.location}
                       amount={row.amount}
                       status={row.status}
-                      date={row.date}
+                      date={row.created}
                       // selected={selected.indexOf(row.name) !== -1}
                       // handleClick={(event) => handleClick(event, row.searchTerm)}
                     />

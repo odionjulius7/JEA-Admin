@@ -2,6 +2,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import checker from 'vite-plugin-checker';
+import { emptyDirSync } from 'fs-extra';
 
 // ----------------------------------------------------------------------
 
@@ -13,6 +14,13 @@ export default defineConfig({
         lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}"',
       },
     }),
+    {
+      name: 'empty-icons-dir',
+      configureServer: () => {
+        emptyDirSync(path.join(process.cwd(), 'dist/assets/icons'));
+        emptyDirSync(path.join(process.cwd(), 'dist/assets/images'));
+      },
+    },
   ],
   resolve: {
     alias: [

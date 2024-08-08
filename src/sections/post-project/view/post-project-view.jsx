@@ -37,6 +37,7 @@ import { postProj, allFeatsNLogos, resetState } from 'src/features/Property/prop
 // import OutlinedInput from '@mui/material/OutlinedInput';
 
 import './imagestyle.css';
+import { useRouter } from 'src/routes/hooks';
 
 //
 const ITEM_HEIGHT = 48;
@@ -89,8 +90,8 @@ export default function PostProjectView() {
       typeof value === 'string' ? value.split(',') : value
     );
   };
-  console.log(personName);
-  //
+  // console.log(personName);
+  const router = useRouter();
   const dispatch = useDispatch();
   const authState = useSelector((state) => state);
   const projState = useSelector((state) => state.property);
@@ -221,6 +222,7 @@ export default function PostProjectView() {
         formik.resetForm();
         setImages([]); // Clear the image state after successful submission
         dispatch(resetState());
+        router.push('/projects');
       } catch (error) {
         formik.resetForm();
         setTimeout(() => {
@@ -241,9 +243,32 @@ export default function PostProjectView() {
   };
 
   // console.log(image);
+  // const handleImage = (event) => {
+  //   setImages([...images, ...event.target.files]);
+  // };
+
   const handleImage = (event) => {
-    setImages([...images, ...event.target.files]);
+    const files = Array.from(event.target.files);
+    const validFiles = [];
+    let invalidFile = false;
+
+    files.forEach((file) => {
+      if (file.size > 500000) {
+        // Check if file size exceeds 500KB
+        // toast.error(`File "${file.name}" exceeds 500KB. Please select a smaller file.`);
+        alert(`File "${file.name}" exceeds 500KB. Please select a smaller file.`);
+        invalidFile = true;
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (!invalidFile) {
+      setImages((prevImages) => [...prevImages, ...validFiles]);
+    }
   };
+
+  //
 
   const removeFile = (key) => {
     const newFiles = images.filter((file, index) => key !== index);
@@ -688,7 +713,6 @@ export default function PostProjectView() {
             }}
           >
             <label htmlFor="inputLogo" className="upload-label">
-              {/* <img src="/assets/icons/shape-avatar.svg" alt="" /> */}
               <MdCloudUpload
                 style={{
                   fontSize: '40px',
@@ -703,7 +727,7 @@ export default function PostProjectView() {
                 onChange={handleLogo}
               />
             </label>
-            <span>Max file size 2MB.</span>
+            <span>Max file size 500kb.</span>
           </div>
         </Stack>
         <div style={{ width: '300px', height: 'auto', margin: '2rem' }}>
@@ -714,7 +738,7 @@ export default function PostProjectView() {
 
         <Stack>
           <div className="upload-wrap">
-            <label htmlFor="inputTag" className="upload-label">
+            {/* <label htmlFor="inputTag" className="upload-label">
               <img src="/assets/icons/shape-avatar.svg" alt="" />
               <span>Upload Images</span>
               <input
@@ -728,7 +752,36 @@ export default function PostProjectView() {
             </label>
             <span>
               Max file size 2MB. <br /> CTRL+ click to select multiple images
-            </span>
+            </span> */}
+            <label htmlFor="file-input">
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Choose Images (500KB max each):
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Image Dimension (400 X 400 each):
+              </Typography>
+              <Stack direction="row" spacing={1}>
+                <LoadingButton
+                  variant="contained"
+                  component="span"
+                  color="primary"
+                  style={{
+                    height: '2rem',
+                  }}
+                >
+                  Upload Product images
+                </LoadingButton>
+              </Stack>
+              <input
+                accept="image/*"
+                id="file-input"
+                type="file"
+                name="images"
+                multiple
+                onChange={handleImage}
+                style={{ display: 'none' }}
+              />
+            </label>
           </div>
         </Stack>
 
