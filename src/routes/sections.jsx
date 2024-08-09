@@ -3,6 +3,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import EditPropertyImages from 'src/pages/EditPropertyImages';
+import EditProjectImages from 'src/pages/EditProjectsImages';
+
 import ProtectedRoute from './ProtectedRoute'; // Ensure proper spacing
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -203,6 +206,22 @@ export default function Router() {
             </ProtectedRoute>
           ),
         },
+        {
+          path: 'product-image-edit/:id',
+          element: (
+            <ProtectedRoute>
+              <EditPropertyImages />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'project-image-edit/:id',
+          element: (
+            <ProtectedRoute>
+              <EditProjectImages />
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
     {
@@ -221,6 +240,7 @@ export default function Router() {
       path: '404',
       element: <Page404 />,
     },
+
     {
       path: '*',
       element: <Navigate to="/404" replace />,

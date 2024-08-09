@@ -35,6 +35,19 @@ const postProperty = async (data) => {
   return response.data;
 };
 
+// update imgs
+const updatePropertyImg = async (data) => {
+  const config = generateAxiosConfig2(data.token);
+
+  const response = await axios.patch(
+    `${base_url}property/img/prop/${data.id}`,
+    data.formData,
+    config
+  );
+
+  return response.data;
+};
+
 const updateProperty = async (ids) => {
   const config = generateAxiosConfig(ids.token);
   try {
@@ -124,6 +137,17 @@ const postProj = async (data) => {
 
   return response.data;
 };
+const updateProjectImages = async (data) => {
+  const config = generateAxiosConfig2(data.token);
+
+  const response = await axios.patch(
+    `${base_url}project/img/project/${data.id}`,
+    data.formData,
+    config
+  );
+
+  return response.data;
+};
 
 // Requests
 const allRequest = async (token) => {
@@ -181,6 +205,8 @@ const allFeatsNLogos = async (token) => {
 };
 
 const propertyService = {
+  updateProjectImages,
+  updatePropertyImg,
   allProperty,
   getAproperty,
   postProperty,

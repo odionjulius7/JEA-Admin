@@ -616,7 +616,7 @@ export default function PostPropertyView() {
                 Choose Images (500KB max each):
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                Image Dimension (400 X 400 each):
+                Image width (max 1200px each):
               </Typography>
               <Stack direction="row" spacing={1}>
                 <LoadingButton

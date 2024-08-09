@@ -730,9 +730,11 @@ export default function PostProjectView() {
             <span>Max file size 500kb.</span>
           </div>
         </Stack>
-        <div style={{ width: '300px', height: 'auto', margin: '2rem' }}>
-          {image && <img src={URL.createObjectURL(image)} alt="Selected" />}
-        </div>
+        {image && (
+          <div style={{ width: '200px', height: '200px', margin: '1rem' }}>
+            <img src={URL.createObjectURL(image)} alt="Selected" />
+          </div>
+        )}
 
         <hr />
 
@@ -758,7 +760,7 @@ export default function PostProjectView() {
                 Choose Images (500KB max each):
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                Image Dimension (400 X 400 each):
+                Image width (max 1200px each):
               </Typography>
               <Stack direction="row" spacing={1}>
                 <LoadingButton
@@ -769,7 +771,7 @@ export default function PostProjectView() {
                     height: '2rem',
                   }}
                 >
-                  Upload Product images
+                  Upload Project images
                 </LoadingButton>
               </Stack>
               <input

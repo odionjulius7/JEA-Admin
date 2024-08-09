@@ -209,8 +209,27 @@ export default function ProjectPage() {
             marginBottom: '20px',
           }}
         >
-          <Grid>
-            <Button onClick={() => router.push(`/edit-project/${id}`)}>Edit Project</Button>
+          <Grid style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
+            <Button
+              style={{
+                backgroundColor: '#FF9900', // orange-red color
+                color: 'white',
+                // padding: '10px 20px',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bolder',
+              }}
+              onClick={() => router.push(`/edit-project/${id}`)}
+            >
+              Edit Project Details
+            </Button>
+            <Button
+              style={{ fontWeight: 'bolder' }}
+              onClick={() => router.push(`/project-image-edit/${id}`)}
+            >
+              Edit Project Images
+            </Button>
           </Grid>
           <Grid>
             {/* <Button onClick={() => router.push(`/featured-proj/${projectDetail._id}`)}>

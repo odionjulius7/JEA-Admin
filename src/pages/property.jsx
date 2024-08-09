@@ -202,15 +202,30 @@ export default function PropertyPage() {
             marginBottom: '20px',
           }}
         >
-          <Grid>
+          <Grid style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
+            <Button
+              style={{
+                backgroundColor: '#FF9900', // orange-red color
+                color: 'white',
+                // padding: '10px 20px',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bolder',
+              }}
+              onClick={() => router.push(`/edit-property/${propertyDetail._id}`)}
+            >
+              Edit Property Details
+            </Button>
             <Button
               style={{
                 border: '1px solid blue',
                 color: '#000',
+                fontWeight: 'bolder',
               }}
-              onClick={() => router.push(`/edit-property/${propertyDetail._id}`)}
+              onClick={() => router.push(`/product-image-edit/${propertyDetail._id}`)}
             >
-              Edit Property
+              Update Property Image
             </Button>
           </Grid>
           <Grid>

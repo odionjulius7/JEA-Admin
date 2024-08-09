@@ -20,6 +20,7 @@ const initialState = {
   isSuccessUpdate1: false,
   isLoadingFeat: false,
   isErrorFeat: false,
+  isSuccessImg: false,
 };
 
 // Properties
@@ -47,6 +48,19 @@ export const postProperty = createAsyncThunk('property/post-property', async (da
     return thunkAPI.rejectWithValue(error);
   }
 });
+
+// images update
+export const updatePropertyImg = createAsyncThunk(
+  'property/update-props-images',
+  async (data, thunkAPI) => {
+    try {
+      return await propertyService.updatePropertyImg(data);
+    } catch (error) {
+      toast.error('Property Post Failed, try again');
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const updateProperty = createAsyncThunk(
   'property/update-property',
@@ -134,6 +148,17 @@ export const postProj = createAsyncThunk('project/post-project', async (data, th
     return thunkAPI.rejectWithValue(error);
   }
 });
+export const updateProjectImages = createAsyncThunk(
+  'project/update-project-images',
+  async (data, thunkAPI) => {
+    try {
+      return await propertyService.updateProjectImages(data);
+    } catch (error) {
+      toast.error('Project image update Failed, try again');
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 // Requests
 export const allRequest = createAsyncThunk('request/get-request', async (token, thunkAPI) => {
@@ -283,6 +308,22 @@ export const propertySlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
+      .addCase(updatePropertyImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePropertyImg.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessImg = true;
+        state.propertyImgs = action.payload;
+        state.message = 'successfully updated';
+      })
+      .addCase(updatePropertyImg.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessImg = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
 
       //  Projects
       .addCase(allProject.pending, (state) => {
@@ -346,6 +387,22 @@ export const propertySlice = createSlice({
       .addCase(postProj.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(updateProjectImages.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProjectImages.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccessImg = true;
+        state.updatedProjectImg = action.payload;
+        state.message = 'success';
+      })
+      .addCase(updateProjectImages.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccessImg = false;
         state.message = action.error;
         state.isLoading = false;
       })
