@@ -52,6 +52,8 @@ export default function EditPropertyPage() {
 
   const theme = useTheme();
 
+  // console.log(propertyDetail?.tag);
+
   const formik = useFormik({
     initialValues: {
       title: propertyDetail?.title || '',
@@ -161,6 +163,26 @@ export default function EditPropertyPage() {
             <MenuItem value="shortlet">Shortlet</MenuItem>
           </Select>
         </FormControl>
+
+        {/* tag */}
+        <FormControl fullWidth>
+          <InputLabel id="category-label">Tag Property</InputLabel>
+          <Select
+            labelId="tag-label"
+            id="tag"
+            name="tag"
+            value={formik.values.tag}
+            onChange={formik.handleChange}
+            label="Tag Property"
+            error={formik.touched.tag && Boolean(formik.errors.tag)}
+            helperText={formik.touched.tag && formik.errors.tag}
+          >
+            <MenuItem value="featured">Featured</MenuItem>
+            <MenuItem value="property of the week">Property Of The Week</MenuItem>
+            <MenuItem value="available luxury">Available Luxury</MenuItem>
+          </Select>
+        </FormControl>
+        {/* tag */}
 
         <TextField
           label="Property Price"
